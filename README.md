@@ -1,3 +1,9 @@
+# Setup project
+`git clone https://github.com/endremau/Skrp`
+
+`git checkout develop`
+
+
 # Git guidelines
 We work out of develop, and merge to master with stable releases. If working on
 a feature, checkout a branch with your issue number and make sure your branch
