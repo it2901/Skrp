@@ -21,5 +21,10 @@ might need to force-push). After your branch is pushed, create a pull request
 and make sure someone does a code review for you. Once its reviewed, you can
 merge / rebase it into develop.
 
+# Database setup
+You need to have a postgres server and client installed to be able to setup
+the database. Refer to [Postgresql downloads](https://www.postgresql.org/download/)
+for instructions on how to get postgres running.
 
-
+Once you have postgres running, you can run the `./db_setup.bash` script. You might
+need to make it executable, which you can do with `chmod +x db_setup.bash`
