@@ -1,5 +1,13 @@
 (ns backend.core
-  (:require [org.httpkit.server :refer [run-server]]))
+  (:require [org.httpkit.server :refer [run-server]]
+            [clojure.java.jdbc :as jdbc]))
+
+(def pg-db {:dbtype "postgres"
+            :dbname "netjson_dev"
+            :host "localhost"})
+
+(jdbc/query pg-db
+  ["select now();"])
 
 (defn app 
   "Says hello, world"
