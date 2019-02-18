@@ -5,7 +5,10 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [environ "1.1.0"]
-                 [http-kit "2.2.0"]]
+                 [http-kit "2.2.0"]
+                 [org.postgresql/postgresql "42.2.5"]
+                 [org.clojure/java.jdbc "0.7.8"]]
+
   :repl-options {:init-ns backend.core}
   :main backend.core
   :plugins [[lein-codox "0.10.6"]])
