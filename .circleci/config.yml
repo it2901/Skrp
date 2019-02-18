@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/build
     docker:
-      - image: circleci/clojure:lein-2.9.0
+      - image: circleci/clojure:lein-2.7.1
     steps:
       - checkout
       - run: cd backend && lein deps
