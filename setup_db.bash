@@ -9,6 +9,7 @@ if [ $? -eq 0 ]; then
   echo "Database created."
   echo "Creating database structure (…)"
   psql -d netjson_dev -f database/001_initial_schema.sql
+  echo "Database structure created"
 else
   echo "Creating database structure failed"
   exit 1
