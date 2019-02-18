@@ -28,3 +28,6 @@ for instructions on how to get postgres running.
 
 Once you have postgres running, you can run the `./db_setup.bash` script. You might
 need to make it executable, which you can do with `chmod +x db_setup.bash`
+
+To make the database work with the application, you need to make sure the `PGDATABASE` environment is set.
+You can do this by running `export PGDATABASE="netjson_dev"`
