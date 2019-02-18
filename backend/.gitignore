@@ -1,6 +1,8 @@
 /target
 /classes
 /checkouts
+/.idea
+*.iml
 profiles.clj
 pom.xml
 pom.xml.asc
