@@ -7,4 +7,6 @@
                  [environ "1.1.0"]
                  [http-kit "2.2.0"]]
   :repl-options {:init-ns backend.core}
-  :main backend.core)
+  :main backend.core
+  :plugins [[lein-codox "0.10.6"]])
+  :codox {:metadata {:doc/format :markdown}}
