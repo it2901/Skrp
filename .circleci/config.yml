@@ -1,0 +1,16 @@
+version: 2
+
+jobs: 
+  build:
+    working_directory ~/build
+    docker:
+      - image: circleci/clojure:lein-2.9.0
+    steps:
+      - checkout
+      - run: cd backend && lein deps
+      - run: cd backend && lein test
+      - run: cd backend && lein build
+
+# TODO: Add caching
+# TODO: Find location for jar
+# TODO: Frontend
