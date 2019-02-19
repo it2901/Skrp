@@ -40,7 +40,7 @@
    :body    {"Error" "Could not find route"}})
 
 (defroutes app-routes
-           "Defines all the route handlers"
+           "Defines all the routes and their respective route handlers"
            (GET "/" [] index-handler)
            (GET "/networkgraph" [] dummy-data-handler)
            (route/not-found error-handler))
