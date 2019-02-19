@@ -18,7 +18,7 @@
             [clojure.java.jdbc :as jdbc]))
 
 (def pg-db {:dbtype "postgres"
-            :dbname "netjson_dev"
+            :dbname (System/getenv "PGDATABASE")
             :host   "localhost"})
 
 (jdbc/query pg-db
