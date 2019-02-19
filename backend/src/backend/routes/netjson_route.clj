@@ -34,7 +34,7 @@
 
 (defn error-response
   "HTTP error reponse"
-  [req]
+  [_]
   {:status  404
    :headers {"Content-Type" "text/json"}
    :body    {"Error" "Could not find route"}})
