@@ -19,19 +19,19 @@
 
 (def pg-db {:dbtype "postgres"
             :dbname "netjson_dev"
-            :host "localhost"})
+            :host   "localhost"})
 
 (jdbc/query pg-db
-  ["select now();"])
+            ["select now();"])
 
-(defn app 
+(defn app
   "Says hello, world"
   [req]
   {:status  200
    :headers {"Content-Type" "text/html"}
    :body    (str "Hello, World")})
 
-(defn -main 
+(defn -main
   "Starts a http-server"
   [& args]
   (run-server app {:port 8080})
