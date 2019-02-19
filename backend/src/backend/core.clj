@@ -15,7 +15,8 @@
 
 (ns backend.core
   (:require [org.httpkit.server :refer [run-server]]
-            [clojure.java.jdbc :as jdbc]))
+            [clojure.java.jdbc :as jdbc]
+            [backend.routes.netjson-route :refer [app-routes]]))
 
 (def pg-db {:dbtype "postgres"
             :dbname (System/getenv "PGDATABASE")
@@ -24,15 +25,8 @@
 (jdbc/query pg-db
             ["select now();"])
 
-(defn app
-  "Says hello, world"
-  [req]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    (str "Hello, World")})
-
 (defn -main
   "Starts a http-server"
   [& args]
-  (run-server app {:port 8080})
+  (run-server app-routes {:port 8080})
   (println "Server started on port 8080"))
