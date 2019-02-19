@@ -18,22 +18,22 @@
             [compojure.route :as route]
             [clojure.java.io :as io]))
 
-(defn index
+(defn index-handler
   "Says hello, world"
   [_]
   {:status  200
    :headers {"Content-Type" "text/html"}
    :body    (str "Hello, World")})
 
-(defn dummy-data
+(defn dummy-data-handler
   "HTTP response for dummy networkgraph data"
   [_]
   {:status  200
    :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
-(defn error-response
-  "HTTP error reponse"
+(defn error-handler
+  "HTTP error response"
   [_]
   {:status  404
    :headers {"Content-Type" "application/json"}
@@ -41,6 +41,6 @@
 
 (defroutes app-routes
            "Defines all the route handlers"
-           (GET "/" [] index)
-           (GET "/networkgraph" [] dummy-data)
-           (route/not-found error-response))
+           (GET "/" [] index-handler)
+           (GET "/networkgraph" [] dummy-data-handler)
+           (route/not-found error-handler))
