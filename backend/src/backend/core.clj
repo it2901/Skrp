@@ -11,14 +11,14 @@
 ;;;; GNU Lesser General Public License for more details.
 ;;;;
 ;;;; You should have received a copy of the GNU Lesser General Public License
-;;;; along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.core
   (:require [org.httpkit.server :refer [run-server]]
             [clojure.java.jdbc :as jdbc]))
 
 (def pg-db {:dbtype "postgres"
-            :dbname (System/getenv "PGDATABASE")
+            :dbname "netjson_dev"
             :host "localhost"})
 
 (jdbc/query pg-db
