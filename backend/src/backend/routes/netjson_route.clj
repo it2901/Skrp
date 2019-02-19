@@ -29,14 +29,14 @@
   "HTTP response for dummy networkgraph data"
   [_]
   {:status  200
-   :headers {"Content-Type" "text/json"}
+   :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
 (defn error-response
   "HTTP error reponse"
   [_]
   {:status  404
-   :headers {"Content-Type" "text/json"}
+   :headers {"Content-Type" "application/json"}
    :body    {"Error" "Could not find route"}})
 
 (defroutes app-routes
