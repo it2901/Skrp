@@ -1,8 +1,5 @@
 # Setup project
-`git clone https://github.com/endremau/Skrp`
-
-`git checkout develop`
-
+`git clone https://github.com/it2901/Skrp.git`
 
 # Git guidelines
 We work out of develop, and merge to master with stable releases. If working on
@@ -14,7 +11,7 @@ has a descriptive name. E.g.
 Once you are done developing™ your feature you can be a friend to the people
 you work with, and rebase on develop
 
-`git pull --rebase origin develop`
+`git pull --rebase origin develop`.
 
 Nice, you rewrote history. Push your branch (if you have already pushed it, you
 might need to force-push). After your branch is pushed, create a pull request
@@ -30,4 +27,4 @@ Once you have postgres running, you can run the `./db_setup.bash` script. You mi
 need to make it executable, which you can do with `chmod +x db_setup.bash`
 
 To make the database work with the application, you need to make sure the `PGDATABASE` environment is set.
-You can do this by running `export PGDATABASE="netjson_dev"`
+You can do this by running `export PGDATABASE="netjson_dev"`.
