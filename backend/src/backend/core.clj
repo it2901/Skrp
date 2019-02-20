@@ -20,6 +20,8 @@
 
 (def pg-db {:dbtype "postgres"
             :dbname (System/getenv "PGDATABASE")
+            :user "postgres"
+            :password "password"
             :host   "localhost"})
 
 (jdbc/query pg-db
@@ -28,5 +30,5 @@
 (defn -main
   "Starts a http-server"
   [& args]
-  (run-server app-routes {:port 8080})
-  (println "Server started on port 8080"))
+  (run-server app-routes {:port 8090})
+  (println "Server started on port 8090"))
