@@ -1,0 +1,11 @@
+{
+ :database
+ { :user "postgres"
+   :pass "password"
+   :host "localhost"
+ }
+ :webserver
+ { 
+   :port 8090
+ }
+}

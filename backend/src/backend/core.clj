@@ -16,13 +16,16 @@
 (ns backend.core
   (:require [org.httpkit.server :refer [run-server]]
             [clojure.java.jdbc :as jdbc]
+            [aero.core :refer (read-config)]
             [backend.routes.netjson-route :refer [app-routes]]))
 
-(def pg-db {:dbtype "postgres"
-            :dbname (System/getenv "PGDATABASE")
-            :user "postgres"
-            :password "password"
-            :host   "localhost"})
+(def cfg (read-config "config.edn"))
+
+(def pg-db {:dbtype   "postgres"
+            :dbname   (System/getenv "PGDATABASE")
+            :user     (get-in cfg [:database :user])
+            :password (get-in cfg [:database :pass])
+            :host     (get-in cfg [:database :host])})
 
 (jdbc/query pg-db
             ["select now();"])
@@ -30,5 +33,6 @@
 (defn -main
   "Starts a http-server"
   [& args]
-  (run-server app-routes {:port 8090})
-  (println "Server started on port 8090"))
+  (run-server app-routes (get cfg :webserver))
+  (println "Server started on port" (get-in cfg [:webserver :port])))
+
