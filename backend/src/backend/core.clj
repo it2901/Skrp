@@ -22,7 +22,7 @@
 (def cfg (read-config "config.edn"))
 
 (def pg-db {:dbtype   "postgres"
-            :dbname   (System/getenv "PGDATABASE")
+            :dbname   (get-in cfg [:database :name])
             :user     (get-in cfg [:database :user])
             :password (get-in cfg [:database :pass])
             :host     (get-in cfg [:database :host])})

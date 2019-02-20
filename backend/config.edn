@@ -1,6 +1,7 @@
 {
  :database
  { :user "postgres"
+   :name  #or [#env PGDATABASE "netjson_dev"]
    :pass "password"
    :host "localhost"
  }
