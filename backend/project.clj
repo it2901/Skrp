@@ -4,6 +4,7 @@
   :license {:name "LGPL-3.0"
             :url "https://www.gnu.org/licenses/lgpl-3.0.en.html"}
   :dependencies [[org.clojure/clojure "1.10.0"]
+                 [cheshire "5.8.1"]
                  [http-kit "2.3.0"]
                  [ring "1.7.1"]
                  [compojure "1.6.1"]
