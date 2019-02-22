@@ -13,7 +13,7 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.routes.netjson-route
+(ns backend.routes.netjson
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [clojure.java.io :as io]))
@@ -32,7 +32,7 @@
    :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
-(defn error-handler
+(defn error-handler-rep
   "HTTP error response"
   [_]
   {:status  404
@@ -43,4 +43,4 @@
            "Defines all the routes and their respective route handlers"
            (GET "/" [] index-handler)
            (GET "/networkgraph" [] dummy-data-handler)
-           (route/not-found error-handler))
+           (route/not-found error-handler-rep))
