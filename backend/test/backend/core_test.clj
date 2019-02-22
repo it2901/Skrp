@@ -1,6 +1,5 @@
 (ns backend.core-test
-  (:require [clojure.test :refer :all]
-            [backend.core :refer :all]))
+  (:require [clojure.test :refer :all]))
 
 (deftest a-test
   (testing "A working test"
