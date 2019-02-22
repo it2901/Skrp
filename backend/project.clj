@@ -7,6 +7,7 @@
                  [http-kit "2.3.0"]
                  [compojure "1.6.1"]
                  [org.postgresql/postgresql "42.2.5"]
+                 [aero "1.1.3"]
                  [org.clojure/java.jdbc "0.7.8"]]
 
   :repl-options {:init-ns backend.core}
