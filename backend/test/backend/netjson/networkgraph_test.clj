@@ -1,4 +1,4 @@
-(ns backend.routes.netjson-test
+(ns backend.netjson.networkgraph-test
   (:require [cheshire.core :refer [parse-string]]
             [clojure.test :refer :all]
             [clojure.spec.alpha :as spec]
