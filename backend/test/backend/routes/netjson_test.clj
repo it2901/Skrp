@@ -18,4 +18,4 @@
 (deftest is-networkgraph-valid
   (def networkgraph
     (parse-string (slurp (io/resource "networkgraph.json")) #(keyword %)))
-  (spec/valid? ::networkgraph networkgraph)g)
+  (spec/valid? ::networkgraph networkgraph))
