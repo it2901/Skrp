@@ -5,6 +5,7 @@
             :url "https://www.gnu.org/licenses/lgpl-3.0.en.html"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [http-kit "2.3.0"]
+                 [ring "1.7.1"]
                  [compojure "1.6.1"]
                  [org.postgresql/postgresql "42.2.5"]
                  [aero "1.1.3"]
