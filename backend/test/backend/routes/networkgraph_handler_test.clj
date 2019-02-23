@@ -14,7 +14,7 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.routes.networkgraph-handler-test
-  (:require [cheshire.core :refer [parse-string]]
+  (:require [clojure.data.json :refer [read-str]]
             [clojure.test :refer :all]
             [backend.routes.netjson :refer [app-routes]]
             [ring.mock.request :as mock]
@@ -23,6 +23,6 @@
 (deftest dummy-route
   (testing "dummy route for networkgraph data"
     (let [response (app-routes (mock/request :get "/networkgraph"))
-          data (parse-string (:body response) #(keyword %))]
+          data (read-str (:body response) :key-fn keyword)]
       (is (= (:status response) 200))
-      (is (spec/valid? :backend.networkgraph-spec/networkgraph data) true))))
+      (is (spec/valid? :backend.networkgraph-spec/networkgraph data)))))
