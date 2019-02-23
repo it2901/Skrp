@@ -13,6 +13,7 @@ jobs:
     steps:
       - checkout
       - run: cd backend && lein deps
+      - run: cd backend && lein cljfmt check
       - run:
           name: Waiting for Postgres
           command: |
