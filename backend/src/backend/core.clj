@@ -16,10 +16,13 @@
 (ns backend.core
   (:require [org.httpkit.server :refer [run-server]]
             [clojure.java.jdbc :as jdbc]
+            [clojure.data.json :as json]
             [aero.core :refer (read-config)]
             [backend.routes.netjson-route :refer [app-routes]]))
 
 (def cfg (read-config "config.edn"))
+
+(def json (json/read (clojure.java.io/reader "resources/backend/networkgraph.json")))
 
 (def pg-db {:dbtype   "postgres"
             :dbname   (get-in cfg [:database :name])
