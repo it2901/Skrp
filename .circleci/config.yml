@@ -1,0 +1,34 @@
+version: 2
+
+jobs: 
+  build:
+    working_directory: ~/build
+    docker:
+      - image: circleci/clojure:lein-2.7.1
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: netjson_dev
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - run: cd backend && lein deps
+      - run:
+          name: Waiting for Postgres
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      - run: cd backend && lein test
+      #- run: cd backend && lein uberjar
+
+# Location for jars:
+## backend/target/backend-0.1.0-SNAPSHOT.jar
+## backend/target/backend-0.1.0-SNAPSHOT-standalone.jar
+#
+# TODO: Add caching
+# TODO: Frontend
