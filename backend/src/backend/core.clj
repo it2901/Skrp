@@ -11,14 +11,14 @@
 ;;;; GNU Lesser General Public License for more details.
 ;;;;
 ;;;; You should have received a copy of the GNU Lesser General Public License
-;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
+;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.core
-  (:require [org.httpkit.server :refer [run-server]]
+  (:require [ring.adapter.jetty :refer [run-jetty]]
             [clojure.java.jdbc :as jdbc]
             [clojure.data.json :as json]
             [aero.core :refer (read-config)]
-            [backend.routes.netjson-route :refer [app-routes]]))
+            [backend.routes.netjson :refer [app-routes]]))
 
 (def cfg (read-config "config.edn"))
 
@@ -36,6 +36,5 @@
 (defn -main
   "Starts a http-server"
   [& args]
-  (run-server app-routes (get cfg :webserver))
+  (run-jetty app-routes (get cfg :webserver))
   (println "Server started on port" (get-in cfg [:webserver :port])))
-
