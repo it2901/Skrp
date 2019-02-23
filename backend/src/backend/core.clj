@@ -11,7 +11,7 @@
 ;;;; GNU Lesser General Public License for more details.
 ;;;;
 ;;;; You should have received a copy of the GNU Lesser General Public License
-;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
+;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
