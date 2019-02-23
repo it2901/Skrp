@@ -7,6 +7,7 @@
                  [cheshire "5.8.1"]
                  [http-kit "2.3.0"]
                  [ring "1.7.1"]
+                 [ring/ring-mock "0.3.2"]
                  [compojure "1.6.1"]
                  [org.postgresql/postgresql "42.2.5"]
                  [aero "1.1.3"]
@@ -16,4 +17,5 @@
   :main backend.core
   :plugins [[lein-codox "0.10.6"]]
   :codox {:metadata {:doc/format :markdown}}
-  :resource-paths ["resources/backend"])
+  :resource-paths ["resources/backend"]
+  :test-paths ["test" "spec"])
