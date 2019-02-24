@@ -16,7 +16,6 @@
 (ns backend.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
             [clojure.java.jdbc :as jdbc]
-            [clojure.data.json :as json]
             [aero.core :refer (read-config)]
             [backend.routes.netjson :refer [app-routes]]))
 
