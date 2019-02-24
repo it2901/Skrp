@@ -22,8 +22,6 @@
 
 (def cfg (read-config "config.edn"))
 
-(def json (json/read (clojure.java.io/reader "resources/backend/networkgraph.json")))
-
 (def pg-db {:dbtype   "postgres"
             :dbname   (get-in cfg [:database :name])
             :user     (get-in cfg [:database :user])
