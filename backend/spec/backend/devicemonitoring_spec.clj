@@ -13,24 +13,16 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.networkgraph-spec
+(ns backend.devicemonitoring-spec
   (:require [clojure.spec.alpha :as spec]))
 
-(spec/def ::networkgraph
-  (spec/keys :req-un
-             [::type ::label ::protocol ::version ::metric ::nodes ::links]))
+(spec/def ::devicemonitoring
+  (spec/keys :req-un [::type ::general ::interfaces]))
 (spec/def ::type string?)
-(spec/def ::label string?)
-(spec/def ::protocol string?)
-(spec/def ::version string?)
-(spec/def ::metric string?)
-(spec/def ::nodes
-  (spec/coll-of ::node :kind vector?))
-(spec/def ::node (spec/map-of keyword? string?))
-(spec/def ::links
-  (spec/coll-of ::link :kind vector?))
-(spec/def ::link
-  (spec/keys :req-un [::source ::target ::cost]))
-(spec/def ::source string?)
-(spec/def ::target string?)
-(spec/def ::cost double?)
+(spec/def ::general (spec/keys :req-un [::hostname ::uptime]))
+(spec/def ::hostname string?)
+(spec/def ::uptime int?)
+(spec/def ::interfaces (spec/coll-of ::interface :kind vector?))
+(spec/def ::interface (spec/keys :req-un [::name ::uptime ::statistics]))
+(spec/def ::name string?)
+(spec/def ::statistics (spec/map-of keyword? int?))
