@@ -27,9 +27,6 @@
             :password (get-in cfg [:database :pass])
             :host     (get-in cfg [:database :host])})
 
-(jdbc/query pg-db
-            ["select now();"])
-
 (defn -main
   "Starts a http-server"
   [& args]
