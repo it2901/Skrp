@@ -17,7 +17,7 @@ class App extends Component {
       <NavBar></NavBar>
       <HashRouter>
         <div className="SPA">
-            <Route path="/" component={Home}/>
+            <Route path="/home" component={Home}/>
             <Route path="/stuff" component={Stuff}/>
             <Route path="/contact" component={Contact}/>
           </div>
