@@ -23,6 +23,7 @@ export default props => {
             <li className="menu-item" ><NavLink to="/home">Home</NavLink></li>
             <li className="menu-item"><NavLink to="/stuff">Stuff</NavLink></li>
             <li className="menu-item"><NavLink to="/contact">Contact</NavLink></li>
+            <li className="menu-item"><NavLink to="/about">About</NavLink></li>
           </ul>
         </div>
       </HashRouter>
