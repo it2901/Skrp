@@ -2,11 +2,7 @@ import React from "react";
 import {
     NavLink,
     HashRouter
-  } from "react-router-dom";
-
-import Home from "./test/Home"
-import Stuff from "./test/Stuff"
-import Contact from "./test/Contact"
+  } from "react-router-dom"; 
 
 import { slide as Menu } from "react-burger-menu";
 
