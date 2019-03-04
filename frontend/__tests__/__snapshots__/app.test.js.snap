@@ -1,0 +1,292 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="App"
+>
+  <div>
+    <div
+      className="bm-overlay"
+      onClick={[Function]}
+      style={
+        Object {
+          "MozTransform": "translate3d(100%, 0, 0)",
+          "MsTransform": "translate3d(100%, 0, 0)",
+          "OTransform": "translate3d(100%, 0, 0)",
+          "WebkitTransform": "translate3d(100%, 0, 0)",
+          "background": "rgba(0, 0, 0, 0.3)",
+          "height": "100%",
+          "opacity": 0,
+          "position": "fixed",
+          "transform": "translate3d(100%, 0, 0)",
+          "transition": "opacity 0.3s, transform 0s 0.3s",
+          "width": "100%",
+          "zIndex": 1000,
+        }
+      }
+    />
+    <div
+      className="bm-menu-wrap"
+      id=""
+      style={
+        Object {
+          "MozTransform": "translate3d(-100%, 0, 0)",
+          "MsTransform": "translate3d(-100%, 0, 0)",
+          "OTransform": "translate3d(-100%, 0, 0)",
+          "WebkitTransform": "translate3d(-100%, 0, 0)",
+          "height": "100%",
+          "position": "fixed",
+          "right": "inherit",
+          "transform": "translate3d(-100%, 0, 0)",
+          "transition": "all 0.5s",
+          "width": "300px",
+          "zIndex": 1100,
+        }
+      }
+    >
+      <div
+        className="bm-menu"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "100%",
+            "overflow": "auto",
+          }
+        }
+      >
+        <nav
+          className="bm-item-list"
+          style={
+            Object {
+              "height": "100%",
+            }
+          }
+        >
+          <div>
+            <h1>
+              Simple SPA
+            </h1>
+            <ul
+              className="header"
+            >
+              <li
+                className="menu-item"
+              >
+                <a
+                  aria-current="page"
+                  className="active"
+                  href="#/"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Standard
+                </a>
+              </li>
+              <li
+                className="menu-item"
+              >
+                <a
+                  aria-current={null}
+                  href="#/home"
+                  onClick={[Function]}
+                >
+                  Home
+                </a>
+              </li>
+              <li
+                className="menu-item"
+              >
+                <a
+                  aria-current={null}
+                  href="#/nodegraph"
+                  onClick={[Function]}
+                >
+                  Node Graph
+                </a>
+              </li>
+              <li
+                className="menu-item"
+              >
+                <a
+                  aria-current={null}
+                  href="#/stuff"
+                  onClick={[Function]}
+                >
+                  Stuff
+                </a>
+              </li>
+              <li
+                className="menu-item"
+              >
+                <a
+                  aria-current={null}
+                  href="#/about"
+                  onClick={[Function]}
+                >
+                  About
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div
+        style={Object {}}
+      >
+        <div
+          className="bm-cross-button"
+          style={
+            Object {
+              "height": 24,
+              "position": "absolute",
+              "right": 8,
+              "top": 8,
+              "width": 24,
+            }
+          }
+        >
+          <span
+            style={
+              Object {
+                "position": "absolute",
+                "right": "14px",
+                "top": "6px",
+              }
+            }
+          >
+            <span
+              className="bm-cross"
+              style={
+                Object {
+                  "height": 14,
+                  "position": "absolute",
+                  "transform": "rotate(45deg)",
+                  "width": 3,
+                }
+              }
+            />
+            <span
+              className="bm-cross"
+              style={
+                Object {
+                  "height": 14,
+                  "position": "absolute",
+                  "transform": "rotate(-45deg)",
+                  "width": 3,
+                }
+              }
+            />
+          </span>
+          <button
+            onClick={[Function]}
+            style={
+              Object {
+                "background": "transparent",
+                "border": "none",
+                "cursor": "pointer",
+                "fontSize": 0,
+                "height": "100%",
+                "left": 0,
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": "100%",
+              }
+            }
+            tabIndex={-1}
+          >
+            Close Menu
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      style={Object {}}
+    >
+      <div
+        className="bm-burger-button"
+        style={
+          Object {
+            "zIndex": 1000,
+          }
+        }
+      >
+        <span>
+          <span
+            className="bm-burger-bars"
+            style={
+              Object {
+                "height": "20%",
+                "left": 0,
+                "opacity": 1,
+                "position": "absolute",
+                "right": 0,
+                "top": "0%",
+              }
+            }
+          />
+          <span
+            className="bm-burger-bars"
+            style={
+              Object {
+                "height": "20%",
+                "left": 0,
+                "opacity": 1,
+                "position": "absolute",
+                "right": 0,
+                "top": "40%",
+              }
+            }
+          />
+          <span
+            className="bm-burger-bars"
+            style={
+              Object {
+                "height": "20%",
+                "left": 0,
+                "opacity": 1,
+                "position": "absolute",
+                "right": 0,
+                "top": "80%",
+              }
+            }
+          />
+        </span>
+        <button
+          onClick={[Function]}
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
+          style={
+            Object {
+              "background": "transparent",
+              "border": "none",
+              "cursor": "pointer",
+              "fontSize": 0,
+              "height": "100%",
+              "left": 0,
+              "margin": 0,
+              "padding": 0,
+              "position": "absolute",
+              "top": 0,
+              "width": "100%",
+            }
+          }
+        >
+          Open Menu
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="SPA"
+  >
+    <div>
+      <img
+        alt="Logo"
+        src="test-file-stub"
+      />
+    </div>
+  </div>
+</div>
+`;
