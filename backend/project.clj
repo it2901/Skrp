@@ -5,6 +5,7 @@
             :url "https://www.gnu.org/licenses/lgpl-3.0.en.html"}
   :dependencies [
                  [aero "1.1.3"]
+                 [clj-time "0.15.0"]
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
                  [org.clojure/clojure "1.10.0"]
@@ -13,8 +14,8 @@
                  [org.clojure/tools.cli "0.4.1"]
                  [org.postgresql/postgresql "42.2.5"]
                  [ring "1.7.1"]
-                 [ring/ring-mock "0.3.2"]
-                 ]
+                 [ring/ring-mock "0.3.2"]]
+
 
   :repl-options {:init-ns backend.core}
   :main backend.core

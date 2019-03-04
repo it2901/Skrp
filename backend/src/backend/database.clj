@@ -14,8 +14,7 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.database
-  (:require [backend.core :refer [cfg]]
-            [clojure.java.jdbc :as j]))
+  (:require [backend.core :refer [cfg]]))
 
 (defn db-cfg
   [cfg]
@@ -26,9 +25,3 @@
    :host     (get-in cfg [:database :host])})
 
 (def db (db-cfg cfg))
-
-(defn get-syslog
-  []
-  (j/query db ["select * from system_log"]))
-
-(get-syslog)

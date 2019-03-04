@@ -15,10 +15,12 @@
 
 (ns backend.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
-            [clojure.tools.cli :refer [parse-opts]]
+            [clojure.tools.cli :as cli]
             [aero.core :refer (read-config)]
             [backend.routes.netjson :refer [app-routes]])
   (:gen-class))
+
+(def cfg (read-config "config.edn"))
 
 (def cli-options
   [["-c" "--config FILE" "Path to configuration file"
@@ -35,11 +37,14 @@
 (defn -main
   "Reads CLI args and starts a http-server"
   [& args]
-  (def opt (parse-opts args cli-options))
-  (when (get-in opt [:options :help])
-    (usage (:summary opt)))
+  (let [opt (cli/parse-opts args cli-options)]
+    (when (get-in opt [:options :help])
+      (usage (:summary opt)))
 
-  (def cfg (read-config (get-in opt [:options :config])))
+    (alter-var-root
+      #'cfg
+      (constantly
+        (read-config (get-in opt [:options :config])))))
 
   (run-jetty app-routes (get cfg :webserver))
   (println "Server started on port" (get-in cfg [:webserver :port])))
