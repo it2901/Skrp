@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from "./components/navbar"
-import Home from "./components/test/Home"
-import Contact from "./components/test/Contact"
-import Stuff from "./components/test/Stuff"
+import NodeGraph from "./components/NodeGraph"
 import {
   Route,
   HashRouter
@@ -10,16 +8,15 @@ import {
 import "./components/styles/navbar.css"
 import "./components/styles/hashrouter.css"
 
+
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App" id="outerContainer"> 
       <NavBar></NavBar>
       <HashRouter>
         <div className="SPA">
-            <Route path="/" component={Home}/>
-            <Route path="/stuff" component={Stuff}/>
-            <Route path="/contact" component={Contact}/>
+            <Route path="/nodegraph" component={NodeGraph}></Route>
           </div>
       </HashRouter>
 
