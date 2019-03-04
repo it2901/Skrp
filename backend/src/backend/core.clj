@@ -15,10 +15,10 @@
 
 (ns backend.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
-            [clojure.java.jdbc :as jdbc]
             [clojure.tools.cli :refer [parse-opts]]
             [aero.core :refer (read-config)]
-            [backend.routes.netjson :refer [app-routes]]))
+            [backend.routes.netjson :refer [app-routes]])
+  (:gen-class))
 
 (def cli-options
   [["-c" "--config FILE" "Path to configuration file"
@@ -26,28 +26,20 @@
     :default-desc "config.edn"]
    ["-h" "--help" "Print this help screen"]])
 
-(defn usage [summary]
+(defn usage
+  [summary]
   (println (str "Usage: skrpend [options]\n\nOptions:\n" summary
                 "\n\nPlease refer to the user guide for more information."))
   (System/exit 0))
 
-(defn db-cfg
-  [cfg]
-  {:dbtype   "postgres"
-   :dbname   (get-in cfg [:database :name])
-   :user     (get-in cfg [:database :user])
-   :password (get-in cfg [:database :pass])
-   :host     (get-in cfg [:database :host])})
-
 (defn -main
-  "Starts a http-server"
+  "Reads CLI args and starts a http-server"
   [& args]
   (def opt (parse-opts args cli-options))
-  (if (get-in opt [:options :help])
+  (when (get-in opt [:options :help])
     (usage (:summary opt)))
 
   (def cfg (read-config (get-in opt [:options :config])))
-  (def db (db-cfg cfg))
 
-  (println "Server started on port" (get-in cfg [:webserver :port]))
-  (run-jetty app-routes (get cfg :webserver)))
+  (run-jetty app-routes (get cfg :webserver))
+  (println "Server started on port" (get-in cfg [:webserver :port])))
