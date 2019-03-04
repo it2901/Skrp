@@ -11,28 +11,43 @@
 ;;;; GNU Lesser General Public License for more details.
 ;;;;
 ;;;; You should have received a copy of the GNU Lesser General Public License
-;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
+;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.core
-  (:require [org.httpkit.server :refer [run-server]]
+  (:require [ring.adapter.jetty :refer [run-jetty]]
             [clojure.java.jdbc :as jdbc]
+            [clojure.tools.cli :refer [parse-opts]]
             [aero.core :refer (read-config)]
-            [backend.routes.netjson-route :refer [app-routes]]))
+            [backend.routes.netjson :refer [app-routes]]))
 
-(def cfg (read-config "config.edn"))
+(def cli-options
+  [["-c" "--config FILE" "Path to configuration file"
+    :default "config.edn"
+    :default-desc "config.edn"]
+   ["-h" "--help" "Print this help screen"]])
 
-(def pg-db {:dbtype   "postgres"
-            :dbname   (get-in cfg [:database :name])
-            :user     (get-in cfg [:database :user])
-            :password (get-in cfg [:database :pass])
-            :host     (get-in cfg [:database :host])})
+(defn usage [summary]
+  (println (str "Usage: skrpend [options]\n\nOptions:\n" summary
+                "\n\nPlease refer to the user guide for more information."))
+  (System/exit 0))
 
-(jdbc/query pg-db
-            ["select now();"])
+(defn db-cfg
+  [cfg]
+  {:dbtype   "postgres"
+   :dbname   (get-in cfg [:database :name])
+   :user     (get-in cfg [:database :user])
+   :password (get-in cfg [:database :pass])
+   :host     (get-in cfg [:database :host])})
 
 (defn -main
   "Starts a http-server"
   [& args]
-  (run-server app-routes (get cfg :webserver))
-  (println "Server started on port" (get-in cfg [:webserver :port])))
+  (def opt (parse-opts args cli-options))
+  (if (get-in opt [:options :help])
+    (usage (:summary opt)))
 
+  (def cfg (read-config (get-in opt [:options :config])))
+  (def db (db-cfg cfg))
+
+  (println "Server started on port" (get-in cfg [:webserver :port]))
+  (run-jetty app-routes (get cfg :webserver)))

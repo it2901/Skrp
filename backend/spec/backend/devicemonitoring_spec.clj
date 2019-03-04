@@ -11,11 +11,18 @@
 ;;;; GNU Lesser General Public License for more details.
 ;;;;
 ;;;; You should have received a copy of the GNU Lesser General Public License
-;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
+;;;; along with SKRP.  If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.core-test
-  (:require [clojure.test :refer :all]))
+(ns backend.devicemonitoring-spec
+  (:require [clojure.spec.alpha :as spec]))
 
-(deftest a-test
-  (testing "A working test"
-    (is (= 1 1))))
+(spec/def ::devicemonitoring
+  (spec/keys :req-un [::type ::general ::interfaces]))
+(spec/def ::type string?)
+(spec/def ::general (spec/keys :req-un [::hostname ::uptime]))
+(spec/def ::hostname string?)
+(spec/def ::uptime int?)
+(spec/def ::interfaces (spec/coll-of ::interface :kind vector?))
+(spec/def ::interface (spec/keys :req-un [::name ::uptime ::statistics]))
+(spec/def ::name string?)
+(spec/def ::statistics (spec/map-of keyword? int?))
