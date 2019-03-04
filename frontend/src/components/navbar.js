@@ -2,11 +2,7 @@ import React from "react";
 import {
     NavLink,
     HashRouter
-  } from "react-router-dom";
-
-import Home from "./test/Home"
-import Stuff from "./test/Stuff"
-import Contact from "./test/Contact"
+  } from "react-router-dom"; 
 
 import { slide as Menu } from "react-burger-menu";
 
@@ -19,9 +15,11 @@ export default props => {
         <div>
           <h1>Simple SPA</h1>
           <ul className="header">
-            <li className="menu-item" ><NavLink to="/">Home</NavLink></li>
+            <li className="menu-item" ><NavLink to="/">Standard</NavLink></li>
+            <li className="menu-item" ><NavLink to="/home">Home</NavLink></li>
             <li className="menu-item"><NavLink to="/stuff">Stuff</NavLink></li>
             <li className="menu-item"><NavLink to="/contact">Contact</NavLink></li>
+            <li className="menu-item"><NavLink to="/about">About</NavLink></li>
           </ul>
         </div>
       </HashRouter>
