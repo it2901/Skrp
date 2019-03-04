@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from "./components/navbar"
-import Home from "./components/test/Home"
-import Contact from "./components/test/Contact"
-import Stuff from "./components/test/Stuff"
+import NodeGraph from "./components/NodeGraph"
 import About from "./components/about"
 import errorcomponent from "./components/errorcomponent"
 
@@ -14,6 +12,7 @@ import {
 import "./components/styles/navbar.css"
 import "./components/styles/hashrouter.css"
 
+
 class App extends Component {
   render() {
     return (
@@ -22,9 +21,8 @@ class App extends Component {
           <HashRouter>
             <div className="SPA">
               <Switch>
-                <Route path="/home" component={Home}/>
-                <Route path="/stuff" component={Stuff}/>
-                <Route path="/contact" component={Contact}/>
+                <Route path="/home" component={About}/>
+                <Route path="/nodegraph" component={NodeGraph}/>
                 <Route path="/about" component={About}/>
                 <Route component={errorcomponent} />
               </Switch>
