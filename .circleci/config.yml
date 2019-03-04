@@ -1,7 +1,7 @@
 version: 2
 
 jobs: 
-  build:
+  backend:
     working_directory: ~/build
     docker:
       - image: circleci/clojure:lein-2.7.1
@@ -26,10 +26,24 @@ jobs:
             echo Failed waiting for Postgres && exit 1
       - run: cd backend && lein test
       #- run: cd backend && lein uberjar
+  frontend:
+    working_directory: ~/buildfrontend
+    docker:
+      - image: circleci/node:11.10.0
+    steps:
+      - checkout
+      - run: cd frontend && npm install
+      - run: cd frontend && npm test
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - backend
+    - frontend
 
 # Location for jars:
 ## backend/target/backend-0.1.0-SNAPSHOT.jar
 ## backend/target/backend-0.1.0-SNAPSHOT-standalone.jar
-#
+
 # TODO: Add caching
-# TODO: Frontend
