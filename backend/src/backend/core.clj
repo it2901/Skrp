@@ -42,9 +42,9 @@
       (usage (:summary opt)))
 
     (alter-var-root
-      #'cfg
-      (constantly
-        (read-config (get-in opt [:options :config])))))
+     #'cfg
+     (constantly
+      (read-config (get-in opt [:options :config])))))
 
   (run-jetty app-routes (get cfg :webserver))
   (println "Server started on port" (get-in cfg [:webserver :port])))

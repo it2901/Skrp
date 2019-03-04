@@ -19,7 +19,8 @@
 
   :repl-options {:init-ns backend.core}
   :main backend.core
-  :plugins [[lein-codox "0.10.6"] [lein-cljfmt "0.6.4"] [lein-cloverage "1.0.13"] [jonase/eastwood "0.3.5"]]
+  :plugins [[lein-codox "0.10.6"] [lein-cljfmt "0.6.4"]
+            [lein-cloverage "1.0.13"] [jonase/eastwood "0.3.5"]]
   :codox {:metadata {:doc/format :markdown}}
   :resource-paths ["resources/backend"]
   :test-paths ["test" "spec"])
