@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavBar from "./components/navbar"
 import NodeGraph from "./components/NodeGraph"
 import About from "./components/about"
+import Log from "./components/log"
 import errorcomponent from "./components/errorcomponent"
 
 import {
@@ -24,6 +25,7 @@ class App extends Component {
                 <Route path="/home" component={About}/>
                 <Route path="/nodegraph" component={NodeGraph}/>
                 <Route path="/about" component={About}/>
+                <Route path="/log" component={Log}/>
                 <Route component={errorcomponent} />
               </Switch>
             </div>  
