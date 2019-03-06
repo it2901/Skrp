@@ -20,8 +20,6 @@
             [backend.routes.netjson :refer [app-routes]])
   (:gen-class))
 
-#_(def cfg (read-config "config.edn"))
-
 (def cli-options
   [["-c" "--config FILE" "Path to configuration file"
     :default "config.edn"
@@ -40,11 +38,6 @@
   (let [opt (cli/parse-opts args cli-options)]
     (when (get-in opt [:options :help])
       (usage (:summary opt))))
-
-    ;(alter-var-root
-     ;#'cfg
-     ;(constantly
-     ;(read-config (get-in opt [:options :config]))))
 
   (intern
    'backend.database
