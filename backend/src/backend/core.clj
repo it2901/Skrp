@@ -20,7 +20,7 @@
             [backend.routes.netjson :refer [app-routes]])
   (:gen-class))
 
-(def cfg (read-config "config.edn"))
+#_(def cfg (read-config "config.edn"))
 
 (def cli-options
   [["-c" "--config FILE" "Path to configuration file"
@@ -39,12 +39,17 @@
   [& args]
   (let [opt (cli/parse-opts args cli-options)]
     (when (get-in opt [:options :help])
-      (usage (:summary opt)))
+      (usage (:summary opt))))
 
-    (alter-var-root
-     #'cfg
-     (constantly
-      (read-config (get-in opt [:options :config])))))
+    ;(alter-var-root
+     ;#'cfg
+     ;(constantly
+     ;(read-config (get-in opt [:options :config]))))
+
+  (intern
+   'backend.database
+   'cfg
+   (read-config (get-in opt [:options :config])))
 
   (run-jetty app-routes (get cfg :webserver))
   (println "Server started on port" (get-in cfg [:webserver :port])))

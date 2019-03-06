@@ -15,9 +15,6 @@
 
 (ns backend.logging
   (:require [backend.database :refer [db]]
-            [clj-time.core :as t]
-            [clj-time.jdbc]
-            [clj-time.local :as l]
             [clojure.java.jdbc :as j]))
 
 (defn get-syslog
@@ -31,11 +28,8 @@
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
-  [{:keys [device-id adaptation-id description]}]
+  [{:keys [device_id adaptation_id description]}]
   (j/insert! db :system_log
-             {:device_id     device-id
-              :adaptation_id adaptation-id
-              :description   description
-              :created       (t/to-time-zone
-                              (l/local-now)
-                              (t/default-time-zone))}))
+             {:device_id     device_id
+              :adaption_id   adaptation_id
+              :description   description}))
