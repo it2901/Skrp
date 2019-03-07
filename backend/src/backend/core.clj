@@ -17,7 +17,8 @@
   (:require [ring.adapter.jetty :refer [run-jetty]]
             [clojure.tools.cli :as cli]
             [aero.core :refer (read-config)]
-            [backend.routes.netjson :refer [app-routes]])
+            [backend.routes.netjson :refer [app-routes]]
+            [backend.database])
   (:gen-class))
 
 (def cli-options
@@ -37,12 +38,8 @@
   [& args]
   (let [opt (cli/parse-opts args cli-options)]
     (when (get-in opt [:options :help])
-      (usage (:summary opt))))
-
-  (intern
-   'backend.database
-   'cfg
-   (read-config (get-in opt [:options :config])))
-
-  (run-jetty app-routes (get cfg :webserver))
-  (println "Server started on port" (get-in cfg [:webserver :port])))
+      (usage (:summary opt)))
+    (let [temp-cfg (read-config (get-in opt [:options :config]))]
+      (intern 'backend.database 'cfg temp-cfg)
+      (run-jetty app-routes (get temp-cfg :webserver))
+      (println "Server started on port" (get-in temp-cfg [:webserver :port])))))
