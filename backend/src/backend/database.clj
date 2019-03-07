@@ -14,8 +14,7 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.database
-  (:require #_[backend.core :refer [cfg]]
-            [aero.core :refer (read-config)]))
+  (:require [aero.core :refer (read-config)]))
 
 (def cfg (read-config "config.edn"))
 
