@@ -1,3 +1,4 @@
+
 ;;;; This file is part of SKRP.
 ;;;;
 ;;;; SKRP is free software: you can redistribute it and/or modify
@@ -15,6 +16,7 @@
 
 (ns backend.logging
   (:require [backend.database :refer [db]]
+            [clojure.data.json :as json]
             [clojure.java.jdbc :as j]))
 
 (defn get-syslog
@@ -33,3 +35,8 @@
              {:device_id     device_id
               :adaption_id   adaptation_id
               :description   description}))
+
+(extend-type java.sql.Timestamp
+  json/JSONWriter
+  (-write [date out]
+    (json/-write (str date) out)))
