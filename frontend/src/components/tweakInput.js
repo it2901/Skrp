@@ -22,7 +22,7 @@ class TweakInput extends Component{
         this.props=props
     }
 
-    onChangeParameterValue = (name,event) =>{
+    onChangeParameterValue = (name,event) => {
         if (event.key === 'Enter') {
         this.setState({
             [name]:event.target.value
