@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from "./components/navbar"
-import Home from "./components/test/Home"
-import Contact from "./components/test/Contact"
-import Stuff from "./components/test/Stuff"
+import NodeGraph from "./components/NodeGraph"
 import About from "./components/about"
 import errorcomponent from "./components/errorcomponent"
 import tweakInput from "./components/tweakInput"
