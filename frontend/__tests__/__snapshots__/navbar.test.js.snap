@@ -84,6 +84,17 @@ exports[`renders correctly 1`] = `
             >
               <a
                 aria-current={null}
+                href="#/tweakinput"
+                onClick={[Function]}
+              >
+                Tweak Input
+              </a>
+            </li>
+            <li
+              className="menu-item"
+            >
+              <a
+                aria-current={null}
                 href="#/home"
                 onClick={[Function]}
               >
@@ -121,6 +132,17 @@ exports[`renders correctly 1`] = `
                 onClick={[Function]}
               >
                 About
+              </a>
+            </li>
+            <li
+              className="menu-item"
+            >
+              <a
+                aria-current={null}
+                href="#/nodegraph"
+                onClick={[Function]}
+              >
+                Node Graph
               </a>
             </li>
           </ul>
