@@ -23,24 +23,23 @@ class TweakInput extends Component{
         }
         this.props=props
     }
-    onChangeParameterValue = (event) =>{
+    onChangeParameterValue = (name,event) =>{
         if (event.key === 'Enter') {
-            const name = event.target.name
             console.log(name)
         this.setState({
-            "parameter1":event.target.value
+            [name]:event.target.value
         })
     }
 
     }
     render(){
         return( <Div>
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this)}  parameter={this.state.parameter1} name ="parameter1"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this)}  parameter={this.state.parameter2} name ="parameter2"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this)}  parameter={this.state.parameter3} name ="parameter3"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this)}  parameter={this.state.parameter4} name ="parameter4"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this)}  parameter={this.state.parameter5} name ="parameter5"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this)}  parameter={this.state.parameter6} name ="parameter6"/> 
+            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter1")}  parameter={this.state.parameter1} name ="parameter1"/> 
+            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter2")}  parameter={this.state.parameter2} name ="parameter2"/> 
+            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter3")}  parameter={this.state.parameter3} name ="parameter3"/> 
+            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter4")}  parameter={this.state.parameter4} name ="parameter4"/> 
+            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter5")}  parameter={this.state.parameter5} name ="parameter5"/> 
+            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter6")}  parameter={this.state.parameter6} name ="parameter6"/> 
             </Div>
        
         )
