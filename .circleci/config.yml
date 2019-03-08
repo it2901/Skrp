@@ -29,12 +29,20 @@ jobs:
   frontend:
     working_directory: ~/buildfrontend
     docker:
-      - image: circleci/node:11.10.0
+      - image: cypress/base:8
     steps:
       - checkout
-      - run: sudo apt-get --yes install xvfb libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "frontend/package.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
       - run: cd frontend && npm install
       - run: cd frontend && npm test
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "frontend/package.json" }}
+          paths:
+            - ~/.cache  ## cache both yarn and Cypress!
 
 workflows:
   version: 2
