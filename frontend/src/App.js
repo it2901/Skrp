@@ -39,6 +39,7 @@ class App extends Component {
                 <Route path="/tweakinput" component={tweakInput}/>
                 <Route path="/nodegraph" component={NodeGraph}/>
                 <Route path="/about" component={About}/>
+                <Route path="/nodegraph" component={NodeGraph}></Route>
                 <Route component={errorcomponent} />
               </Switch>
             </div>  
