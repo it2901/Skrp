@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import styled, {css} from 'styled-components'
+import fetch from 'isomorphic-fetch'
 
 const Table=styled.table`
 border:1px solid #ccc;

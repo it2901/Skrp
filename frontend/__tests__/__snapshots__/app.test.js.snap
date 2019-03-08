@@ -3,7 +3,7 @@
 exports[`renders correctly 1`] = `
 <div>
   <div
-    className="sc-ifAKCX ilEGgs"
+    className="sc-gzVnrw blJhoL"
   >
     <div>
       <div
@@ -97,29 +97,6 @@ exports[`renders correctly 1`] = `
                 <li
                   className="menu-item"
                 >
-<<<<<<< HEAD
-                  Node Graph
-                </a>
-              </li>
-              <li
-                className="menu-item"
-              >
-                <a
-                  aria-current={null}
-                  href="#/log"
-                  onClick={[Function]}
-                >
-                  Log
-                </a>
-              </li>
-              <li
-                className="menu-item"
-              >
-                <a
-                  aria-current={null}
-                  href="#/about"
-                  onClick={[Function]}
-=======
                   <a
                     aria-current={null}
                     href="#/home"
@@ -141,14 +118,13 @@ exports[`renders correctly 1`] = `
                 </li>
                 <li
                   className="menu-item"
->>>>>>> develop
                 >
                   <a
                     aria-current={null}
-                    href="#/stuff"
+                    href="#/log"
                     onClick={[Function]}
                   >
-                    Stuff
+                    Log
                   </a>
                 </li>
                 <li
