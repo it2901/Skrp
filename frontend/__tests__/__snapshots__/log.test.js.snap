@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<table
+  className="sc-bdVaJa iufyJw"
+>
+  <tr
+    className="sc-htpNat hHWtGj"
+  >
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      system_log_id
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      device_id
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      adaption_id
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      description
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      created
+    </th>
+  </tr>
+</table>
+`;

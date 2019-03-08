@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavBar from "./components/navbar"
 import NodeGraph from "./components/NodeGraph"
 import About from "./components/about"
+import Log from "./components/log"
 import errorcomponent from "./components/errorcomponent"
 import tweakInput from "./components/tweakInput"
 import styled from "styled-components"
@@ -26,7 +27,7 @@ class App extends Component {
       <div>
         {/* The Helmet gives a uniform color to the whole page. */}
       <Helmet>
-        <style>{'body { background-color:black ; }'}</style>
+        <style>{'body { background-color:white ; }'}</style>
       </Helmet>
     {/* This is the acctual components and navbar*/}
 
@@ -39,7 +40,7 @@ class App extends Component {
                 <Route path="/tweakinput" component={tweakInput}/>
                 <Route path="/nodegraph" component={NodeGraph}/>
                 <Route path="/about" component={About}/>
-                <Route path="/nodegraph" component={NodeGraph}></Route>
+                <Route path="/log" component={Log}/>
                 <Route component={errorcomponent} />
               </Switch>
             </div>  

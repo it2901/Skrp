@@ -117,10 +117,10 @@ exports[`renders correctly 1`] = `
             >
               <a
                 aria-current={null}
-                href="#/stuff"
+                href="#/log"
                 onClick={[Function]}
               >
-                Stuff
+                Log
               </a>
             </li>
             <li
