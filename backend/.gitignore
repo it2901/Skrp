@@ -15,4 +15,4 @@ pom.xml.asc
 .eastwood
 \#*\#
 .\#*
-
+*.DS_Store
