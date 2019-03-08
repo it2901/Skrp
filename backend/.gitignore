@@ -13,3 +13,6 @@ pom.xml.asc
 .hgignore
 .hg/
 .eastwood
+\#*\#
+.\#*
+*.DS_Store
