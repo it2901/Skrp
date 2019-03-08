@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import image from "./../assets/404.gif"
+import image from "../assets/404.gif"
 
 class Errorcomponent extends Component {
   render() {
@@ -7,7 +7,7 @@ class Errorcomponent extends Component {
         <div>
             <img src={image} alt="Logo" />
       </div>
-    );
+    )
   }
 }
 
