@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public.system_log (
   device_id INTEGER NOT NULL REFERENCES device(device_id),
   adaption_id INTEGER REFERENCES adaption(adaption_id),
   description TEXT NOT NULL,
-  created TIMESTAMPTZ NOT NULL
+  created TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS public.position_log (

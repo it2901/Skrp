@@ -16,7 +16,9 @@
 (ns backend.routes.netjson
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [clojure.java.io :as io]))
+            [clojure.data.json :as json]
+            [clojure.java.io :as io]
+            [backend.logging :refer [get-syslog]]))
 
 (defn index-handler
   "Says hello, world"
@@ -32,6 +34,13 @@
    :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
+(defn syslog-handler
+  "HTTP response for dummy networkgraph data"
+  [_]
+  {:status  200
+   :headers {"Content-Type" "application/json"}
+   :body    (json/write-str (get-syslog))})
+
 (defn error-handler-rep
   "HTTP error response"
   [_]
@@ -43,4 +52,5 @@
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] dummy-data-handler)
+  (GET "/syslog" [] syslog-handler)
   (route/not-found error-handler-rep))
