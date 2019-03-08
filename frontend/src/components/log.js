@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
 const Table=styled.table`
 border:1px solid #ccc;
@@ -7,8 +7,9 @@ border-spacing:0;
 height:600px;
 overflow-y:scroll;
 display:block;
+position:relative;
 & > tr:nth-child(even) {
-background-color:#f1f1f1;
+    background-color:#f1f1f1;
 }
 `
 const Head=styled.th`
@@ -20,11 +21,20 @@ background-color:#fff;
 color:#333;
 border-bottom:1px solid #ddd;
 text-align:left;
+${props => props.head && css`
+    position:sticky;
+    top:0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+`}
+
 & > td{
-    height:25px;
     width:100px;
     border:none;
     padding: 8px 14px;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+}
+& > td:hover{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 `
 
@@ -32,12 +42,21 @@ class Log extends Component{
     constructor(props){
         super(props)
         this.props=props
-        this.state={logElements:this.genDummy(25)}
+        this.state={logElements:[]}
     }
     componentDidMount(){
         //Fetch logs from rest api
         //or something
         //
+        this.fetchLog()
+    }
+    fetchLog(){
+        fetch('http://localhost:8090/syslog')
+        .then(res=>{
+            return res.json()
+        }).then(data=>{
+            this.setState({logElements:data})
+        })
     }
     genDummy(n){
         let ack=[],
@@ -69,19 +88,25 @@ class Log extends Component{
     render(){
         return(
             <Table>
-                <Row>
-                    <Head>ID</Head>
-                    <Head>Adaptation</Head>
-                    <Head>Description</Head>
-                    <Head>Date</Head>
+                <Row head>
+                    <Head>system_log_id</Head>
+                    <Head>device_id</Head>
+                    <Head>adaption_id</Head>
+                    <Head>description</Head>
+                    <Head>created</Head>
                 </Row>
-                {this.state.logElements.map(
-                    o=><Row name={o['date']}>
-                    <td>{o['id']}</td>
-                    <td>{o['adaption']}</td>
+                
+                {this.state.logElements.map(o=>{
+                return(
+                <Row key={o['created']}>
+                    <td>{o['system_log_id']}</td>
+                    <td>{o['device_id']}</td>
+                    <td>{o['adaption_id']}</td>
                     <td>{o['description']}</td>
-                    <td>{o['date']}</td>
-                    </Row>)}
+                    <td>{o['created']}</td>
+                </Row>
+                )
+                })}
 
             </Table>
         )

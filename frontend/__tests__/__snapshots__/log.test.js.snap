@@ -1,0 +1,432 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<table
+  className="sc-bdVaJa izEoWN"
+>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      ID
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      Adaptation
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      Description
+    </th>
+    <th
+      className="sc-bwzfXH cWhSti"
+    >
+      Date
+    </th>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      76
+    </td>
+    <td>
+      Poll
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      11/11/1240
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      2
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      11/4/604
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      67
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      22/6/2109
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      28
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      1/9/2438
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      20
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      9/3/2860
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      81
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      9/11/2149
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      43
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      13/6/245
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      40
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      12/4/3097
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      38
+    </td>
+    <td>
+      Poll
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      10/9/985
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      11
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      10/1/1359
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      50
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      17/8/1864
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      11
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      8/2/1772
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      26
+    </td>
+    <td>
+      Poll
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      22/4/808
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      89
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      7/2/1386
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      41
+    </td>
+    <td>
+      Poll
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      8/3/2163
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      56
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      29/8/66
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      73
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      29/1/2810
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      12
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      6/8/1181
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      84
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      21/1/2709
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      86
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      4/9/3025
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      35
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      12/5/1192
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      56
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      27/4/772
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      77
+    </td>
+    <td>
+      Subscribe
+    </td>
+    <td>
+      Not fiber :(
+    </td>
+    <td>
+      22/1/2069
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      80
+    </td>
+    <td>
+      Compression
+    </td>
+    <td>
+      NK sent nuke
+    </td>
+    <td>
+      10/3/232
+    </td>
+  </tr>
+  <tr
+    className="sc-htpNat gxqNEL"
+  >
+    <td>
+      74
+    </td>
+    <td>
+      Poll
+    </td>
+    <td>
+      Low bitrate
+    </td>
+    <td>
+      5/2/716
+    </td>
+  </tr>
+</table>
+`;
