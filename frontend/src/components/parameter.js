@@ -29,7 +29,8 @@ class Parameters extends Component{
 
 
     render(){
-        return( <Div>
+        return( 
+        <Div>
             <form>
             <Label for={this.props.name}>{this.props.name} </Label>
             <Input placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue}/>

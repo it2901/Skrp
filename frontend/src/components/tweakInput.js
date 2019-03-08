@@ -8,8 +8,6 @@ display:flex;
 flex-direction:row;
 `;
 
-
-
 class TweakInput extends Component{
     constructor(props){
         super(props)
@@ -23,26 +21,20 @@ class TweakInput extends Component{
         }
         this.props=props
     }
+
     onChangeParameterValue = (name,event) =>{
         if (event.key === 'Enter') {
-            console.log(name)
         this.setState({
             [name]:event.target.value
-        })
-    }
-
+            })
+        }
     }
     render(){
-        return( <Div>
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter1")}  parameter={this.state.parameter1} name ="parameter1"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter2")}  parameter={this.state.parameter2} name ="parameter2"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter3")}  parameter={this.state.parameter3} name ="parameter3"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter4")}  parameter={this.state.parameter4} name ="parameter4"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter5")}  parameter={this.state.parameter5} name ="parameter5"/> 
-            <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, "parameter6")}  parameter={this.state.parameter6} name ="parameter6"/> 
-            </Div>
-       
-        )
+            let state = Object.entries(this.state)
+            let parameters = state.map(s=>{
+                return <Parameters changeParameterValue={this.onChangeParameterValue.bind(this,s[0] )}  parameter={s[1]} name ={s[0]}/> ;
+          })
+        return <Div>{parameters}</Div> 
     }
 }
 
