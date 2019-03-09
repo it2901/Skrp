@@ -1,0 +1,4 @@
+/cypress
+/__tests__
+/__mocks__
+/public
