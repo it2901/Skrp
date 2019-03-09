@@ -53,6 +53,6 @@
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] dummy-data-handler)
-  (GET "/syslog" [date] (json/write-str (get-syslog date)))
+  (GET "/syslog" {params :params} (str params))
   (GET "/syslog/all" [] syslog-handler)
   (route/not-found error-handler-rep))
