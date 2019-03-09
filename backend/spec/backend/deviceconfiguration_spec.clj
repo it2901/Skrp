@@ -54,9 +54,9 @@
 (spec/def ::address-obj (spec/keys :req-un [::proto ::family]
                                    :opt-un [::address ::mask ::gateway]))
 (def protocols #{"dhcp" "static"})
-(spec/def ::proto #(and string? #(contains? protocols %)))
+(spec/def ::proto #(and string? (contains? protocols %)))
 (def protocol-type #{"ipv4" "ipv6"})
-(spec/def ::family #(and string? #(contains? protocol-type %)))
+(spec/def ::family #(and string? (contains? protocol-type %)))
 (spec/def ::address string?)
 (spec/def ::mask int?)
 (spec/def ::gateway string?)
