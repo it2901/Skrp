@@ -35,7 +35,7 @@
    :body    (slurp (io/resource "networkgraph.json"))})
 
 (defn syslog-handler
-  "HTTP response for dummy networkgraph data"
+  "HTTP response for system log"
   [_]
   {:status  200
    :headers {"Content-Type" "application/json"}

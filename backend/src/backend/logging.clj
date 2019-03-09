@@ -24,9 +24,9 @@
   ([]
    (j/query db "SELECT * FROM system_log"))
   ([date]
-   (j/query db ["SELECT * FROM system_log WHERE created = ? " date]))
+   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) = '" date "'")]))
   ([from to]
-   (j/query db ["SELECT * FROM system_log WHERE created from ? to ?" from to])))
+   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
