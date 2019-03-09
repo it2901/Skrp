@@ -40,7 +40,7 @@
                                           ::autostart ::disabled
                                           ::bridge_members ::addresses
                                           ::wireless]))
-(spec/def ::name #(and string? (>= 15 (count? %))))
+(spec/def ::name #(and string? (>= 15 (count %))))
 (def names
   #{"ethernet" "wireless" "bridge" "virtual" "loopback" "other"})
 (spec/def ::interface-type #(contains? names %))
