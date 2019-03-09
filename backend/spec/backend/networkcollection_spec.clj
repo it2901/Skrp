@@ -18,4 +18,9 @@
 
 (spec/def ::networkcollection (spec/keys :req-un [::type ::collection]))
 (spec/def ::type #(and string? (= "NetworkCollection" %)))
-(spec/def ::collection (spec/keys ::NetJsonObject :kind vector?))
+(spec/def ::collection (spec/coll-of ::NetJsonObject :kind vector?))
+(def objects #{:backend.networkgraph-spec/networgraph
+               :backend.deviceconfiguration-spec/deviceconfiguration
+               :backend.devicemonitoring-spec/devicemonitoring
+               :backend.networkroutes-spec/networkroutes})
+(spec/def ::NetJsonObject #(contains? objects %))
