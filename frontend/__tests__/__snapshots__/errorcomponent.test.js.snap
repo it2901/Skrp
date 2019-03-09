@@ -7,4 +7,4 @@ exports[`renders correctly 1`] = `
     src="test-file-stub"
   />
 </div>
-`;
+`

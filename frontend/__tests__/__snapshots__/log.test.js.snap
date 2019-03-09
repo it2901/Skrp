@@ -34,4 +34,4 @@ exports[`renders correctly 1`] = `
     </th>
   </tr>
 </table>
-`;
+`

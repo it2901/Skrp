@@ -1,17 +1,16 @@
-import React from "react";
+import React from 'react'
 import {
-    NavLink,
-    HashRouter
-  } from "react-router-dom";
+  NavLink,
+  HashRouter
+} from 'react-router-dom'
 
-import { slide as Menu } from "react-burger-menu";
-
+import { slide as Menu } from 'react-burger-menu'
 
 export default props => {
   return (
 
-    <Menu outerContainerId="outerContainer">  
-    <HashRouter>
+    <Menu outerContainerId="outerContainer">
+      <HashRouter>
         <div>
           <h1>Simple SPA</h1>
           <ul className="header">
@@ -26,5 +25,5 @@ export default props => {
         </div>
       </HashRouter>
     </Menu>
-  );
-};
+  )
+}
