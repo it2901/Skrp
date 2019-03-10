@@ -65,7 +65,7 @@ exports[`renders correctly 1`] = `
           >
             <div>
               <h1>
-                Simple SPA
+                SKRP
               </h1>
               <ul
                 className="header"
@@ -91,7 +91,7 @@ exports[`renders correctly 1`] = `
                     href="#/tweakinput"
                     onClick={[Function]}
                   >
-                    Tweak Input
+                    Adjust parameters
                   </a>
                 </li>
                 <li
@@ -113,7 +113,7 @@ exports[`renders correctly 1`] = `
                     href="#/nodegraph"
                     onClick={[Function]}
                   >
-                    Node Graph
+                    Network graph
                   </a>
                 </li>
                 <li
@@ -124,7 +124,7 @@ exports[`renders correctly 1`] = `
                     href="#/log"
                     onClick={[Function]}
                   >
-                    Log
+                    Adaption log
                   </a>
                 </li>
                 <li
@@ -136,17 +136,6 @@ exports[`renders correctly 1`] = `
                     onClick={[Function]}
                   >
                     About
-                  </a>
-                </li>
-                <li
-                  className="menu-item"
-                >
-                  <a
-                    aria-current={null}
-                    href="#/nodegraph"
-                    onClick={[Function]}
-                  >
-                    Node Graph
                   </a>
                 </li>
               </ul>
