@@ -12,6 +12,7 @@ const Label = styled.label`
     height:50px;
     width:200px;
     width: auto;
+    color:black;
 `
 const Input = styled.input`
     font-size:18pt;

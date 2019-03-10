@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
+
+const Div = styled.div`
+color:black;
+`
+
+
 
 class About extends Component {
   render () {
     return (
-      <div>
+      <Div>
         <h1>About</h1>
-        <p>orem ipsum dolor sit amet, odio munere abhorreant ut mei, id vim mentitum accusamus. Omnis erant fierent id eam. Qui melius ancillae apeirian et. Mundi democritum efficiantur pro ex, ne vel populo latine gloriatur. No vix malis ludus rationibus. Per eu affert omnesque, quot fabulas an mel.
-
+        <p>Lorem ipsum dolor sit amet, odio munere abhorreant ut mei, id vim mentitum accusamus. Omnis erant fierent id eam. Qui melius ancillae apeirian et. Mundi democritum efficiantur pro ex, ne vel populo latine gloriatur. No vix malis ludus rationibus. Per eu affert omnesque, quot fabulas an mel.
 Ut eius dolorum eos. Minim putant ius id. Eos laudem verear adolescens ad. Mel et quaestio scriptorem. Ut eos natum dolore.
-
 Te ipsum doming sanctus nam, dicam iisque accumsan mea ea. Ne adhuc illum torquatos est. No malis dolores disputationi mel. Mei no zril ridens doming.
 
 Id has habemus voluptua, salutandi accusamus persequeris ne mel. Vocent scripta accommodare vis ei. Id porro option has, ei vix populo vocent sententiae. Ex nam aperiam moderatius temporibus, cu vel agam ornatus efficiendi. An esse fuisset suscipit usu.
@@ -211,7 +216,7 @@ Agam tibique officiis eam ex, urbanitas definitiones ut usu, gubergren similique
 
 Ei nihil tibique est. Mucius vivendum molestiae an pri, at habemus. </p>
 
-      </div>
+      </Div>
     )
   }
 }

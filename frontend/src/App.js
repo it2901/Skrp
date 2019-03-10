@@ -36,7 +36,6 @@ class App extends Component {
           <HashRouter>
             <div className="SPA">
               <Switch>
-                <Route path="/home" component={About}/>
                 <Route path="/tweakinput" component={tweakInput}/>
                 <Route path="/nodegraph" component={NodeGraph}/>
                 <Route path="/about" component={About}/>

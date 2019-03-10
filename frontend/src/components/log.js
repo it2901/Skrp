@@ -57,36 +57,11 @@ class Log extends Component {
         this.setState({ logElements: data })
       })
   }
-  genDummy (n) {
-    let ack = []
-    let i = 0
-    let ad = ['Compression', 'Poll', 'Subscribe']
-    let desc = ['NK sent nuke', 'Low bitrate', 'Not fiber :(']
-
-    while (i < n) {
-      i++
-      ack.push(
-        { 'id': this.randInt(0, 100),
-          'adaption': this.rand(ad),
-          'description': this.rand(desc),
-          'date': 'd/m/y'
-            .replace('d', this.randInt(1, 31))
-            .replace('m', this.randInt(1, 12))
-            .replace('y', this.randInt(0, 3117))
-        }
-      )
-    }
-    return ack
-  }
-  randInt (from, to) {
-    return Math.floor(from + Math.random() * (to - from))
-  }
-  rand (list) {
-    return list[Math.floor(Math.random() * list.length)]
-  }
+  
   render () {
     return (
       <Table>
+        <tbody>
         <Row head>
           <Head>system_log_id</Head>
           <Head>device_id</Head>
@@ -94,6 +69,7 @@ class Log extends Component {
           <Head>description</Head>
           <Head>created</Head>
         </Row>
+        </tbody>
 
         {this.state.logElements.map(o => {
           return (
