@@ -20,10 +20,15 @@
             [clojure.spec.alpha :as spec]))
 (deftest specs
   (testing "Spec and data should match"
-    (is (spec/valid? :backend.deviceconfiguration-spec/deviceconfiguration (read-str (slurp (io/resource "deviceconfiguration.json")))))
-    (is (spec/valid? :backend.devicemonitoring-spec/devicemonitoring (read-str (slurp (io/resource "devicemonitoring.json")))))
-    (is (spec/valid? :backend.networkgraph-spec/networkgraph (read-str (slurp (io/resource "networkgraph.json")))))
-    (is (spec/valid? :backend.networkroutes-spec/networkroutes (read-str (slurp (io/resource "networkroutes.json")))))
-    (is (spec/valid? :backend.networkcollection-spec/networkcollection (read-str (slurp (io/resource "networkcollection.json")))))))
+    (is (spec/valid? :backend.deviceconfiguration-spec/deviceconfiguration (read-str (slurp (io/resource "deviceconfiguration.json"))
+                                                                                     :key-fn keyword)))
+    (is (spec/valid? :backend.devicemonitoring-spec/devicemonitoring (read-str (slurp (io/resource "devicemonitoring.json"))
+                                                                               :key-fn keyword)))
+    (is (spec/valid? :backend.networkgraph-spec/networkgraph (read-str (slurp (io/resource "networkgraph.json"))
+                                                                       :key-fn keyword)))
+    (is (spec/valid? :backend.networkroutes-spec/networkroutes (read-str (slurp (io/resource "networkroutes.json"))
+                                                                         :key-fn keyword)))
+    (is (spec/valid? :backend.networkcollection-spec/networkcollection (read-str (slurp (io/resource "networkcollection.json"))
+                                                                                 :key-fn keyword)))))
 
 
