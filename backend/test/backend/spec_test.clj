@@ -30,5 +30,3 @@
                                                                          :key-fn keyword)))
     (is (spec/valid? :backend.networkcollection-spec/networkcollection (read-str (slurp (io/resource "networkcollection.json"))
                                                                                  :key-fn keyword)))))
-
-
