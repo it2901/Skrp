@@ -1,11 +1,11 @@
-import React, { Component } from "react";
- 
+import React, { Component } from 'react'
+
 class About extends Component {
-  render() {
+  render () {
     return (
-        <div>
-      <h1>About</h1>
-      <p>orem ipsum dolor sit amet, odio munere abhorreant ut mei, id vim mentitum accusamus. Omnis erant fierent id eam. Qui melius ancillae apeirian et. Mundi democritum efficiantur pro ex, ne vel populo latine gloriatur. No vix malis ludus rationibus. Per eu affert omnesque, quot fabulas an mel.
+      <div>
+        <h1>About</h1>
+        <p>orem ipsum dolor sit amet, odio munere abhorreant ut mei, id vim mentitum accusamus. Omnis erant fierent id eam. Qui melius ancillae apeirian et. Mundi democritum efficiantur pro ex, ne vel populo latine gloriatur. No vix malis ludus rationibus. Per eu affert omnesque, quot fabulas an mel.
 
 Ut eius dolorum eos. Minim putant ius id. Eos laudem verear adolescens ad. Mel et quaestio scriptorem. Ut eos natum dolore.
 
@@ -211,9 +211,9 @@ Agam tibique officiis eam ex, urbanitas definitiones ut usu, gubergren similique
 
 Ei nihil tibique est. Mucius vivendum molestiae an pri, at habemus. </p>
 
-        </div> 
-    );
+      </div>
+    )
   }
 }
- 
-export default About;
+
+export default About
