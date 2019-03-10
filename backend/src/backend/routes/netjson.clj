@@ -16,16 +16,16 @@
 (ns backend.routes.netjson
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [clojure.data.json :as json]
             [clojure.java.io :as io]
-            [backend.logging :refer [get-syslog]]))
+            [backend.logging :refer [get-syslog]]
+            [ring.middleware.json :refer [wrap-json-response]]))
 
 (defn index-handler
-  "Says hello, world"
+  "Says hello world"
   [_]
   {:status  200
    :headers {"Content-Type" "text/html"}
-   :body    (str "Hello, World")})
+   :body    "Hello World!"})
 
 (defn dummy-data-handler
   "HTTP response for dummy networkgraph data"
@@ -39,7 +39,7 @@
   [_]
   {:status  200
    :headers {"Content-Type" "application/json"}
-   :body    (json/write-str (get-syslog))})
+   :body    (get-syslog)})
 
 (defn error-handler-rep
   "HTTP error response"
@@ -52,5 +52,5 @@
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] dummy-data-handler)
-  (GET "/syslog" [] syslog-handler)
+  (GET "/syslog" [] (wrap-json-response syslog-handler))
   (route/not-found error-handler-rep))
