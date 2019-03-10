@@ -23,4 +23,8 @@
                :backend.deviceconfiguration-spec/deviceconfiguration
                :backend.devicemonitoring-spec/devicemonitoring
                :backend.networkroutes-spec/networkroutes})
-(spec/def ::NetJsonObject #(contains? objects %))
+(spec/def ::NetJsonObject
+  (spec/or :networkgraph :backend.networkgraph-spec/networkgraph
+           :deviceconfiguration :backend.deviceconfiguration-spec/deviceconfiguration
+           :devicemonitoring :backend.devicemonitoring-spec/devicemonitoring
+           :networkroutes :backend.networkroutes-spec/networkroutes))

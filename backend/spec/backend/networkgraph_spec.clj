@@ -18,19 +18,31 @@
 
 (spec/def ::networkgraph
   (spec/keys :req-un
-             [::type ::label ::protocol ::version ::metric ::nodes ::links]))
-(spec/def ::type string?)
-(spec/def ::label string?)
+             [::type ::protocol ::version ::metric ::nodes ::links]
+             :opt-un
+             [::revision ::topology_id ::router_id ::label]))
+(spec/def ::type #(and string? (= "NetworkGraph" %)))
 (spec/def ::protocol string?)
-(spec/def ::version string?)
-(spec/def ::metric string?)
+(spec/def ::version #(or (= nil %) string?))
+(spec/def ::metric #(or (= nil %) string?))
 (spec/def ::nodes
   (spec/coll-of ::node :kind vector?))
-(spec/def ::node (spec/map-of keyword? string?))
+(spec/def ::node (spec/keys :req-un [::id]
+                            :opt-un [::label ::local_addresses ::properties]))
+(spec/def ::id string?)
+(spec/def ::label string?)
+(spec/def ::local_addresses (spec/coll-of string? :kind vector?))
+(spec/def ::properties (spec/map-of any? any?))
 (spec/def ::links
   (spec/coll-of ::link :kind vector?))
 (spec/def ::link
-  (spec/keys :req-un [::source ::target ::cost]))
+  (spec/keys :req-un [::source ::target ::cost]
+             :opt-un [::cost_text ::properties]))
 (spec/def ::source string?)
 (spec/def ::target string?)
-(spec/def ::cost double?)
+(spec/def ::cost #(or (double? %) (int? %)))
+(spec/def ::cost_text string?)
+(spec/def ::properties (spec/map-of any? any?))
+(spec/def ::revision string?)
+(spec/def ::topology_id string?)
+(spec/def ::router_id string?)
