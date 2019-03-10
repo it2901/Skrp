@@ -24,7 +24,7 @@
 (spec/def ::type #(= % "DeviceConfiguration"))
 (spec/def ::general
   (spec/keys
-   ::opt-un
+   :opt-un
    [::hostname ::timezone ::maintainer ::description ::ula_prefix]))
 (spec/def ::hostname string?)
 (spec/def ::timezone string?) ; must be a value present in the timezone database IANA
@@ -32,10 +32,14 @@
 (spec/def ::maintainer (spec/and string? #(re-matches email-regex %)))
 (spec/def ::description string?)
 (spec/def ::ula_prefix string?) ;IPv6 address
-(spec/def ::hardware (spec/map-of keyword? string?))
+(spec/def ::hardware (spec/keys :opt-un [::manufacturer ::model ::version ::cpu]))
+(spec/def ::manufacturer string?)
+(spec/def ::model string?)
+(spec/def ::version int?)
+(spec/def ::cpu string?)
 (spec/def ::operating_system (spec/map-of keyword? string?))
 (spec/def ::interfaces (spec/coll-of ::interface :kind vector?))
-(spec/def ::interface (spec/keys :req-un [::name ::interface-type]
+(spec/def ::interface (spec/keys :req-un [::name :interface/type]
                                  :opt-un [::mac ::mtu ::txqueuelen
                                           ::autostart ::disabled
                                           ::bridge_members ::addresses
@@ -43,7 +47,7 @@
 (spec/def ::name #(and string? (>= 15 (count %))))
 (def names
   #{"ethernet" "wireless" "bridge" "virtual" "loopback" "other"})
-(spec/def ::interface-type #(contains? names %))
+(spec/def :interface/type #(contains? names %))
 (spec/def ::mac string?) ; mac address
 (spec/def ::mtu int?)
 (spec/def ::txqueuelen int?)
@@ -60,18 +64,20 @@
 (spec/def ::address string?)
 (spec/def ::mask int?)
 (spec/def ::gateway string?)
-(spec/def ::wireless (spec/keys :req-un [::radio ::mode ::ssid]
+(spec/def ::wireless (spec/keys :req-un [:wireless/radio ::mode ::ssid]
                                 :opt-un [::bssid ::hidden ::ack_distance
                                          ::rts_threshold ::frag_threshold
                                          ::encryption]))
-(spec/def ::radio (spec/keys :req-un [::radio-name ::radio-protocol
+(spec/def :wireless/radio string?)
+(spec/def ::radios (spec/coll-of ::radio :kind vector?))
+(spec/def ::radio (spec/keys :req-un [:radio/name :radio/protocol
                                       ::channel ::channel_width]
                              :opt-un [::phy ::country
                                       ::tx_power ::disabled]))
-(spec/def ::radio-name string?)
+(spec/def :radio/name string?)
 (def radio-protocols
   #{"802.11ac" "802.11n" "802.11b" "802.11g" "802.11a"})
-(spec/def ::radio-protocol #(and string? (contains? radio-protocols %)))
+(spec/def :radio/protocol #(and string? (contains? radio-protocols %)))
 (spec/def ::channel int?)
 (spec/def ::channe_width int?)
 (spec/def ::phy string?)
@@ -86,15 +92,19 @@
 (spec/def ::ack_distance int?)
 (spec/def ::rts_threshold int?)
 (spec/def ::frag_threshold #(and int? (and (< 0 %) (> 2346 %))))
-(spec/def ::encryption (spec/keys :req-un [::enc-protocol ::key]
+(spec/def ::encryption (spec/keys :req-un [:encryption/protocol ::key]
                                   :opt-un [::cipher ::disabled]))
 (def encryption-protocols #{"wep_open" "wep_shared" "wpa_personal" "wpa2_personal" "wpa_personal_mixed" "wpa_enterprise" "wpa2_enterprise" "wpa_enterprise_mixed" "wps"})
-(spec/def ::enc-protocol
+(spec/def :encryption/protocol
   #(and string? (contains? encryption-protocols %)))
 (spec/def ::key string?)
 (def ciphers #{"auto" "ccmp" "tkip" "tkip+ccmp"})
 (spec/def ::cipher #(and string? (contains? ciphers %)))
 (spec/def ::routes (spec/coll-of ::route :kind vector?))
-(spec/def ::route (spec/map-of string? string?))
+(spec/def ::route (spec/keys :req-un [::device ::next ::destination ::cost]))
+(spec/def ::device string?)
+(spec/def ::next string?)
+(spec/def ::destination string?)
+(spec/def ::cost (spec/or :int int? :double double?))
 (spec/def ::dns_servers (spec/coll-of string? :kind vector?))
 (spec/def ::dns_search (spec/coll-of string?))
