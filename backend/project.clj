@@ -13,6 +13,7 @@
                  [org.clojure/tools.cli "0.4.1"]
                  [org.postgresql/postgresql "42.2.5"]
                  [ring "1.7.1"]
+                 [ring/ring-json "0.4.0"]
                  [ring/ring-mock "0.3.2"]]
   :repl-options {:init-ns backend.core}
   :main backend.core
