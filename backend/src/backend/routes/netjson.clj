@@ -39,6 +39,7 @@
   [_]
   {:status  200
    :headers {"Content-Type" "application/json"}
+   ;; TODO: Add error handling if logger can't connect to database
    :body    (get-syslog)})
 
 (defn error-handler-rep
