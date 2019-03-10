@@ -3,6 +3,7 @@ import styled, {css} from 'styled-components'
 import fetch from 'isomorphic-fetch'
 
 const Table=styled.table`
+margin-left:100px;
 border:1px solid #ccc;
 border-spacing:0;
 height:600px;
@@ -33,9 +34,6 @@ ${props => props.head && css`
     border:none;
     padding: 8px 14px;
     transition: all .3s cubic-bezier(.25,.8,.25,1);
-}
-& > td:hover{
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 `
 
