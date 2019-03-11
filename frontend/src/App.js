@@ -5,7 +5,6 @@ import About from './components/about'
 import Log from './components/log'
 import errorcomponent from './components/errorcomponent'
 import tweakInput from './components/tweakInput'
-import styled from 'styled-components'
 import { Helmet } from 'react-helmet'
 import {
   Route,
@@ -15,11 +14,6 @@ import {
 import './components/styles/navbar.css'
 import './components/styles/hashrouter.css'
 
-const Div = styled.div`
-height: 100%;
-width:100%;
-color:white;
-`
 
 class App extends Component {
   render () {
@@ -31,7 +25,7 @@ class App extends Component {
         </Helmet>
         {/* This is the acctual components and navbar */}
 
-        <Div>
+        <div>
           <NavBar/>
           <HashRouter>
             <div className="SPA">
@@ -44,7 +38,7 @@ class App extends Component {
               </Switch>
             </div>
           </HashRouter>
-        </Div>
+        </div>
       </div>
     )
   }
