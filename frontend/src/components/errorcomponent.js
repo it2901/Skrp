@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import image from "./../assets/404.gif"
+import React, { Component } from 'react'
+import image from '../assets/404.gif'
 
 class Errorcomponent extends Component {
-  render() {
+  render () {
     return (
-        <div>
-            <img src={image} alt="Logo" />
+      <div>
+        <img src={image} alt="Logo" />
       </div>
-    );
+    )
   }
 }
 
-export default Errorcomponent;
-
+export default Errorcomponent

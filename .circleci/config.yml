@@ -29,11 +29,21 @@ jobs:
   frontend:
     working_directory: ~/buildfrontend
     docker:
-      - image: circleci/node:11.10.0
+      - image: cypress/base:10
     steps:
       - checkout
-      - run: cd frontend && npm install
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "frontend/package.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
+      - run: cd frontend && npm ci
       - run: cd frontend && npm test
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "frontend/package.json" }}
+          paths:
+            - ~/.cache
+            - ~/.npm
 
 workflows:
   version: 2

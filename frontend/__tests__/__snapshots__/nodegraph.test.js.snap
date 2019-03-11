@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  style={
+    Object {
+      "height": "100vh",
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "width": "100vw",
+    }
+  }
+>
+  <iframe
+    height="100%"
+    src="http://localhost:3000/graph/visualizer.html"
+    title="Nodegraph"
+    width="100%"
+  />
+</div>
+`;
