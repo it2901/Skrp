@@ -5,8 +5,6 @@ const Div = styled.div`
 color:black;
 `
 
-
-
 class About extends Component {
   render () {
     return (
