@@ -32,7 +32,7 @@ class TweakInput extends Component {
     render () {
       let state = Object.entries(this.state)
       let parameters = state.map(s => {
-        return <Parameters changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
+        return <Parameters key={s[0]}changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
       })
       return <Div>{parameters}</Div>
     }
