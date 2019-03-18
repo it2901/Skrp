@@ -35,12 +35,17 @@
    :body    (slurp (io/resource "networkgraph.json"))})
 
 (defn syslog-handler
-  "HTTP response for system log"
-  [_]
+  "HTTP POST response for system log"
+  [params]
   {:status  200
    :headers {"Content-Type" "application/json"}
    ;; TODO: Add error handling if logger can't connect to database
-   :body    (get-syslog)})
+   :body    (json/write-str
+              (cond 
+                (empty? params) (get-syslog)
+                (contains? params "date") (get-syslog (get params "date"))
+                (and (contains? params "datefrom") (contains? params "dateto")) (get-syslog (get params "datefrom") (get params "dateto")))
+                )})
 
 (defn error-handler-rep
   "HTTP error response"
@@ -53,6 +58,5 @@
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] dummy-data-handler)
-  (GET "/syslog" {params :params} (str params))
-  (GET "/syslog/all" [] syslog-handler)
+  (POST "/syslog" request (syslog-handler (:form-params request)))
   (route/not-found error-handler-rep))
