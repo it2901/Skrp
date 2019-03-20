@@ -23,8 +23,8 @@ You need to have a postgres server and client installed to be able to setup
 the database. Refer to [Postgresql downloads](https://www.postgresql.org/download/)
 for instructions on how to get postgres running.
 
-Once you have postgres running, you can run the `./db_setup.bash` script. You might
-need to make it executable, which you can do with `chmod +x db_setup.bash`
+Once you have postgres running, you can run the `./setup_db.bash` script. You might
+need to make it executable, which you can do with `chmod +x setup_db.bash`
 
 To make the database work with the application, you need to make sure the `PGDATABASE` environment is set.
 You can do this by running `export PGDATABASE="netjson_dev"`.
