@@ -18,9 +18,7 @@
             [compojure.route :as route]
             [clojure.java.io :as io]
             [backend.logging :refer [get-syslog]]
-            [clojure.data.json :as json]))
-
-; TODO: Replace json with the middleware
+            [ring.middleware.json :refer [wrap-json-response]]))
 
 (defn index-handler
   "Says hello world"
@@ -38,15 +36,18 @@
 
 (defn syslog-handler
   "HTTP POST response for system log"
-  [params]
+  [{params :form-params :as req}]
   {:status  200
    :headers {"Content-Type" "application/json"}
    ;; TODO: Add error handling if logger can't connect to database
-   :body    (json/write-str
-             (cond
-               (empty? params) (get-syslog)
-               (contains? params "date") (get-syslog (get params "date"))
-               (and (contains? params "datefrom") (contains? params "dateto")) (get-syslog (get params "datefrom") (get params "dateto"))))})
+   :body    (cond
+              (empty? params) (get-syslog)
+              (contains? params "date") (get-syslog (params "date"))
+              (and
+               (contains? params "datefrom")
+               (contains? params "dateto")) (get-syslog
+                                             (params "datefrom")
+                                             (params "dateto")))})
 
 (defn error-handler-rep
   "HTTP error response"
@@ -58,6 +59,9 @@
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
-  (GET "/networkgraph" [] dummy-data-handler)
-  (POST "/syslog" request (syslog-handler (:form-params request)))
-  (route/not-found error-handler-rep))
+  (GET "/networkgraph" [] (wrap-json-response
+                           dummy-data-handler))
+  (GET "/syslog" request (wrap-json-response
+                           (syslog-handler request)))
+  (route/not-found (wrap-json-response
+                    error-handler-rep)))
