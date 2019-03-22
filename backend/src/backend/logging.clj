@@ -19,7 +19,7 @@
             [clojure.java.jdbc :as j]))
 
 (defn get-syslog
-  "Retrieves all entries in the system log table"
+  "Retrieves entries in the system log table"
   ([]
    (j/query db "SELECT * FROM system_log"))
   ([date]
