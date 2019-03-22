@@ -36,18 +36,21 @@
 
 (defn syslog-handler
   "HTTP POST response for system log"
-  [{params :form-params :as req}]
-  {:status  200
-   :headers {"Content-Type" "application/json"}
-   ;; TODO: Add error handling if logger can't connect to database
-   :body    (cond
-              (empty? params) (get-syslog)
-              (contains? params "date") (get-syslog (params "date"))
-              (and
-               (contains? params "datefrom")
-               (contains? params "dateto")) (get-syslog
-                                             (params "datefrom")
-                                             (params "dateto")))})
+  [{params :query-params :as req}]
+  (let [resp (fn [s b]
+               {:status s
+                :headers {"Content-Type" "application/json"}
+                :body b})]
+    (cond
+      (empty? params) (resp 200 (get-syslog))
+      (contains? params "date") (resp 200 (get-syslog (params "date")))
+      (and
+       (contains? params "datefrom")
+       (contains? params "dateto")) (resp 200
+                                          (get-syslog
+                                           (params "datefrom")
+                                           (params "dateto")))
+      :else (resp 400 {"Error" "Invalid query"}))))
 
 (defn error-handler-rep
   "HTTP error response"
