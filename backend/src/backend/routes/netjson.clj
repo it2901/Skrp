@@ -25,7 +25,7 @@
   [_]
   {:status  200
    :headers {"Content-Type" "text/html"}
-   :body    "Hello World!"})
+   :body    "<h1>Hello World!</h1>"})
 
 (defn dummy-data-handler
   "HTTP response for dummy networkgraph data"
@@ -59,9 +59,6 @@
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
-  (GET "/networkgraph" [] (wrap-json-response
-                           dummy-data-handler))
-  (GET "/syslog" request (wrap-json-response
-                           (syslog-handler request)))
-  (route/not-found (wrap-json-response
-                    error-handler-rep)))
+  (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
+  (GET "/syslog" request (wrap-json-response syslog-handler))
+  (route/not-found (wrap-json-response error-handler-rep)))
