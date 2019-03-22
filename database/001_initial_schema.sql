@@ -14,8 +14,15 @@ CREATE TABLE IF NOT EXISTS public.device(
 );
 
 CREATE TABLE IF NOT EXISTS public.adaption (
-  adaption_id SERIAL PRIMARY KEY NOT NULL
+  adaption_id SERIAL PRIMARY KEY NOT NULL,
   -- what does an adaption consist of?
+
+  -- create dummy columns
+  adaption1 INTEGER NOT NULL,
+  adaption2 INTEGER NOT NULL,
+  adaption3 INTEGER NOT NULL,
+  adaption4 INTEGER NOT NULL,
+  adaption5 INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.system_log (
