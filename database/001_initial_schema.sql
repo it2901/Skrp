@@ -37,5 +37,5 @@ CREATE TABLE IF NOT EXISTS public.position_log (
   device_id INTEGER NOT NULL REFERENCES device(device_id),
   lat FLOAT NOT NULL,
   lng FLOAT NOT NULL,
-  created TIMESTAMPTZ NOT NULL
+  created TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

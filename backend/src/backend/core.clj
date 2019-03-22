@@ -15,6 +15,7 @@
 
 (ns backend.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
+            [ring.middleware.params :as ring-params]
             [clojure.tools.cli :as cli]
             [aero.core :refer (read-config)]
             [backend.routes.netjson :refer [app-routes]]
@@ -41,5 +42,5 @@
       (usage (:summary opt)))
     (let [temp-cfg (read-config (get-in opt [:options :config]))]
       (intern 'backend.database 'cfg temp-cfg)
-      (run-jetty app-routes (get temp-cfg :webserver))
+      (run-jetty (ring-params/wrap-params app-routes) (get temp-cfg :webserver))
       (println "Server started on port" (get-in temp-cfg [:webserver :port])))))
