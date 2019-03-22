@@ -15,6 +15,7 @@
 
 (ns backend.routes.core
   (:require [backend.routes.syslog :refer [syslog-handler]]
+            [backend.routes.logadaption :refer [adaption-handler]]
             [backend.routes.util :refer [index-handler
                                          dummy-data-handler
                                          error-handler-rep]]
@@ -27,5 +28,6 @@
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
+  (POST "/logadaption" request (wrap-json-response adaption-handler))
   (not-found (wrap-json-response
               (error-handler-rep 404 "Could not find route"))))

@@ -35,6 +35,22 @@
               :adaption_id   adaptation_id
               :description   description}))
 
+(defn get-device-from-id
+  "Queries the database for devices with input as id"
+  [device_id]
+  (j/query db [(str "SELECT * FROM device WHERE device_id ='" device_id "'")]))
+
+(defn set-device-id
+  "Registers a device in the database"
+  [device_id]
+  (j/insert! db :device
+             {:device_id device_id}))
+
+(defn get-adaption-from-id
+  "Queries the database for adaption with input as id"
+  [adaption_id]
+  (j/query db [(str "SELECT * FROM adaption WHERE adaption_id = '" adaption_id "'")]))
+
 (extend-type java.sql.Timestamp
   json/JSONWriter
   (-write [date out]
