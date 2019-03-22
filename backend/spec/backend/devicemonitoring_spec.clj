@@ -18,7 +18,7 @@
 
 (spec/def ::devicemonitoring
   (spec/keys :req-un [::type ::general ::interfaces]))
-(spec/def ::type string?)
+(spec/def ::type #(= % "DeviceMonitoring"))
 (spec/def ::general (spec/keys :req-un [::hostname ::uptime]))
 (spec/def ::hostname string?)
 (spec/def ::uptime int?)
