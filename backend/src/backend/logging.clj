@@ -27,6 +27,11 @@
   ([from to]
    (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
 
+(defn set-device-id
+  [{:keys [device_id]}]
+  (j/insert! db :device
+             {:device_id device_id}))
+
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
   [{:keys [device_id adaptation_id description]}]
@@ -34,6 +39,17 @@
              {:device_id     device_id
               :adaption_id   adaptation_id
               :description   description}))
+
+;;TODO replace dummy adaptions
+(defn insert-adaption
+  "Takes a map of values for adaptions made and inserts them into the database"
+  [{:keys [adaption1, adaption2, adaption3, adaption4, adaption5]}]
+  (j/insert! db :adaption
+             {:adaption1 adaption1
+              :adaption2 adaption2
+              :adaption3 adaption3
+              :adaption4 adaption4
+              :adaption5 adaption5}))
 
 (extend-type java.sql.Timestamp
   json/JSONWriter
