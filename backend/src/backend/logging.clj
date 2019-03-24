@@ -1,4 +1,3 @@
-
 ;;;; This file is part of SKRP.
 ;;;;
 ;;;; SKRP is free software: you can redistribute it and/or modify
@@ -20,13 +19,13 @@
             [clojure.java.jdbc :as j]))
 
 (defn get-syslog
-  "Retrieves all entries in the system log table"
+  "Retrieves entries in the system log table"
   ([]
    (j/query db "SELECT * FROM system_log"))
   ([date]
-   (j/query db ["SELECT * FROM system_log WHERE created = ? " date]))
+   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) = '" date "'")]))
   ([from to]
-   (j/query db ["SELECT * FROM system_log WHERE created from ? to ?" from to])))
+   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"

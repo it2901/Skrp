@@ -25,7 +25,7 @@
   [_]
   {:status  200
    :headers {"Content-Type" "text/html"}
-   :body    "Hello World!"})
+   :body    "<h1>Hello World!</h1>"})
 
 (defn dummy-data-handler
   "HTTP response for dummy networkgraph data"
@@ -34,24 +34,44 @@
    :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
-(defn syslog-handler
-  "HTTP response for dummy networkgraph data"
-  [_]
-  {:status  200
-   :headers {"Content-Type" "application/json"}
-   ;; TODO: Add error handling if logger can't connect to database
-   :body    (get-syslog)})
-
 (defn error-handler-rep
-  "HTTP error response"
-  [_]
-  {:status  404
-   :headers {"Content-Type" "application/json"}
-   :body    {"Error" "Could not find route"}})
+  "HTTP error response template"
+  [status msg]
+  (fn [_]
+    {:status  status
+     :headers {"Content-Type" "application/json"}
+     :body    {"Error" msg}}))
+
+(defn syslog-check
+  "Returns correct HTTP response according to system log query result"
+  [result]
+  ;; TODO: Find a way to handle db connection error
+  (let [[status body] (if (= [] result)
+                        [404 {"Error" "No query results found"}]
+                        [200 result])]
+    {:status status
+     :headers {"Content-Type" "application/json"}
+     :body body}))
+
+(defn syslog-handler
+  "HTTP GET response for system log"
+  [{params :query-params :as req}]
+  (cond
+    (empty? params) (syslog-check (get-syslog))
+    (contains? params "date") (syslog-check (get-syslog (params "date")))
+    (and
+     (contains? params "datefrom")
+     (contains? params "dateto")) (syslog-check
+                                   (get-syslog
+                                    (params "datefrom")
+                                    (params "dateto")))
+    :else (error-handler-rep 400 "Invalid query")))
 
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
-  (GET "/networkgraph" [] dummy-data-handler)
-  (GET "/syslog" [] (wrap-json-response syslog-handler))
-  (route/not-found error-handler-rep))
+  (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
+  (GET "/syslog" request (wrap-json-response syslog-handler))
+  (route/not-found (wrap-json-response
+                    (error-handler-rep 404
+                                       "Could not find route"))))
