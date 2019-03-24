@@ -36,11 +36,15 @@
 
 (defn error-handler-rep
   "HTTP error response template"
-  [status msg]
-  (fn [_]
-    {:status  status
-     :headers {"Content-Type" "application/json"}
-     :body    {"Error" msg}}))
+  ([status msg]
+   (fn [_]
+     {:status  status
+      :headers {"Content-Type" "application/json"}
+      :body    {"Error" msg}}))
+  ([status msg req]
+   {:status  status
+    :headers {"Content-Type" "application/json"}
+    :body    {"Error" msg}}))
 
 (defn syslog-check
   "Returns correct HTTP response according to system log query result"
@@ -65,7 +69,7 @@
                                    (get-syslog
                                     (params "datefrom")
                                     (params "dateto")))
-    :else (error-handler-rep 400 "Invalid query")))
+    :else (error-handler-rep 400 "Invalid query" req)))
 
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
