@@ -23,18 +23,20 @@
   ([_] nil)
   ([_ _] nil))
 
-(defn run-mock [req-str]
+(defn run-mock
+  "Mocking syslog handler so it doesn't query the database"
+  [req-str]
   (with-redefs
    [backend.routes.netjson/syslog-check (fn [_] mock-data)
-    backend.logging/get-syslog mock-syslog
+    backend.logging/get-syslog mock-syslog]
     (as-> req-str s
       (mock/request :get s)
       ((wrap-params backend.routes.netjson/app-routes) s)
-      (update s :body read-str))]))
+      (update s :body read-str))))
 
 (deftest syslog-test
   (testing "system log query"
-    (let [bad-rep (run-mock "/syslog?dasdsa=2019-01-01")
+    (let [bad-rep (run-mock "/syslog?datefrom=2019-01-01")
           good-rep (run-mock "/syslog")]
       (is (= {:status 400
               :headers {"Content-Type" "application/json"}
