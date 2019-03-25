@@ -29,10 +29,10 @@
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
-  [{:keys [device_id adaptation_id description]}]
+  [{:keys [device_id adaption_id description]}]
   (j/insert! db :system_log
              {:device_id     device_id
-              :adaption_id   adaptation_id
+              :adaption_id   adaption_id
               :description   description}))
 
 (defn get-device-from-id
