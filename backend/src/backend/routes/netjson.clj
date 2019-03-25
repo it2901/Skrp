@@ -17,7 +17,7 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [clojure.java.io :as io]
-            [backend.logging :refer [get-syslog, set-device-id, insert-adaption, insert-syslog,]]
+            [backend.logging :refer [get-syslog, set-device-id, insert-adaption, insert-syslog]]
                                      ;;testreturn, test-parse]]
             [ring.middleware.json :refer [wrap-json-response]]))
 
@@ -86,7 +86,6 @@
                     :adaption_id adaption_id
                     :description description})))
 
-
 ;;TODO get real device id (mac/ip), + adaption id
 (defn adaption-check
   "Insert adaption-data"
@@ -129,7 +128,6 @@
                                               :adaption3 3
                                               :adaption4 4
                                               :adaption5 5})))
-
 
 #_(defn testfunc
     [{params :query-params :as req}]
