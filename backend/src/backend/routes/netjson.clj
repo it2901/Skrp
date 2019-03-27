@@ -74,7 +74,7 @@
   "Logs adaption if adaption is valid"
   [{:keys [device_id adaption_id description]}]
   (let [[status body] (if (= [] (get-adaption-from-id adaption_id))
-                        [404 {"Error""Invalid adaptionID"}]
+                        [404 {"Error" "Invalid adaptionID"}]
                         [200 (insert-syslog {:device_id device_id
                                              :adaption_id adaption_id
                                              :description description})])]
