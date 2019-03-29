@@ -13,16 +13,9 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.routes.networkgraph-handler-test
-  (:require [clojure.data.json :refer [read-str]]
-            [clojure.test :refer :all]
-            [backend.routes.core :refer [app-routes]]
-            [ring.mock.request :as mock]
-            [clojure.spec.alpha :as spec]))
+(ns backend.configuration
 
-(deftest dummy-route-test
-  (testing "dummy route for networkgraph data"
-    (let [response (app-routes (mock/request :get "/networkgraph"))
-          data (read-str (:body response) :key-fn keyword)]
-      (is (= (:status response) 200))
-      (is (spec/valid? :backend.networkgraph-spec/networkgraph data)))))
+  (defn update-conf
+    "Update adaption configuration"
+    [{:keys [device_id adaptation_id description]}]
+    (str "Do something with the configuration.")))

@@ -9,4 +9,8 @@
  { 
    :port 8090
  }
+ :thresholds
+ {
+   :compression 0.8
+ }
 }
