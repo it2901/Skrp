@@ -14,8 +14,11 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.configuration
+  (:require [backend.database :refer [db]]
+            [clojure.data.json :as json]
+            [clojure.java.jdbc :as j]))
 
-  (defn update-conf
-    "Update adaption configuration"
-    [{:keys [device_id adaptation_id description]}]
-    (str "Do something with the configuration.")))
+(defn write-conf
+  "Update adaption configuration"
+  [params]
+  (j/insert! db "config" params))

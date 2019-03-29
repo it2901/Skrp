@@ -15,7 +15,7 @@
 
 (ns backend.routes.core
   (:require [backend.routes.syslog :refer [syslog-handler]]
-            [backend.routes.config :refer [conf-hander]]
+            [backend.routes.config :refer [conf-handler]]
             [backend.routes.util :refer [index-handler
                                          dummy-data-handler
                                          error-handler-rep]]

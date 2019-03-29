@@ -13,6 +13,8 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
+(ns backend.routes.config)
+
 (defn conf-handler
   "Handle configuration parameters.
   Input: GET request with all configuration parameters

@@ -39,3 +39,8 @@ CREATE TABLE IF NOT EXISTS public.position_log (
   lng FLOAT NOT NULL,
   created TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS config (
+  conf_id SERIAL PRIMARY KEY NOT NULL,
+  threshold TEXT NOT NULL
+);
