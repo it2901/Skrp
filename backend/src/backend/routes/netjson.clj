@@ -67,14 +67,14 @@
                                     (params "dateto")))
     :else (error-handler-rep 400 "Invalid query")))
 
-(defn adaption-check
+(defn adaption-check-if-exist
   "Returns true if the adaption is registered, false otherwise"
   [adaption_id]
   (if (= [] (get-adaption-from-id adaption_id))
     false
     true))
 
-(defn device-check
+(defn device-check-if-exist
   "Returns true if device is registered, false otherwise."
   [device_id]
   (if (= [] (get-device-from-id device_id))
@@ -88,49 +88,24 @@
     (and
       (contains? params "adaption_id")
       (contains? params "device_id")
-      (contains? params "description")) ((if (false? (device-check (read-string (params "device_id"))))
-                                           (set-device-id (read-string (params "device_id"))))
-                                        (cond
-                                          (false? (adaption-check (read-string (params "adaption_id")))) (let [[status body] [404 {"Error" "Invalid adaption_id"}]]
-                                                                                                           {:status status
-                                                                                                            :headers {"Content-Type" "application/json"}
-                                                                                                            :body body})
-                                          (and
-                                            (true? (adaption-check (read-string (params "adaption_id"))))
-                                            (true? (device-check (read-string (params "device_id"))))) (let [[status body] [200 (insert-syslog {:device_id (read-string (params "device_id"))
-                                                                                                                                        :adaption_id (read-string (params "adaption_id"))
-                                                                                                                                        :description (params "description")})]]
-                                                                                                                                                   {:status status
-                                                                                                                                                    :headers {"Content-Type" "application/json"}
-                                                                                                                                                    :body body})
-                                          :else (error-handler-rep 400 "?")))
+      (contains? params "description")) (let [[adaption_id device_id description] [(read-string (params "adaption_id")) (read-string (params "device_id")) (params "description")]]
+                                             (if (false? (device-check-if-exist (read-string (params "device_id"))))
+                                               (set-device-id device_id))
+                                             (cond
+                                               (false? (adaption-check-if-exist adaption_id)) (let [[status body] [404 {"Error" "Invalid adaption_id"}]]
+                                                                                                {:status status
+                                                                                                 :headers {"Content-Type" "application/json"}
+                                                                                                 :body body})
+                                               (and
+                                                 (true? (adaption-check-if-exist adaption_id))
+                                                 (true? (device-check-if-exist device_id))) (let [[status body] [200 (insert-syslog {:device_id device_id
+                                                                                                                                     :adaption_id adaption_id
+                                                                                                                                     :description description})]]
+                                                                                              {:status status
+                                                                                               :headers {"Content-Type" "application/json"}
+                                                                                               :body body})
+                                                  :else (error-handler-rep 400 "?")))
     :else (error-handler-rep 400 "Invalid query")))
-
-#_(defn adaption-check
-    "Logs adaption if adaption is valid"
-    [{:keys [device_id adaption_id description]}]
-    (if (= [] (device-check device_id))
-      (set-device-id device_id))
-    (let [[status body] (if (= [] (get-adaption-from-id adaption_id))
-                          [404 {"Error" "Invalid adaptionID"}]
-                          [200 (insert-syslog {:device_id device_id
-                                               :adaption_id adaption_id
-                                               :description description})])]
-      {:status status
-       :headers {"Content-Type" "application/json"}
-       :body body}))
-
-#_(defn adaption-handler
-    "Check if an adaption is valid"
-    [{params :query-params :as req}]
-    (cond
-      (and
-        (contains? params "adaption_id")
-        (contains? params "device_id")
-        (contains? params "description")) (adaption-check {:device_id (read-string (params "device_id"))
-                                                           :adaption_id (read-string (params "adaption_id"))
-                                                           :description (params "description")})
-      :else (error-handler-rep 400 "invalid query")))
 
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
