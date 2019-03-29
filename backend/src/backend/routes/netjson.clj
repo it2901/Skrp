@@ -104,8 +104,8 @@
                                                                                          {:status status
                                                                                           :headers {"Content-Type" "application/json"}
                                                                                           :body body})
-                                           :else (error-handler-rep 400 "?")))
-    :else (error-handler-rep 400 "Invalid query")))
+                                           :else (error-handler-rep 400 "Database error" req)))
+    :else (error-handler-rep 400 "Invalid query" req)))
 
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
