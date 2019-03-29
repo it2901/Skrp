@@ -27,9 +27,6 @@
   ([from to]
    (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
 
-#_(defn get-device-ip []
-    (.getHostAddress (InetAddress/getLocalHost)))
-
 (defn get-device-from-id
   [device_id]
   (j/query db [(str "SELECT FROM device WHERE device_id ='" device_id "'")]))
