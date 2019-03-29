@@ -27,10 +27,17 @@
   ([from to]
    (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
 
-#_(defn set-device-id
-    [device-id]
-    (j/insert! db :device
-               {:device_id device-id}))
+#_(defn get-device-ip []
+    (.getHostAddress (InetAddress/getLocalHost)))
+
+(defn get-device-from-id
+  [device_id]
+  (j/query db [(str "SELECT FROM device WHERE device_id ='" device_id "'")]))
+
+(defn set-device-id
+  [device-id]
+  (j/insert! db :device
+             {:device_id device-id}))
 
 (defn get-adaption-from-id
   "Retrieves adaption with input id"
