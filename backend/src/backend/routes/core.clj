@@ -21,8 +21,6 @@
             [compojure.core :refer :all]
             [compojure.route :refer [not-found]]
             [ring.middleware.json :refer [wrap-json-response]]))
-            
-   
 
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
