@@ -17,21 +17,23 @@
   (:require [clojure.java.io :as io]))
 
 (defn index-handler
-  "Says hello world"
+  "HTTP GET response returning hello world in an
+  html heading tag on the root endpoint"
   [_]
   {:status  200
    :headers {"Content-Type" "text/html"}
    :body    "<h1>Hello World!</h1>"})
 
 (defn dummy-data-handler
-  "HTTP response for dummy networkgraph data"
+  "HTTP response for dummy networkgraph json data
+  on the /networkgraph endpoint"
   [_]
   {:status  200
    :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
 (defn error-handler-rep
-  "HTTP error response template"
+  "HTTP error response template function"
   ([status msg]
    (fn [_]
      {:status  status
