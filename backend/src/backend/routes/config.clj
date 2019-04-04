@@ -13,13 +13,21 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.routes.config)
+(ns backend.routes.config
+  (:require [backend.configuration :refer [write-conf, read-conf]]
+            [backend.routes.util :refer [error-handler-rep]]))
 
 (defn conf-handler
   "Handle configuration parameters.
   Input: GET request with all configuration parameters
-  Output: OK/ERROR"
+  Action: Inserts configuration in database if it fits the schema."
   [{params :query-params :as req}]
-  {:status 400
-   :headers {"Content-Type" "application/json"}
-   :body params})
+  (if (empty? params)
+    (try
+      (read-conf)
+      (catch Exception _
+        (error-handler-rep 503 "Can't read from the database" req)))
+    (try
+      (write-conf params)
+      (catch Exception _
+        (error-handler-rep 503 "Can't connect to the database" req)))))
