@@ -14,11 +14,14 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.routes.syslog
+  "Functions for handling the /syslog endpoint"
   (:require [backend.logging :refer [get-syslog]]
             [backend.routes.util :refer [error-handler-rep]]))
 
 (defn syslog-check
-  "Returns correct HTTP response according to system log query result"
+  "Returns correct HTTP response according to system log database
+  query result"
+  {:arglist '([query-result])}
   [result]
   ;; TODO: Find a way to handle db connection error
   (let [[status body] (if (= [] result)
@@ -29,7 +32,17 @@
      :body body}))
 
 (defn syslog-handler
-  "HTTP GET response for system log"
+  "HTTP GET handler for system log. Retrieves data from the systemlog
+  database table. Endpoint accepts three different sets of query
+  paramsters on the GET request:
+  
+  |          Description         |   query params  |
+  |:----------------------------:|:---------------:|
+  |       get entire syslog      |                 |
+  |  get syslog on specific date |       date      |
+  | get syslog between two dates | datefrom dateto |
+
+  Date has to be ISO formatted: yyyy-mm-dd"
   [{params :query-params :as req}]
   (cond
     (empty? params) (syslog-check (get-syslog))
