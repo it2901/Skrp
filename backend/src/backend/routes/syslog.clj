@@ -13,38 +13,9 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.routes.netjson
-  (:require [compojure.core :refer :all]
-            [compojure.route :as route]
-            [clojure.java.io :as io]
-            [backend.logging :refer [get-syslog]]
-            [ring.middleware.json :refer [wrap-json-response]]))
-
-(defn index-handler
-  "Says hello world"
-  [_]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "<h1>Hello World!</h1>"})
-
-(defn dummy-data-handler
-  "HTTP response for dummy networkgraph data"
-  [_]
-  {:status  200
-   :headers {"Content-Type" "application/json"}
-   :body    (slurp (io/resource "networkgraph.json"))})
-
-(defn error-handler-rep
-  "HTTP error response template"
-  ([status msg]
-   (fn [_]
-     {:status  status
-      :headers {"Content-Type" "application/json"}
-      :body    {"Error" msg}}))
-  ([status msg req]
-   {:status  status
-    :headers {"Content-Type" "application/json"}
-    :body    {"Error" msg}}))
+(ns backend.routes.syslog
+  (:require [backend.logging :refer [get-syslog]]
+            [backend.routes.util :refer [error-handler-rep]]))
 
 (defn syslog-check
   "Returns correct HTTP response according to system log query result"
@@ -70,12 +41,3 @@
                                     (params "datefrom")
                                     (params "dateto")))
     :else (error-handler-rep 400 "Invalid query" req)))
-
-(defroutes app-routes
-  "Defines all the routes and their respective route handlers"
-  (GET "/" [] index-handler)
-  (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
-  (GET "/syslog" request (wrap-json-response syslog-handler))
-  (route/not-found (wrap-json-response
-                    (error-handler-rep 404
-                                       "Could not find route"))))

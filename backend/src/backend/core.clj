@@ -18,7 +18,7 @@
             [ring.middleware.params :as ring-params]
             [clojure.tools.cli :as cli]
             [aero.core :refer (read-config)]
-            [backend.routes.netjson :refer [app-routes]]
+            [backend.routes.core :refer [app-routes]]
             [backend.database])
   (:gen-class))
 
