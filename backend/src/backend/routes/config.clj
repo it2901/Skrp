@@ -17,6 +17,18 @@
   (:require [backend.configuration :refer [write-conf, read-conf]]
             [backend.routes.util :refer [error-handler-rep]]))
 
+(defn conf-check
+  "Returns correct HTTP response according to configuration result"
+  {:arglist '([query-result])}
+  [result]
+  ;; TODO: Find a way to handle db connection error
+  (let [[status body] (if (= [] result)
+                        [404 {"Error" "No query results found"}]
+                        [200 result])]
+    {:status status
+     :headers {"Content-Type" "application/json"}
+     :body body}))
+
 (defn conf-handler
   "Handle configuration parameters.
   Input: GET request with all configuration parameters
@@ -24,10 +36,11 @@
   [{params :query-params :as req}]
   (if (empty? params)
     (try
-      (read-conf)
+      (conf-check (read-conf))
       (catch Exception _
         (error-handler-rep 503 "Can't read from the database" req)))
     (try
       (write-conf params)
       (catch Exception _
         (error-handler-rep 503 "Can't connect to the database" req)))))
+
