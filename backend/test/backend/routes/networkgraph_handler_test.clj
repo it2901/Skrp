@@ -16,7 +16,7 @@
 (ns backend.routes.networkgraph-handler-test
   (:require [clojure.data.json :refer [read-str]]
             [clojure.test :refer :all]
-            [backend.routes.netjson :refer [app-routes]]
+            [backend.routes.core :refer [app-routes]]
             [ring.mock.request :as mock]
             [clojure.spec.alpha :as spec]))
 

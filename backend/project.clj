@@ -19,6 +19,7 @@
   :main backend.core
   :plugins [[lein-codox "0.10.6"] [lein-cljfmt "0.6.4"]
             [lein-cloverage "1.0.13"] [jonase/eastwood "0.3.5"]]
-  :codox {:metadata {:doc/format :markdown}}
+  :codox {:metadata {:doc/format :markdown}
+          :namespaces [backend.routes.syslog backend.routes.util]}
   :resource-paths ["resources/backend"]
   :test-paths ["test" "spec"])

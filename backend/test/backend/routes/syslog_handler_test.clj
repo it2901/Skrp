@@ -27,11 +27,11 @@
   "Mocking syslog handler so it doesn't query the database"
   [req-str]
   (with-redefs
-   [backend.routes.netjson/syslog-check (fn [_] mock-data)
+   [backend.routes.syslog/syslog-check (fn [_] mock-data)
     backend.logging/get-syslog mock-syslog]
     (as-> req-str s
       (mock/request :get s)
-      ((wrap-params backend.routes.netjson/app-routes) s)
+      ((wrap-params backend.routes.core/app-routes) s)
       (update s :body read-str))))
 
 (deftest syslog-test
