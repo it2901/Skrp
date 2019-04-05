@@ -58,8 +58,8 @@
          (adaption-exists? adaption_id)
          (device-registered? device_id)) (let [status 200
                                                body (insert-syslog {:device_id device_id
-                                                                       :adaption_id adaption_id
-                                                                       :description description})]
+                                                                    :adaption_id adaption_id
+                                                                    :description description})]
                                            {:status status
                                             :headers {"Content-Type" "application/json"}
                                             :body body})
