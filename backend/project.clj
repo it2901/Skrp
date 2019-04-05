@@ -7,6 +7,7 @@
                  [clj-time "0.15.0"]
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
+                 [org.clojure/algo.generic "0.1.3"]
                  [org.clojure/clojure "1.10.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/java.jdbc "0.7.8"]

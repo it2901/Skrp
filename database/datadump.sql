@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 11.2 (Debian 11.2-1.pgdg90+1)
--- Dumped by pg_dump version 11.1
+-- Dumped by pg_dump version 11.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -25,6 +25,16 @@ COPY public.adaption (adaption_id) FROM stdin;
 5
 4
 3
+\.
+
+
+--
+-- Data for Name: config; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.config (conf_id, p1, p2, p3, p4, p5, p6) FROM stdin;
+1	1	2	3	4	5	6
+2	2	4	6	8	10	12
 \.
 
 
@@ -74,6 +84,13 @@ COPY public.system_log (system_log_id, device_id, adaption_id, description, crea
 --
 
 SELECT pg_catalog.setval('public.adaption_adaption_id_seq', 1, false);
+
+
+--
+-- Name: config_conf_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.config_conf_id_seq', 1, false);
 
 
 --

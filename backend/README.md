@@ -32,3 +32,8 @@ To run the tests simply run
 To calculate the code coverage run
 
 `lein cloverage`
+
+# Generate docs
+To generate documentation run
+
+`lein codox`
