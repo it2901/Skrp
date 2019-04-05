@@ -12,7 +12,7 @@ class TweakInput extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      'parameter1': 1,
+      'threshold': 2,
       'parameter2': 2,
       'parameter3': 3,
       'parameter4': 4,
@@ -21,15 +21,31 @@ class TweakInput extends Component {
     }
     this.props = props
   }
+
+  async setInitalState (){
+    //let stateToBe = fetch("http://localhost:8090/configure").catch(err => console.error(err));
+    //console.log([stateToBe.body,stateToBe.then(data=> console.log([data.data,JSON.parse(data.body)]))])
+    const fisk = await fetch('http://localhost:8090/configure').then(data => (console.log(data.json())))
+  }
   
-  
-    onChangeParameterValue = (name, event) => {
-      if (event.key === 'Enter' && event.target.value.match(/^[.0-9]*$/gm) )  {
+  sendToConfigure(parameter,value){
+    fetch("http://localhost:8090/configure?",parameter,"=",value)
+  }
+  valdiator (value) {
+    return value.match(/^[.0-9]*$/gm)
+  }
+
+    onChangeParameterValue(name, event){
+      if (event.key === 'Enter' && this.valdiator(event.target.value) )  {
+        this.setInitalState()
         this.setState({
           [name]: event.target.value
         })
+        this.sendToConfigure(name,event.target.value)
       }
     }
+
+   
 
     render () {
       let state = Object.entries(this.state)
