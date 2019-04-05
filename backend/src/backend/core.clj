@@ -18,7 +18,7 @@
             [ring.middleware.params :as ring-params]
             [clojure.tools.cli :as cli]
             [aero.core :refer (read-config)]
-            [backend.routes.core :refer [app-routes]]
+            [backend.routes.core :refer [reloadable-app]]
             [backend.database])
   (:gen-class))
 
@@ -42,5 +42,5 @@
       (usage (:summary opt)))
     (let [temp-cfg (read-config (get-in opt [:options :config]))]
       (intern 'backend.database 'cfg temp-cfg)
-      (run-jetty (ring-params/wrap-params app-routes) (get temp-cfg :webserver))
+      (run-jetty (ring-params/wrap-params reloadable-app) (get temp-cfg :webserver))
       (println "Server started on port" (get-in temp-cfg [:webserver :port])))))

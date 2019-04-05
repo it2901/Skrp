@@ -13,16 +13,19 @@
 ;;;; You should have received a copy of the GNU Lesser General Public License
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
-(ns backend.routes.networkgraph-handler-test
-  (:require [clojure.data.json :refer [read-str]]
-            [clojure.test :refer :all]
-            [backend.routes.core :refer [app-routes]]
-            [ring.mock.request :as mock]
-            [clojure.spec.alpha :as spec]))
+(ns backend.configuration
+  "Functions for handling the configuration endpoint."
+  (:require [backend.database :refer [db]]
+            [clojure.java.jdbc :as j]))
 
-(deftest dummy-route-test
-  (testing "dummy route for networkgraph data"
-    (let [response (app-routes (mock/request :get "/networkgraph"))
-          data (read-str (:body response) :key-fn keyword)]
-      (is (= (:status response) 200))
-      (is (spec/valid? :backend.networkgraph-spec/networkgraph data)))))
+(defn write-conf
+  "Writes a map into the config table of the database.
+  The key corresponds to the column name and the value will be inserted in this column.
+  The keys used must match with the database schema of the config table."
+  [params]
+  (j/insert! db "config" params))
+
+(defn read-conf
+  "Reads the latest configuration from the database"
+  []
+  (j/query db "SELECT * FROM config ORDER BY conf_id DESC LIMIT 1;"))
