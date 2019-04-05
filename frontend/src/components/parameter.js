@@ -12,12 +12,19 @@ const Label = styled.label`
     height:50px;
     width:200px;
     width: auto;
+    padding: 10px 20px 0px 20px ;
     color:black;
+    border-bottom:solid black;
+    background-color: lightgrey;
 `
 const Input = styled.input`
     font-size:18pt;
     height:50px;
     width:200px;
+    border: 4px;
+    border-radius: 8px;
+    border-bottom: solid black;
+    }
 `
 class Parameters extends Component {
   constructor (props) {

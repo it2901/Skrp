@@ -21,22 +21,24 @@ class TweakInput extends Component {
   }
 
   async setInitalState (){
-    //let stateToBe = fetch("http://localhost:8090/configure").catch(err => console.error(err));
-    //console.log([stateToBe.body,stateToBe.then(data=> console.log([data.data,JSON.parse(data.body)]))])
-    const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json()
-  }
-)
-delete stateToBe[0]['conf_id']
-Object.entries(stateToBe[0]).map(p=>{
+  const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json()}).catch(err => console.error(err))
+  let parameters = stateToBe[0]
+  delete parameters['conf_id']
+  Object.entries(parameters).map(p=>(
     this.setState({
-      [p[0]]:p[1]
+        [p[0]]:p[1]
     })
-})
+  )
+  )}
+    
+  sendToConfigure(){
+    let state = this.state
+    let statement = "?"
+    Object.entries(state).map(x=>statement+=x[0]+"="+x[1]+"&")
+    statement = statement.substring(0, statement.length-1)
+    fetch("http://localhost:8090/configure"+statement)
   }
-  
-  sendToConfigure(parameter,value){
-    fetch("http://localhost:8090/configure?",parameter,"=",value)
-  }
+
   valdiator (value) {
     return value.match(/^[.0-9]*$/gm)
   }
@@ -46,7 +48,10 @@ Object.entries(stateToBe[0]).map(p=>{
         this.setState({
           [name]: event.target.value
         })
-        this.sendToConfigure(name,event.target.value)
+        setTimeout(() => {
+          this.sendToConfigure()
+        }, 1);
+        
       }
     }
 
