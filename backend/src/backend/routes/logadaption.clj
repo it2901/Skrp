@@ -24,14 +24,14 @@
 (defn adaption-exists?
   "Returns true if the adaption is registered, false otherwise"
   [adaption_id]
-  (if-not (= [] (get-adaption-from-id adaption_id))
+  (if-not (= nil (type (get-adaption-from-id adaption_id)))
     true
     false))
 
 (defn device-registered?
   "Returns true if device is registered, false otherwise."
   [device_id]
-  (if-not (= [] (get-device-from-id device_id))
+  (if-not (= nil (type (get-device-from-id device_id)))
     true
     false))
 
@@ -43,20 +43,23 @@
            (contains? params "device_id")
            (contains? params "description"))
     (error-handler-rep 400 "Invalid query" req)
-    (let [[adaption_id device_id description]
-          [(read-string (params "adaption_id")) (read-string (params "device_id")) (params "description")]]
+    (let [adaption_id (read-string (params "adaption_id"))
+          device_id (read-string (params "device_id"))
+          description (params "description")]
       (if-not (device-registered? (read-string (params "device_id")))
         (set-device-id device_id))
       (cond
-        (not (adaption-exists? adaption_id)) (let [[status body] [404 {"Error" "Invalid adaption_id"}]]
+        (not (adaption-exists? adaption_id)) (let [status 404
+                                                   body {"Error" "Invalid adaption_id"}]
                                                {:status status
                                                 :headers {"Content-Type" "application/json"}
                                                 :body body})
         (and
          (adaption-exists? adaption_id)
-         (device-registered? device_id)) (let [[status body] [200 (insert-syslog {:device_id device_id
-                                                                                  :adaption_id adaption_id
-                                                                                  :description description})]]
+         (device-registered? device_id)) (let [status 200
+                                               body (insert-syslog {:device_id device_id
+                                                                       :adaption_id adaption_id
+                                                                       :description description})]
                                            {:status status
                                             :headers {"Content-Type" "application/json"}
                                             :body body})
