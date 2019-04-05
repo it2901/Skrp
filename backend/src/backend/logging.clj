@@ -27,6 +27,20 @@
   ([from to]
    (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
 
+(defn get-device-from-id
+  [device_id]
+  (j/query db [(str "SELECT FROM device WHERE device_id ='" device_id "'")]))
+
+(defn set-device-id
+  [device-id]
+  (j/insert! db :device
+             {:device_id device-id}))
+
+(defn get-adaption-from-id
+  "Retrieves adaption with input id"
+  [adaption_id]
+  (j/query db [(str "SELECT * FROM adaption WHERE adaption_id = '" adaption_id "'")]))
+
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
   [{:keys [device_id adaption_id description]}]
