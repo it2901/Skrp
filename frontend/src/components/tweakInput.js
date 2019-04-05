@@ -21,14 +21,16 @@ class TweakInput extends Component {
     }
     this.props = props
   }
-
+  
+  
     onChangeParameterValue = (name, event) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && event.target.value.match(/^[.0-9]*$/gm) )  {
         this.setState({
           [name]: event.target.value
         })
       }
     }
+
     render () {
       let state = Object.entries(this.state)
       let parameters = state.map(s => {
