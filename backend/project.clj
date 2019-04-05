@@ -7,6 +7,7 @@
                  [clj-time "0.15.0"]
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
+                 [org.clojure/algo.generic "0.1.3"]
                  [org.clojure/clojure "1.10.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/java.jdbc "0.7.8"]
@@ -20,6 +21,6 @@
   :plugins [[lein-codox "0.10.6"] [lein-cljfmt "0.6.4"]
             [lein-cloverage "1.0.13"] [jonase/eastwood "0.3.5"]]
   :codox {:metadata {:doc/format :markdown}
-          :namespaces [backend.routes.syslog backend.routes.util]}
+          :namespaces [backend.routes.syslog backend.routes.util backend.routes.config]}
   :resource-paths ["resources/backend"]
   :test-paths ["test" "spec"])

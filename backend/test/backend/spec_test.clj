@@ -18,7 +18,7 @@
             [clojure.java.io :as io]
             [clojure.data.json :refer [read-str]]
             [clojure.spec.alpha :as spec]))
-(deftest specs
+(deftest specs-test
   (testing "Spec and data should match"
     (is (spec/valid? :backend.deviceconfiguration-spec/deviceconfiguration (read-str (slurp (io/resource "deviceconfiguration.json"))
                                                                                      :key-fn keyword)))

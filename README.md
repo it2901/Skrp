@@ -19,6 +19,10 @@ and make sure someone does a code review for you. Once its reviewed, you can
 merge / rebase it into develop.
 
 # Database setup
+A database can automatically be created by running `database/run_database.sh`.
+This requires Docker to be installed and an internet connection (the first time).
+
+It is also possible to create a database manually.
 You need to have a postgres server and client installed to be able to setup
 the database. Refer to [Postgresql downloads](https://www.postgresql.org/download/)
 for instructions on how to get postgres running.
