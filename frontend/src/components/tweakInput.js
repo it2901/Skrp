@@ -6,6 +6,7 @@ const Div = styled.div`
 top-border: 50%;
 display:flex;
 flex-direction:row;
+flex-wrap: wrap;
 `
 
 class TweakInput extends Component {
@@ -40,7 +41,8 @@ class TweakInput extends Component {
   }
 
   valdiator (value) {
-    return value.match(/^[.0-9]*$/gm)
+    return value.match(/^(0(\.\d+)?|[0-9]+)$/)
+
   }
 
     onChangeParameterValue(name, event){
@@ -55,14 +57,12 @@ class TweakInput extends Component {
       }
     }
 
-   
-
     render () {
       let state = Object.entries(this.state)
       let parameters = state.map(s => {
         return <Parameters key={s[0]}changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
       })
-      return <Div>{parameters}</Div>
+      return <Div className="flex-container">{parameters}</Div>
     }
 }
 
