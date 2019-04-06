@@ -4,34 +4,36 @@ exports[`renders correctly 1`] = `
 <table
   className="sc-bdVaJa jmfmUY"
 >
-  <tr
-    className="sc-htpNat fGZbsq"
-  >
-    <th
-      className="sc-bwzfXH cWhSti"
+  <tbody>
+    <tr
+      className="sc-htpNat fGZbsq"
     >
-      system_log_id
-    </th>
-    <th
-      className="sc-bwzfXH cWhSti"
-    >
-      device_id
-    </th>
-    <th
-      className="sc-bwzfXH cWhSti"
-    >
-      adaption_id
-    </th>
-    <th
-      className="sc-bwzfXH cWhSti"
-    >
-      description
-    </th>
-    <th
-      className="sc-bwzfXH cWhSti"
-    >
-      created
-    </th>
-  </tr>
+      <th
+        className="sc-bwzfXH cWhSti"
+      >
+        system_log_id
+      </th>
+      <th
+        className="sc-bwzfXH cWhSti"
+      >
+        device_id
+      </th>
+      <th
+        className="sc-bwzfXH cWhSti"
+      >
+        adaption_id
+      </th>
+      <th
+        className="sc-bwzfXH cWhSti"
+      >
+        description
+      </th>
+      <th
+        className="sc-bwzfXH cWhSti"
+      >
+        created
+      </th>
+    </tr>
+  </tbody>
 </table>
 `;
