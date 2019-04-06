@@ -29,11 +29,27 @@
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
-  [{:keys [device_id adaptation_id description]}]
+  [{:keys [device_id adaption_id description]}]
   (j/insert! db :system_log
              {:device_id     device_id
-              :adaption_id   adaptation_id
+              :adaption_id   adaption_id
               :description   description}))
+
+(defn get-device-from-id
+  "Queries the database for devices with input as id"
+  [device_id]
+  (j/get-by-id db :device device_id :device_id))
+
+(defn set-device-id
+  "Registers a device in the database"
+  [device_id]
+  (j/insert! db :device
+             {:device_id device_id}))
+
+(defn get-adaption-from-id
+  "Queries the database for adaption with input as id"
+  [adaption_id]
+  (j/get-by-id db :adaption adaption_id :adaption_id))
 
 (extend-type java.sql.Timestamp
   json/JSONWriter
