@@ -14,10 +14,10 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.routes.config
-  (:require [backend.configuration :refer [write-conf, read-conf]]
+  (:require [backend.configuration :refer [write-config, read-config]]
             [backend.routes.util :refer [error-handler-rep]]))
 
-(defn conf-check
+(defn config-check
   "Returns correct HTTP response according to configuration result"
   {:arglist '([query-result])}
   [result]
@@ -29,18 +29,18 @@
      :headers {"Content-Type" "application/json"}
      :body body}))
 
-(defn conf-handler
+(defn config-handler
   "Handle configuration parameters.
   Input: GET request with all configuration parameters
   Action: Inserts configuration in database if it fits the schema."
   [{params :query-params :as req}]
   (if (empty? params)
     (try
-      (conf-check (read-conf))
+      (config-check (read-config))
       (catch Exception _
         (error-handler-rep 503 "Can't read from the database" req)))
     (try
-      (write-conf params)
+      (write-config params)
       (catch Exception _
         (error-handler-rep 503 "Can't connect to the database" req)))))
 
