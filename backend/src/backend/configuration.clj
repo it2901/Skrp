@@ -19,14 +19,14 @@
             [clojure.algo.generic.functor :refer [fmap]]
             [clojure.java.jdbc :as j]))
 
-(defn write-conf
+(defn write-config
   "Writes a map into the config table of the database.
   The key corresponds to the column name and the value will be inserted in this column.
   The keys used must match with the database schema of the config table."
   [params]
   (j/insert! db "config" (fmap read-string params)))
 
-(defn read-conf
+(defn read-config
   "Reads the latest configuration from the database"
   []
   (j/query db "SELECT * FROM config ORDER BY conf_id DESC LIMIT 1;"))
