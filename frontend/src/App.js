@@ -16,7 +16,7 @@ import './components/styles/hashrouter.css'
 import './components/styles/react-datetime.css'
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <div>
         {/* The Helmet gives a uniform color to the whole page. */}

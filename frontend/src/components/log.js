@@ -5,7 +5,7 @@ import Datetime from 'react-datetime'
 import 'moment/locale/nb'
 
 class Log extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.props = props
     this.state = {
