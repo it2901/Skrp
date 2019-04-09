@@ -1,23 +1,12 @@
 import React, { Component } from 'react'
-import styled, { css } from 'styled-components'
 import fetch from 'isomorphic-fetch'
-import { Input, Dropdown, Table, Button, Popup, Icon, Form } from 'semantic-ui-react'
+import { Table, Button, Popup, Icon, Form } from 'semantic-ui-react'
 import _ from 'lodash'
 import Datetime from 'react-datetime'
-import moment from 'moment'
 import 'moment/locale/nb'
 
-const Filters = styled.div`
-  display:flex;
-  flex-direction:column;
-  padding-left:40px;
-  * {
-    margin-bottom:5px;
-  }
-`
-
 class Log extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.props = props
     this.state = {
@@ -25,12 +14,12 @@ class Log extends Component {
       column: null,
       direction: null,
       dateRange: false,
-      form_desc: "",
-      form_devids: [],
-      form_adaptids: [],
-      form_date: "",
-      form_datefrom: "",
-      form_dateto: ""
+      formDesc: '',
+      formDevIds: [],
+      formAdaptIds: [],
+      formDate: '',
+      formDateFrom: '',
+      formDateTo: ''
     }
     this.logHeaders = [
       { key: 'system_log_id', text: 'Log id', value: 'system_log_id' },
@@ -43,21 +32,21 @@ class Log extends Component {
       { key: 1, text: 1, value: 1 },
       { key: 2, text: 2, value: 2 },
       { key: 3, text: 3, value: 3 },
-      { key: 4, text: 4, value: 4 },
+      { key: 4, text: 4, value: 4 }
     ]
     this.deviceIds = [
       { key: 1, text: 1, value: 1 },
       { key: 2, text: 2, value: 2 },
       { key: 3, text: 3, value: 3 },
-      { key: 4, text: 4, value: 4 },
+      { key: 4, text: 4, value: 4 }
     ]
     this.queryParams = {
-      'date': 'form_date',
-      'desc': 'form_desc',
-      'deviceids': 'form_devids',
-      'adaptids': 'form_adaptids',
-      'datefrom': 'form_datefrom',
-      'dateto': 'form_dateto'
+      'date': 'formDate',
+      'desc': 'formDesc',
+      'deviceids': 'formDevIds',
+      'adaptids': 'formAdaptIds',
+      'datefrom': 'formDateFrom',
+      'dateto': 'formDateTo'
     }
   }
 
@@ -79,11 +68,11 @@ class Log extends Component {
       direction: direction === 'ascending' ? 'descending' : 'ascending'
     })
   }
-  componentDidMount() {
+  componentDidMount () {
     // Fetch logs from rest api
     this.fetchLog()
   }
-  fetchLog() {
+  fetchLog () {
     fetch('http://localhost:8090/syslog')
       .then(res => {
         return res.json()
@@ -92,42 +81,43 @@ class Log extends Component {
         this.setState({ data: data })
       })
   }
-  filter() {
-    //validate form
-    let queryList = [],
-      q = Object.assign({}, this.queryParams),
-      queryString = ""
+  filter () {
+    // validate form
+    let queryList = []
+    let q = Object.assign({}, this.queryParams)
+    let queryString = ''
+
     if (this.state.dateRange) {
-      //remove date entry if range is selected
+      // remove date entry if range is selected
       delete q['date']
     } else {
-      //and vice versa
+      // and vice versa
       delete q['datefrom']
       delete q['dateto']
     }
-    //filter and add to query array
+    // filter and add to query array
     for (let i in q) {
       let a = this.state[q[i]]
-      if (a != "" && a != [] && a) {
-        //not empty value
-        if (i.startsWith("date")) {
-          //is date string
-          //format
+      if (a !== '' && a !== [] && a) {
+        // not empty value
+        if (i.startsWith('date')) {
+          // is date string
+          // format
           a = a.format('YYYY-MM-DD[T]HH:mm:ss[Z]')
         }
         console.log(q[i], a)
         queryList.push({ [i]: a })
       }
     }
-    //build string
-    if (queryList.length != 0) {
-      //list not empty
-      queryString += "?"
-      queryString += queryList.map((o) => Object.keys(o)[0] + "=" + o[Object.keys(o)[0]]).join("&")
+    // build string
+    if (queryList.length !== 0) {
+      // list not empty
+      queryString += '?'
+      queryString += queryList.map((o) => Object.keys(o)[0] + '=' + o[Object.keys(o)[0]]).join('&')
     }
     console.log(queryString)
 
-    //and then fetch
+    // and then fetch
     fetch('localhost:8090/syslog' + queryString)
       .then(res => {
         return res.json()
@@ -135,28 +125,26 @@ class Log extends Component {
       .then(data => {
         this.setState({ data: data })
       })
-
   }
-  toggleDateRange() {
+  toggleDateRange () {
     this.setState({ dateRange: !this.state.dateRange })
   }
   onChange = e => this.setState({ [e.name]: e.value })
 
   onDateToChange = (name, e) => {
-    if (e.isAfter(this.state.form_datefrom)) {
+    if (e.isAfter(this.state.formDateFrom)) {
       this.setState({ [name]: e })
     }
   }
   onDateChange = (name, e) => {
-    //returns moment obj if valid date
+    // returns moment obj if valid date
     if (typeof e === 'object') {
       this.setState({ [name]: e })
-
     }
   }
 
-  render() {
-    const { column, data, direction, dateRange, form_desc, form_devids, form_adaptids, form_date, form_datefrom, form_dateto } = this.state
+  render () {
+    const { column, data, direction, dateRange, formDesc, formDate, formDateFrom, formDateTo } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
@@ -170,26 +158,26 @@ class Log extends Component {
             placeholder="Description"
             icon='search'
             iconPosition='left'
-            name="form_desc"
+            name="formDesc"
             onChange={e => this.onChange(e.target)}
-            value={form_desc}
+            value={formDesc}
           />
           <Form.Dropdown
             options={this.deviceIds}
             placeholder="Device ids"
-            name="form_devids"
+            name="formDevIds"
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
           <Form.Dropdown
             options={this.adaptionIds}
             placeholder="Adaption ids"
-            name="form_adaptids"
+            name="formAdaptIds"
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
           <Form.Field>
             <span style={{ textAlign: 'center' }}>Date
-            <Popup
-                content={dateRange ? "Filter by single date" : "Filter by date range"}
+              <Popup
+                content={dateRange ? 'Filter by single date' : 'Filter by date range'}
                 trigger={
                   <Icon
                     link
@@ -201,17 +189,17 @@ class Log extends Component {
             </span>
           </Form.Field>
           {
-            dateRange ?
-              <Form.Group grouped >
+            dateRange
+              ? <Form.Group grouped >
                 <Form.Field
                   control={Datetime}
                   label="From"
                   dateFormat="YYYY-MM-DD"
                   timeFormat='HH:mm:ss'
                   width={16}
-                  onChange={e => this.onDateChange("form_datefrom", e)}
-                  name="form_datefrom"
-                  value={form_datefrom}
+                  onChange={e => this.onDateChange('formDateFrom', e)}
+                  name="formDateFrom"
+                  value={formDateFrom}
                 />
                 <Form.Field
                   control={Datetime}
@@ -219,21 +207,20 @@ class Log extends Component {
                   dateFormat="YYYY-MM-DD"
                   timeFormat='HH:mm:ss'
                   width={16}
-                  onChange={e => this.onDateToChange("form_dateto", e)}
-                  name="form_dateto"
-                  value={form_dateto}
+                  onChange={e => this.onDateToChange('formDateTo', e)}
+                  name="formDateTo"
+                  value={formDateTo}
                 />
               </Form.Group>
-              :
-              <Form.Group widths={1}>
+              : <Form.Group widths={1}>
                 <Form.Field
                   control={Datetime}
                   dateFormat="YYYY-MM-DD"
                   timeFormat='HH:mm:ss'
                   width={16}
-                  onChange={e => this.onDateChange("form_date", e)}
-                  name="form_date"
-                  value={form_date}
+                  onChange={e => this.onDateChange('formDate', e)}
+                  name="formDate"
+                  value={formDate}
                 />
               </Form.Group>
           }
@@ -251,11 +238,11 @@ class Log extends Component {
                 this.logHeaders.map(o => {
                   return (
                     <Table.HeaderCell
-                      key={o["value"]}
-                      sorted={column === o["value"] ? direction : null}
-                      onClick={this.handleSort(o["value"])}
+                      key={o['value']}
+                      sorted={column === o['value'] ? direction : null}
+                      onClick={this.handleSort(o['value'])}
                     >
-                      {o["text"]}
+                      {o['text']}
                     </Table.HeaderCell>
                   )
                 })
