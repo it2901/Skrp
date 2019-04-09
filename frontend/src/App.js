@@ -13,10 +13,11 @@ import {
 } from 'react-router-dom'
 import './components/styles/navbar.css'
 import './components/styles/hashrouter.css'
+import './components/styles/react-datetime.css'
 
 
 class App extends Component {
-  render () {
+  render() {
     return (
       <div>
         {/* The Helmet gives a uniform color to the whole page. */}
@@ -26,14 +27,14 @@ class App extends Component {
         {/* This is the acctual components and navbar */}
 
         <div>
-          <NavBar/>
+          <NavBar />
           <HashRouter>
-            <div className="SPA">
+            <div className="SKRP">
               <Switch>
-                <Route path="/tweakinput" component={tweakInput}/>
-                <Route path="/nodegraph" component={NodeGraph}/>
-                <Route path="/about" component={About}/>
-                <Route path="/log" component={Log}/>
+                <Route path="/tweakinput" component={tweakInput} />
+                <Route path="/nodegraph" component={NodeGraph} />
+                <Route path="/about" component={About} />
+                <Route path="/log" component={Log} />
                 <Route component={errorcomponent} />
               </Switch>
             </div>
