@@ -15,6 +15,10 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+//to make fetching work or something
+Cypress.on('window:before:load', win=>{
+    win.fetch=null
+})
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
