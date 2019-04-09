@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "test": "jest __tests__ -u && start-server-and-test start http://localhost:3000 cy",
     "cy": "cypress run",
-    "jest": "jest __tests__ -u",
+    "cy:open":"cypress:open",
     "eject": "react-scripts eject",
     "lint": "eslint './**/*.js' --fix"
   },

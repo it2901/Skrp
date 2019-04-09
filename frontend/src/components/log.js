@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import fetch from 'isomorphic-fetch'
 import { Table, Button, Popup, Icon, Form } from 'semantic-ui-react'
 import _ from 'lodash'
 import Datetime from 'react-datetime'
@@ -70,16 +69,25 @@ class Log extends Component {
   }
   componentDidMount () {
     // Fetch logs from rest api
-    this.fetchLog()
+    this.fetch()
   }
-  fetchLog () {
-    fetch('http://localhost:8090/syslog')
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        this.setState({ data: data })
-      })
+  fetch (query) {
+    // not using fetch api cause cypress sucks..
+    query = query || ''
+    console.log(query)
+
+    let xhttp = new XMLHttpRequest()
+    let self = this
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        // Setstate
+        self.setState({ data: JSON.parse(xhttp.responseText) })
+      }
+    }
+    xhttp.open('GET', 'http://localhost:8090/syslog' + query, true)
+    xhttp.setRequestHeader('Content-Type', 'application/json')
+    xhttp.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8090/')
+    xhttp.send()
   }
   filter () {
     // validate form
@@ -98,7 +106,7 @@ class Log extends Component {
     // filter and add to query array
     for (let i in q) {
       let a = this.state[q[i]]
-      if (a !== '' && a !== [] && a) {
+      if (a.length !== 0) {
         // not empty value
         if (i.startsWith('date')) {
           // is date string
@@ -118,13 +126,7 @@ class Log extends Component {
     console.log(queryString)
 
     // and then fetch
-    fetch('localhost:8090/syslog' + queryString)
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        this.setState({ data: data })
-      })
+    this.fetch(queryString)
   }
   toggleDateRange () {
     this.setState({ dateRange: !this.state.dateRange })
@@ -249,7 +251,7 @@ class Log extends Component {
               }
             </Table.Row>
           </Table.Header>
-          <Table.Body>
+          <Table.Body data-cy='children'>
             {data.map(o => {
               return (
                 <Table.Row key={o['created']}>
