@@ -718,7 +718,6 @@ exports[`renders correctly 1`] = `
     </div>
     <div
       className="field"
-    >
       <button
         className="ui fluid negative button"
         onClick={[Function]}
@@ -732,15 +731,6 @@ exports[`renders correctly 1`] = `
     className="ui celled collapsing sortable table"
     style={
       Object {
-        "margin": "0",
-        "marginLeft": "40px",
-      }
-    }
-  >
-    <thead
-      className=""
-    >
-      <tr
         className=""
       >
         <th
