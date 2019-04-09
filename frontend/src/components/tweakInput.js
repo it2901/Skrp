@@ -3,16 +3,27 @@ import Parameters from './parameter'
 import styled from 'styled-components'
 
 const Div = styled.div`
-top-border: 50%;
+top -border: 50%;
 display:flex;
 flex-direction:row;
 flex-wrap: wrap;
 `
+const initialState = {
+}
+const reset = () => {
+  this.setState(initialState)
+}
 
 class TweakInput extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      p1:100,
+      p2:100,
+      p6:100,
+      p3:100,
+      p5:100,
+      p4:100,
     }
     this.props = props
   }
@@ -22,6 +33,7 @@ class TweakInput extends Component {
   }
 
   async setInitalState (){
+  // this.reset()
   const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json()}).catch(err => console.error(err))
   let parameters = stateToBe[0]
   delete parameters['conf_id']
@@ -42,7 +54,6 @@ class TweakInput extends Component {
 
   valdiator (value) {
     return value.match(/^(0(\.\d+)?|[0-9]+)$/)
-
   }
 
     onChangeParameterValue(name, event){
@@ -60,9 +71,13 @@ class TweakInput extends Component {
     render () {
       let state = Object.entries(this.state)
       let parameters = state.map(s => {
-        return <Parameters key={s[0]}changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
+        return <Parameters data-cy="submit" key={s[0]} changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
       })
-      return <Div className="flex-container">{parameters}</Div>
+      return <Div className="flex-container">
+      <form>
+      {parameters}
+      </form>
+      </Div>
     }
 }
 
