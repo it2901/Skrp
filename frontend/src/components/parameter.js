@@ -40,10 +40,8 @@ class Parameters extends Component {
   render () {
     return (
       <Div>
-        <form>
           <Label htmlFor={this.props.name}>{this.props.name} </Label>
-          <Input placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue}/>
-        </form>
+          <Input name={this.props.name} key={this.props.key} placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue} />
       </Div>
     )
   }
