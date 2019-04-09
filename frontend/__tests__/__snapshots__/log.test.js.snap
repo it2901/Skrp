@@ -746,6 +746,7 @@ exports[`renders correctly 1`] = `
     </thead>
     <tbody
       className=""
+      data-cy="children"
     />
   </table>
 </div>
