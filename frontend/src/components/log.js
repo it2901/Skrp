@@ -5,7 +5,7 @@ import Datetime from 'react-datetime'
 import 'moment/locale/nb'
 
 class Log extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.props = props
     this.state = {
@@ -68,7 +68,26 @@ class Log extends Component {
       direction: direction === 'ascending' ? 'descending' : 'ascending'
     })
   }
-  componentDidMount () {
+
+  handleSort = clickedColumn => () => {
+    const { column, data, direction } = this.state
+
+    if (column !== clickedColumn) {
+      this.setState({
+        column: clickedColumn,
+        data: _.sortBy(data, [clickedColumn]),
+        direction: 'ascending'
+      })
+
+      return
+    }
+
+    this.setState({
+      data: data.reverse(),
+      direction: direction === 'ascending' ? 'descending' : 'ascending'
+    })
+  }
+  componentDidMount() {
     // Fetch logs from rest api
     this.fetch()
   }
