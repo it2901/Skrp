@@ -112,7 +112,7 @@
                 "properties": {
                     "source": {
                         "type": "string",
-                        "pattern": "123[.]123[.]123[.][0-9]{3}"
+                        "pattern": "123[.]123[.]123[.]123"
                     },
                     "target": {
                         "type": "string",
