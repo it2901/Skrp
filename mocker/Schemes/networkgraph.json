@@ -65,7 +65,7 @@
         },
         "nodes": {
           "type": "array",
-          "minItems":90,
+          "minItems":98,
           "uniqueItems": true,
           "title": "Nodes",
           "items": {
@@ -99,7 +99,8 @@
         "links": {
             "type": "array",
             "title": "Links",
-            "maxItems":30,
+            "maxItems":75,
+            "uniqueItems": true,
             "items": {
                 "type": "object",
                 "title": "Link",
@@ -112,7 +113,7 @@
                 "properties": {
                     "source": {
                         "type": "string",
-                        "pattern": "123\\.123\\.123\\.1[0-9]"
+                        "pattern": "123\\.123\\.123\\.11"
                     },
                     "target": {
                         "type": "string",
