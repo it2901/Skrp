@@ -20,6 +20,7 @@
             [backend.routes.util :refer [index-handler
                                          dummy-data-handler
                                          error-handler-rep]]
+            [backend.routes.filteredsyslog :refer [filtered-syslog-handler]]
             [compojure.core :refer :all]
             [compojure.route :refer [not-found]]
             [ring.middleware.reload :refer [wrap-reload]]
@@ -32,6 +33,7 @@
   (GET "/syslog" request (wrap-json-response syslog-handler))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
   (GET "/configure" request (wrap-json-response conf-handler))
+  (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
   (not-found (wrap-json-response
               (error-handler-rep 404 "Could not find route"))))
 
