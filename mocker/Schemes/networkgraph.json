@@ -65,7 +65,8 @@
         },
         "nodes": {
           "type": "array",
-          "minItems":10,
+          "minItems":980,
+          "uniqueItems": true,
           "title": "Nodes",
           "items": {
               "title": "Node",
@@ -77,7 +78,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "format": "ipv4"
+                "pattern": "123[.]123[.]123[.][0-9]{3}"
               },
               "label": {
                 "type": "string"
@@ -98,7 +99,7 @@
         "links": {
             "type": "array",
             "title": "Links",
-            "minItems":30,
+            "maxItems":10,
             "items": {
                 "type": "object",
                 "title": "Link",
@@ -111,11 +112,11 @@
                 "properties": {
                     "source": {
                         "type": "string",
-                        "format": "ipv4"
+                        "pattern": "123[.]123[.]123[.][0-9]{3}"
                     },
                     "target": {
                         "type": "string",
-                        "format": "ipv4"
+                        "pattern": "123[.]123[.]123[.][0-9]{3}"
                     },
                     "cost": {
                         "type": "number",
