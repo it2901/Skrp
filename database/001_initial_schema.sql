@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS public.net_json_graph (
   -- from a tactical router. Could provide useful for
   -- historic purposes
   net_json_graph_id SERIAL PRIMARY KEY NOT NULL,
-  -- we might not even need a key here
   content JSONB NOT NULL,
   created TIMESTAMPTZ NOT NULL
 );
@@ -15,8 +14,8 @@ CREATE TABLE IF NOT EXISTS public.device(
 
 CREATE TABLE IF NOT EXISTS public.adaption (
   adaption_id SERIAL PRIMARY KEY NOT NULL,
-  adaption_name TEXT NOT NULL,
-  adaption_description TEXT NOT NULL
+  adaption_type TEXT NOT NULL,
+  adaption_description TEXT NOT NULL,
   config_id INTEGER NOT NULL REFERENCES(device_id),
 );
 
@@ -45,7 +44,8 @@ CREATE TABLE IF NOT EXISTS public.position_log (
 CREATE TABLE IF NOT EXISTS config (
   conf_id SERIAL PRIMARY KEY NOT NULL,
   device_id INTEGER NOT NULL REFERENCES device(device_id),
-  config JSONB NOT NULL
+  config JSONB NOT NULL,
+  created TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 
