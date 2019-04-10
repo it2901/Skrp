@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Parameters from './parameter'
 import styled from 'styled-components'
 
-const Div = styled.div`
+const Form = styled.form`
 top -border: 50%;
 display:flex;
 flex-direction:row;
@@ -46,32 +46,40 @@ class TweakInput extends Component {
     fetch("http://localhost:8090/configure"+statement)
   }
 
+
+  sendToAdaptation(name,value){
+    let id = 1
+    let description = `parameter ${name} has been changed to ${value}`
+    console.log(description)
+    let statement = `http://localhost:8090/logadaption?adaption_id=${id}&device_id=${id}&description=${description}`
+    fetch (statement,{method:"POST"})
+  }
   valdiator (value) {
     return value.match(/^(0(\.\d+)?|[0-9]+)$/)
   }
 
     onChangeParameterValue(name, event){
-      if (event.key === 'Enter' && this.valdiator(event.target.value) )  {
+      let value = event.target.value
+      if (event.key === 'Enter' && this.valdiator(value) )  {
         this.setState({
-          [name]: event.target.value
+          [name]: value
         })
         setTimeout(() => {
           this.sendToConfigure()
+          this.sendToAdaptation(name,value)
         }, 1);
-        
-      }
-    }
+      }}
 
     render () {
       let state = Object.entries(this.state)
       let parameters = state.map(s => {
         return <Parameters data-cy="submit" key={s[0]} changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
       })
-      return <Div className="flex-container">
-      <form>
+      return <div>
+      <Form className="flex-container">
       {parameters}
-      </form>
-      </Div>
+      </Form>
+      </div>
     }
 }
 
