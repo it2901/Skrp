@@ -99,7 +99,7 @@
         "links": {
             "type": "array",
             "title": "Links",
-            "maxItems":40,
+            "maxItems":30,
             "items": {
                 "type": "object",
                 "title": "Link",
