@@ -15,6 +15,7 @@
         },
         "collection": {
           "type": "array",
+          "maxItems": 1,
           "items": {
             "$ref": "#/definitions/Graph"
           }
