@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS public.net_json_graph (
-  -- Interatively store the network graph we fetch
+  -- Iteratively store the network graph we fetch
   -- from a tactical router. Could provide useful for
   -- historic purposes
   net_json_graph_id SERIAL PRIMARY KEY NOT NULL,
@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS public.device(
 
 CREATE TABLE IF NOT EXISTS public.adaption (
   adaption_id SERIAL PRIMARY KEY NOT NULL,
-  -- what does an adaption consist of?
   adaption_name TEXT NOT NULL,
   adaption_description TEXT NOT NULL
+  config_id INTEGER NOT NULL REFERENCES(device_id),
 );
 
 CREATE TABLE IF NOT EXISTS public.system_log (
@@ -44,10 +44,9 @@ CREATE TABLE IF NOT EXISTS public.position_log (
 
 CREATE TABLE IF NOT EXISTS config (
   conf_id SERIAL PRIMARY KEY NOT NULL,
-  p1 INTEGER NOT NULL,
-  p2 INTEGER NOT NULL,
-  p3 INTEGER NOT NULL,
-  p4 INTEGER NOT NULL,
-  p5 INTEGER NOT NULL,
-  p6 INTEGER NOT NULL
+  device_id INTEGER NOT NULL REFERENCES device(device_id),
+  config JSONB NOT NULL
 );
+
+
+
