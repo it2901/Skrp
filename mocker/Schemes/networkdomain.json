@@ -1,0 +1,107 @@
+{
+    "id": "http://json-schema.org/schema#",
+    "description": "Overview of traffic domains",
+    "$ref": "#/definitions/Domains",
+    "definitions": {
+      "Domains": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "collection"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["NetworkCollection"]
+          },
+          "collection": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Domain"
+            }
+          }
+        }
+      },
+      "Domain": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+            "protocol",
+            "domain"
+          ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "type of netjson object",
+            "enum": [ "NetworkDomain" ]
+          },
+          "protocol": {
+            "type": "string",
+            "description": "routing protocol running on the node"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the routing protocol"
+          },
+          "revision": {
+            "type": "string",
+            "description": "Exact revision of the routing protocol"
+          },
+          "domain": {
+            "type": "array",
+            "description": "Array of domains describing the multi-topology options on the node",
+            "items": {
+              "type": "object",
+              "description": "Description of one domain",
+              "additionalProperties": true,
+              "required": [
+                "number",
+                "router_id",
+                "router_addr",
+                "mpr"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Topology ID of the domain"
+                },
+                "number": {
+                  "type": "integer",
+                  "description": "Numeric ID of the domain",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                "router_id": {
+                  "type": "string",
+                  "description": "Router id of the local router for this domain"
+                },
+                "router_addr": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "IPv4 address of the local router for this domain",
+                      "format": "ipv4"
+                    },
+                    {
+                      "type": "string",
+                      "description": "IPv6 address of the local router for this domain",
+                      "format": "ipv6"
+                    }
+                  ]
+                },
+                "metric": {
+                  "type": "string",
+                  "description": "Routing metric active on this domain"
+                },
+                "mpr": {
+                  "type": "string",
+                  "description": "MPR algorithm active on this domain"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
