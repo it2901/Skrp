@@ -16,6 +16,7 @@
           },
           "collection": {
             "type": "array",
+            "minItems":5,
             "items": {
               "$ref": "#/definitions/Domain"
             }
