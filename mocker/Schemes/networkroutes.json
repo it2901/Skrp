@@ -15,6 +15,7 @@
           },
           "collection": {
             "type": "array",
+            "maxItems": 1,
             "items": {
               "$ref": "#/definitions/Route"
             }
@@ -28,11 +29,10 @@
           "type",
           "protocol",
           "version",
+          "revision",
           "metric",
-          "routes",
           "router_id",
-          "topology_id"
-
+          "routes"
         ],
         "properties": {
           "type": {
@@ -40,19 +40,25 @@
             "enum": ["NetworkRoutes"]
           },
           "protocol": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[a-z]{4}$[0-9]"
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "pattern": "0[.][0-9][.][0-9]"
           },
           "metric": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[a-z]{2}$_^[a-z]{3}$_metric"
           },
           "revision": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 12,
+            "pattern": "v[0-9][.,][0-9][.,][0-9][_-][0-9][-_][0-9][a-z0-9]+"
           },
           "router_id": {
-            "type": "string"
+            "type": "string",
+            "format": "ipv4"
           },
           "topology_id": {
             "type": "string"
@@ -60,6 +66,7 @@
           "routes": {
             "type": "array",
             "title": "Routes",
+            "minItems":4,
             "items": {
               "type": "object",
               "title": "Route",
@@ -67,22 +74,25 @@
               "required": [
                 "destination",
                 "next",
-                "device",
                 "cost",
-                "source"
+                "device"
               ],
               "properties": {
                 "destination": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "ipv4"
                 },
                 "next": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "ipv4"
                 },
                 "device": {
-                  "type": "string"
+                  "type": "string",
+                  "pattern": "eth[0-9]"
                 },
                 "cost": {
-                  "type": "number"
+                  "type": "integer",
+                  "minimum": 999999
                 },
                 "source": {
                   "type": "string"
