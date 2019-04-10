@@ -15,9 +15,7 @@
 
 (ns backend.filterlog
   (:require [backend.database :refer [db]]
-            [clojure.data.json :as json]
-            [clojure.java.jdbc :as j]
-            [clojure.string :as string]))
+            [clojure.java.jdbc :as j]))
 
 (defn get-filtered-syslog
   "Retrieve a filtered log from the database"
