@@ -1,137 +1,136 @@
 {
-    "$schema": "http://json-schema.org/schema#",
-    "$ref": "#/definitions/Graphs",
-    "definitions": {
-      "Graphs": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": [
-            "collection"
-        ],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["NetworkCollection"]
-          },
-          "collection": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/Graph"
-            }
+  "$schema": "http://json-schema.org/schema#",
+  "$ref": "#/definitions/Graphs",
+  "definitions": {
+    "Graphs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "collection"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["NetworkCollection"]
+        },
+        "collection": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Graph"
           }
         }
-      },
-      "Graph": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": [
-          "type",
-          "protocol",
-          "version",
-          "metric",
-          "nodes",
-          "links",
-          "router_id",
-          "topology_id",
-          "label"
-        ],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["NetworkGraph"]
-          },
-          "protocol": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "revision": {
-            "type": "string"
-          },
-          "metric": {
-            "type": "string"
-          },
-          "router_id": {
-            "type": "string"
-          },
-          "topology_id": {
-            "type": "string"
-          },
-          "label": {
-            "type": "string"
-          },
-          "nodes": {
-            "type": "array",
-            "title": "Nodes",
-            "items": [
-              {
-                "title": "Node",
+      }
+    },
+    "Graph": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "type",
+        "protocol",
+        "version",
+        "metric",
+        "nodes",
+        "links"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["NetworkGraph"]
+        },
+        "protocol": {
+          "type": "string",
+          "maxLength": 4,
+          "pattern": "[A-Z]+"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "[0-9][.][0-9][.][0-9][.][0-9]"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "metric": {
+          "type": "string",
+          "pattern": "[A-Z]{3}"
+        },
+        "router_id": {
+          "type": "string"
+        },
+        "topology_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "minItems":10,
+          "title": "Nodes",
+          "items": {
+              "title": "Node",
+            "type": "object",
+            "additionalProperties": true,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "ipv4"
+              },
+              "label": {
+                "type": "string"
+              },
+              "local_addresses": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "properties": {
                 "type": "object",
-                "additionalProperties": true,
-                "required": [
-                 "label",
-                 "local_addresses"
-                  ],
-                "required": [
-                  "id"
-                ],
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "label": {
-                    "type": "string"
-                  },
-                  "local_addresses": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "properties": {
-                    "type": "object",
-                    "additionalProperties": true
-                  }
+                "additionalProperties": true
                 }
               }
-            ]
-          },
-          "links": {
-              "type": "array",
-              "title": "Links",
-              "items": {
-                  "type": "object",
-                  "title": "Link",
-                  "additionalProperties": true,
-                  "required": [
-                      "source",
-                      "target",
-                      "cost"
-                  ],
-                  "properties": {
-                      "source": {
-                          "type": "string"
-                      },
-                      "target": {
-                          "type": "string"
-                      },
-                      "cost": {
-                          "type": "number",
-                          "default": 1
-                      },
-                      "cost_text": {
-                          "type": "string"
-                      },
-                      "properties": {
-                          "type": "object",
-                          "additionalProperties": true
-                      }
-                  }
-              }
-          }
+            }
+        },
+        "links": {
+            "type": "array",
+            "title": "Links",
+            "minItems":30,
+            "items": {
+                "type": "object",
+                "title": "Link",
+                "additionalProperties": true,
+                "required": [
+                    "source",
+                    "target",
+                    "cost"
+                ],
+                "properties": {
+                    "source": {
+                        "type": "string",
+                        "format": "ipv4"
+                    },
+                    "target": {
+                        "type": "string",
+                        "format": "ipv4"
+                    },
+                    "cost": {
+                        "type": "number",
+                        "minimum": 999999
+                    },
+                    "cost_text": {
+                        "type": "string"
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                }
+            }
         }
       }
     }
   }
-  
+}
