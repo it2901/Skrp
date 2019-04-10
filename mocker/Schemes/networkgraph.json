@@ -1,0 +1,137 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$ref": "#/definitions/Graphs",
+    "definitions": {
+      "Graphs": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+            "collection"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["NetworkCollection"]
+          },
+          "collection": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Graph"
+            }
+          }
+        }
+      },
+      "Graph": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "type",
+          "protocol",
+          "version",
+          "metric",
+          "nodes",
+          "links",
+          "router_id",
+          "topology_id",
+          "label"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["NetworkGraph"]
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          },
+          "metric": {
+            "type": "string"
+          },
+          "router_id": {
+            "type": "string"
+          },
+          "topology_id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "nodes": {
+            "type": "array",
+            "title": "Nodes",
+            "items": [
+              {
+                "title": "Node",
+                "type": "object",
+                "additionalProperties": true,
+                "required": [
+                 "label",
+                 "local_addresses"
+                  ],
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "local_addresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            ]
+          },
+          "links": {
+              "type": "array",
+              "title": "Links",
+              "items": {
+                  "type": "object",
+                  "title": "Link",
+                  "additionalProperties": true,
+                  "required": [
+                      "source",
+                      "target",
+                      "cost"
+                  ],
+                  "properties": {
+                      "source": {
+                          "type": "string"
+                      },
+                      "target": {
+                          "type": "string"
+                      },
+                      "cost": {
+                          "type": "number",
+                          "default": 1
+                      },
+                      "cost_text": {
+                          "type": "string"
+                      },
+                      "properties": {
+                          "type": "object",
+                          "additionalProperties": true
+                      }
+                  }
+              }
+          }
+        }
+      }
+    }
+  }
+  

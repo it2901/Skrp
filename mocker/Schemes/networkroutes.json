@@ -1,0 +1,101 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$ref": "#/definitions/Routes",
+    "definitions": {
+      "Routes": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "collection"  
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["NetworkCollection"]
+          },
+          "collection": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Route"
+            }
+          }
+        }
+      },
+      "Route": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "type",
+          "protocol",
+          "version",
+          "metric",
+          "routes",
+          "router_id",
+          "topology_id"
+
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["NetworkRoutes"]
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "metric": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          },
+          "router_id": {
+            "type": "string"
+          },
+          "topology_id": {
+            "type": "string"
+          },
+          "routes": {
+            "type": "array",
+            "title": "Routes",
+            "items": {
+              "type": "object",
+              "title": "Route",
+              "additionalProperties": true,
+              "required": [
+                "destination",
+                "next",
+                "device",
+                "cost",
+                "source"
+              ],
+              "properties": {
+                "destination": {
+                  "type": "string"
+                },
+                "next": {
+                  "type": "string"
+                },
+                "device": {
+                  "type": "string"
+                },
+                "cost": {
+                  "type": "number"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "cost_txt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  
