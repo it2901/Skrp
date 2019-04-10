@@ -41,7 +41,7 @@ class Parameters extends Component {
     return (
       <Div>
           <Label htmlFor={this.props.name}>{this.props.name} </Label>
-          <Input name={this.props.name} key={this.props.key} placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue} />
+          <Input name={this.props.name} key={this.props.name} placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue} />
       </Div>
     )
   }
