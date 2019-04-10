@@ -22,4 +22,3 @@ At this point your server is running and the API-ends are up.
 The mocker is a generic Node and Express server, IT serves mocked NETJSON using json-schema-faker. I have taken the schemas given to us by FFI and made it so lots of the fields are required, so that the mocker always gives us that data. I have omitted adding some of the data that i thought unnecessary.
 
 
-
