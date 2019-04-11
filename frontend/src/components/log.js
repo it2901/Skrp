@@ -248,7 +248,7 @@ class Log extends Component {
         <Form.Input {...props}
           error={!this.state.canFilter && !this.state[name] }
           icon={
-            <Icon link name='close' onClick={clear} />
+            <Icon link name={this.state[name] ? 'close' : undefined} onClick={clear} />
           }
         />
       </div>
