@@ -229,16 +229,20 @@ class Log extends Component {
       renderInput={this.renderDateInput}
     />
   }
-  renderDateInput (props) {
-    function clear () {
-      props.onChange({ target: { value: '' } })
+  renderDateInput = (props, name) => {
+    const clear = () => {
+      // props.onChange({ target: { value: '' } })
+      this.setState({ [name]: '' })
+      this.checkIfCanFilter()
     }
 
     return (
       <div>
-        <Form.Input {...props} icon={
-          <Icon link name='close' onClick={clear} />
-        } />
+        <Form.Input {...props}
+          icon={
+            <Icon link name='close' onClick={clear} />
+          }
+        />
       </div>
     )
   }
