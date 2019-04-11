@@ -1,9 +1,9 @@
 {
  :database
- { :user "postgres"
+ { :user  #or [#env PGUSER "postgres"]
    :name  #or [#env PGDATABASE "netjson_dev"]
-   :pass "password"
-   :host "localhost"
+   :pass  #or [#env PGPASSWD "password"]
+   :host  #or [#env PGHOST "localhost"]
  }
  :webserver
  { 
