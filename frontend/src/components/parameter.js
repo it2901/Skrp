@@ -16,13 +16,15 @@ const Label = styled.label`
     color:black;
     border-bottom:solid black;
     background-color: lightgrey;
+    border-radius: 8px 8px 0px 0px;
+    border-top: solid black;
 `
 const Input = styled.input`
     font-size:18pt;
     height:50px;
     width:200px;
     border: 4px;
-    border-radius: 8px;
+    border-radius: 0px 0px 8px 8px;
     border-bottom: solid black;
     }
 `
@@ -38,10 +40,8 @@ class Parameters extends Component {
   render () {
     return (
       <Div>
-        <form>
           <Label htmlFor={this.props.name}>{this.props.name} </Label>
-          <Input placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue}/>
-        </form>
+          <Input name={this.props.name} key={this.props.name} placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue} />
       </Div>
     )
   }
