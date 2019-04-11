@@ -266,6 +266,7 @@ exports[`renders correctly 1`] = `
         <i
           aria-hidden="true"
           className="arrows alternate horizontal circular inverted link icon"
+          data-cy="Toggle"
           onBlur={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
@@ -301,6 +302,7 @@ exports[`renders correctly 1`] = `
               >
                 <div
                   className="ui icon input"
+                  data-cy="formDate"
                 >
                   <input
                     onChange={[Function]}
