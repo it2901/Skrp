@@ -239,6 +239,7 @@ class Log extends Component {
     return (
       <div>
         <Form.Input {...props}
+
           icon={
             <Icon link name='close' onClick={clear} />
           }
