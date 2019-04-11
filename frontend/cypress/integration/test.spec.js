@@ -21,6 +21,7 @@ describe("First test lol", ()=>{
                 cy.contains('Adjust parameters').click()
                 cy.url().should('include','/tweakinput')
                 cy.get('.bm-cross-button').click()
+                /*
                 let x = 0.2
                 cy.get('form').find('input').each((input) =>{
                     cy.wrap(input).type(x).type('{enter}').clear()
@@ -30,7 +31,7 @@ describe("First test lol", ()=>{
                     else{
                         x+=1;
                     }
-                })
+                })*/
         //close burger menu
         
 
