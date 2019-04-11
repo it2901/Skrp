@@ -180,9 +180,23 @@ class Log extends Component {
       </div>
     )
   }
+  resetForm = () => {
+    // resets form
+    this.setState({
+      formAdaptIds: [],
+      formDate: '',
+      formDateFrom: '',
+      formDateTo: '',
+      formDesc: '',
+      formDevIds: [],
+      canFilter: true
+    })
+    // also fetch new ok
+    this.fetch()
+  }
 
   render () {
-    const { column, data, direction, dateRange, formDesc, formDate, formDateFrom, formDateTo, canFilter } = this.state
+    const { column, data, direction, dateRange, formDesc, formAdaptIds, formDevIds, formDate, formDateFrom, formDateTo, canFilter } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
@@ -204,12 +218,14 @@ class Log extends Component {
             options={this.deviceIds}
             placeholder="Device ids"
             name="formDevIds"
+            value={formDevIds}
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
           <Form.Dropdown
             options={this.adaptionIds}
             placeholder="Adaption ids"
             name="formAdaptIds"
+            value={formAdaptIds}
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
           <Form.Field>
@@ -277,12 +293,18 @@ class Log extends Component {
                 />
               </Form.Group>
           }
-          <Button
+          <Form.Button
             type="submit"
             onClick={() => this.filter()}
             content="Filter"
             primary fluid
             disabled={ !canFilter }
+          />
+          <Form.Button
+            type="reset"
+            content="Reset"
+            negative fluid
+            onClick={this.resetForm}
           />
         </Form>
         <Table sortable celled collapsing style={{ margin: '0', marginLeft: '40px' }}>
