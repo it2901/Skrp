@@ -84,8 +84,6 @@ class Log extends Component {
         self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
-        console.log()
-
         self.setState({ data: [] })
       }
     }
@@ -146,6 +144,34 @@ class Log extends Component {
       this.setState({ [name]: e })
     }
   }
+  generateDateField (fields) {
+    return <Form.Field
+      control={Datetime}
+      label={fields.label || ''}
+      dateFormat="YYYY-MM-DD"
+      // timeFormat='HH:mm:ss'
+      timeFormat={false}
+      width={16}
+      onChange={e => this.onDateChange(fields.name, e)}
+      name={fields.name}
+      // value={fields.value}
+      // defaultValue=''
+      renderInput={this.renderDateInput}
+    />
+  }
+  renderDateInput (props) {
+    function clear () {
+      props.onChange({ target: { value: '' } })
+    }
+
+    return (
+      <div>
+        <Form.Input {...props} icon={
+          <Icon link name='close' onClick={clear} />
+        } />
+      </div>
+    )
+  }
 
   render () {
     const { column, data, direction, dateRange, formDesc, formDate, formDateFrom, formDateTo } = this.state
@@ -195,40 +221,12 @@ class Log extends Component {
           {
             dateRange
               ? <Form.Group grouped >
-                <Form.Field
-                  control={Datetime}
-                  label="From"
-                  dateFormat="YYYY-MM-DD"
-                  // timeFormat='HH:mm:ss'
-                  timeFormat={false}
-                  width={16}
-                  onChange={e => this.onDateChange('formDateFrom', e)}
-                  name="formDateFrom"
-                  value={formDateFrom}
-                />
-                <Form.Field
-                  control={Datetime}
-                  label="To"
-                  dateFormat="YYYY-MM-DD"
-                  // timeFormat='HH:mm:ss'
-                  timeFormat={false}
-                  width={16}
-                  onChange={e => this.onDateToChange('formDateTo', e)}
-                  name="formDateTo"
-                  value={formDateTo}
-                />
+                {this.generateDateField({ label: 'From', name: 'formDateFrom', value: { formDateFrom } })}
+                {this.generateDateField({ label: 'To', name: 'formDateTo', value: { formDateTo } })}
               </Form.Group>
               : <Form.Group widths={1}>
-                <Form.Field
-                  control={Datetime}
-                  dateFormat="YYYY-MM-DD"
-                  // timeFormat='HH:mm:ss'
-                  timeFormat={false}
-                  width={16}
-                  onChange={e => this.onDateChange('formDate', e)}
-                  name="formDate"
-                  value={formDate}
-                />
+                {this.generateDateField({ name: 'formDate', value: { formDate } })}
+                {/* <Form.Button content="Clear" onClick={() => this.setState({ 'formDate': '' })} /> */}
               </Form.Group>
           }
 
