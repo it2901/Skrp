@@ -65,7 +65,7 @@
         },
         "nodes": {
           "type": "array",
-          "minItems":98,
+          "minItems":95,
           "uniqueItems": true,
           "title": "Nodes",
           "items": {
@@ -99,7 +99,7 @@
         "links": {
             "type": "array",
             "title": "Links",
-            "maxItems":75,
+            "maxItems":75 ,
             "uniqueItems": true,
             "items": {
                 "type": "object",
