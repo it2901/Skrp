@@ -214,6 +214,34 @@ class Log extends Component {
     // also fetch new ok
     this.fetch()
   }
+  generateDateField (fields) {
+    return <Form.Field
+      control={Datetime}
+      label={fields.label || ''}
+      dateFormat="YYYY-MM-DD"
+      // timeFormat='HH:mm:ss'
+      timeFormat={false}
+      width={16}
+      onChange={e => this.onDateChange(fields.name, e)}
+      name={fields.name}
+      // value={fields.value}
+      // defaultValue=''
+      renderInput={this.renderDateInput}
+    />
+  }
+  renderDateInput (props) {
+    function clear () {
+      props.onChange({ target: { value: '' } })
+    }
+
+    return (
+      <div>
+        <Form.Input {...props} icon={
+          <Icon link name='close' onClick={clear} />
+        } />
+      </div>
+    )
+  }
 
   render () {
     const { column, data, direction,
