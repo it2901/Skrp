@@ -14,7 +14,7 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.routes.filteredsyslog
-  "Functions for handling the /syslog endpoint"
+  "Functions for handling the /filtersyslog endpoint"
   (:require [backend.logging :refer [get-syslog]]
             [backend.filterlog :refer [get-filtered-syslog]]
             [backend.routes.util :refer [error-handler-rep]]))
@@ -32,7 +32,10 @@
      :body body}))
 
 (defn filtered-syslog-handler
-  "description"
+  "HTTP get handler to filter data from the databse table 'system_log'.
+  Creates and passes a map to the fetch-function, containing info about which
+  variables to filter by. If no parameter i passed, the whole log will be retrieved.
+  Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
   [{params :query-params :as req}]
   (def logFilter {:device_id nil
                   :adaption_id nil
@@ -53,7 +56,6 @@
   (if (contains? params "date_to")
     (def logFilter (update logFilter :date_to #(str (params "date_to") %))))
 
-  (println "logFilter: " logFilter)
   (if (empty? params)
     (filtered-syslog-check (get-syslog))
     (filtered-syslog-check (get-filtered-syslog logFilter))))
