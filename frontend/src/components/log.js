@@ -219,6 +219,8 @@ class Log extends Component {
                 trigger={
                   <Icon
                     link
+                    circular
+                    inverted
                     style={{ marginLeft: '5px' }}
                     name='arrows alternate horizontal'
                     onClick={() => this.toggleDateRange()}
