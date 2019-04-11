@@ -7,7 +7,7 @@ describe('log test', () => {
     })
   })
 
-  it('visits log and gets data', () => {
+  it('can visit endpoint and get data', () => {
     cy.route('http://localhost:8090/filtersyslog', [
       {
         'system_log_id': 1,
@@ -51,7 +51,7 @@ describe('log test', () => {
     // check table
     cy.get('[data-cy=children]').children().should('have.length', 1)
   })
-  it('fetches no data', () => {
+  it('handles 404 endpoint correctly', () => {
     // route to check for WRONG id
     cy.route('http://localhost:8090/filtersyslog?description=test&device_id=2', [])
     // first clear input
@@ -64,5 +64,37 @@ describe('log test', () => {
     cy.contains('Filter').click()
     // table should have length 0 now
     cy.get('[data-cy=children]').children().should('have.length', 0)
+  })
+  it('can get get log between two dates', ()=>{
+    cy.route('http://localhost:8090/filtersyslog',[])
+    cy.route('http://localhost:8090/filtersyslog?date_from=2019-03-01&date_to=2019-05-02', [
+      {
+        'system_log_id': 1,
+        'adaption_id': 1,
+        'device_id': 1,
+        'description': 'test',
+        'created': '2019-04-03T22:23:04Z'
+      },
+      {
+        'system_log_id': 1,
+        'adaption_id': 1,
+        'device_id': 1,
+        'description': 'compress',
+        'created': '2019-05-01T22:23:04Z'
+      }
+    ])
+    
+    //reset form
+    cy.contains('Reset').click()
+    //click date toggle
+    cy.get('[data-cy=Toggle]').click()
+    //fill in first date form
+    cy.get('[data-cy=formDateFrom').children().first().type('2019-03-01')
+    //second
+    cy.get('[data-cy=formDateTo').children().first().type('2019-05-02')
+    //submit
+    cy.contains('Filter').click()
+    //Should now have 2 items
+    cy.get('[data-cy=children]').children().should('have.length', 2)
   })
 })

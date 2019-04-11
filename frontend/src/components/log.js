@@ -197,7 +197,10 @@ class Log extends Component {
   }
 
   render () {
-    const { column, data, direction, dateRange, formDesc, formAdaptIds, formDevIds, formDate, formDateFrom, formDateTo, canFilter } = this.state
+    const { column, data, direction,
+      dateRange, formDesc, formAdaptIds,
+      formDevIds, formDate, formDateFrom,
+      formDateTo, canFilter } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
