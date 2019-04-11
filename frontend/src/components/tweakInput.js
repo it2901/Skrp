@@ -13,6 +13,12 @@ class TweakInput extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      p1:100,
+      p2:100,
+      p3:100,
+      p4:100,
+      p5:100,
+      p6:100
     }
     this.props = props
   }
