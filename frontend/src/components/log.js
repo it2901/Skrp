@@ -41,11 +41,11 @@ class Log extends Component {
     ]
     this.queryParams = {
       'date': 'formDate',
-      'desc': 'formDesc',
-      'deviceids': 'formDevIds',
-      'adaptids': 'formAdaptIds',
-      'datefrom': 'formDateFrom',
-      'dateto': 'formDateTo'
+      'description': 'formDesc',
+      'device_id': 'formDevIds',
+      'adaption_id': 'formAdaptIds',
+      'date_from': 'formDateFrom',
+      'date_to': 'formDateTo'
     }
   }
 
@@ -74,19 +74,22 @@ class Log extends Component {
   fetch (query) {
     // not using fetch api cause cypress sucks..
     query = query || ''
-    console.log(query)
+    // console.log(query)
 
-    let xhttp = new XMLHttpRequest()
+    let xhttp = new XMLHttpRequest({ mozSystem: true })
     let self = this
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
         self.setState({ data: JSON.parse(xhttp.responseText) })
+      } else if (this.readyState === 4 && this.status === 404) {
+        // no results
+        console.log()
+
+        self.setState({ data: [] })
       }
     }
-    xhttp.open('GET', 'http://localhost:8090/syslog' + query, true)
-    xhttp.setRequestHeader('Content-Type', 'application/json')
-    xhttp.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8090/')
+    xhttp.open('GET', 'http://localhost:8090/filtersyslog' + query, true)
     xhttp.send()
   }
   filter () {
@@ -100,8 +103,8 @@ class Log extends Component {
       delete q['date']
     } else {
       // and vice versa
-      delete q['datefrom']
-      delete q['dateto']
+      delete q['date_from']
+      delete q['date_to']
     }
     // filter and add to query array
     for (let i in q) {
@@ -110,10 +113,9 @@ class Log extends Component {
         // not empty value
         if (i.startsWith('date')) {
           // is date string
-          // format
-          a = a.format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+          // format [] escapes characters
+          a = a.format('YYYY-MM-DD')
         }
-        console.log(q[i], a)
         queryList.push({ [i]: a })
       }
     }
@@ -123,7 +125,7 @@ class Log extends Component {
       queryString += '?'
       queryString += queryList.map((o) => Object.keys(o)[0] + '=' + o[Object.keys(o)[0]]).join('&')
     }
-    console.log(queryString)
+    // console.log(queryString)
 
     // and then fetch
     this.fetch(queryString)
@@ -197,7 +199,8 @@ class Log extends Component {
                   control={Datetime}
                   label="From"
                   dateFormat="YYYY-MM-DD"
-                  timeFormat='HH:mm:ss'
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
                   width={16}
                   onChange={e => this.onDateChange('formDateFrom', e)}
                   name="formDateFrom"
@@ -207,7 +210,8 @@ class Log extends Component {
                   control={Datetime}
                   label="To"
                   dateFormat="YYYY-MM-DD"
-                  timeFormat='HH:mm:ss'
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
                   width={16}
                   onChange={e => this.onDateToChange('formDateTo', e)}
                   name="formDateTo"
@@ -218,7 +222,8 @@ class Log extends Component {
                 <Form.Field
                   control={Datetime}
                   dateFormat="YYYY-MM-DD"
-                  timeFormat='HH:mm:ss'
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
                   width={16}
                   onChange={e => this.onDateChange('formDate', e)}
                   name="formDate"
