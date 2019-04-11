@@ -254,6 +254,20 @@ class Log extends Component {
       </div>
     )
   }
+  resetForm = () => {
+    // resets form
+    this.setState({
+      formAdaptIds: [],
+      formDate: '',
+      formDateFrom: '',
+      formDateTo: '',
+      formDesc: '',
+      formDevIds: [],
+      canFilter: true
+    })
+    // also fetch new ok
+    this.fetch()
+  }
 
   render () {
     const { column, data, direction,
