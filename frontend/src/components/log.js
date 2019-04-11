@@ -164,6 +164,7 @@ class Log extends Component {
     return (
       <div>
         <Form.Input {...props}
+
           icon={
             <Icon link name='close' onClick={clear} />
           }
@@ -231,6 +232,7 @@ class Log extends Component {
                   name={'formDateFrom'}
                   value={formDateFrom}
                   // defaultValue=''
+                  closeOnSelect
                   renderInput={(e) => this.renderDateInput(e, 'formDateFrom')}
                 />
                 <Form.Field
@@ -244,6 +246,7 @@ class Log extends Component {
                   name={'formDateTo'}
                   isValidDate={this.dateToIsValid}
                   value={formDateTo}
+                  closeOnSelect
                   // defaultValue=''
                   renderInput={(e) => this.renderDateInput(e, 'formDateTo')}
                 />
@@ -258,6 +261,7 @@ class Log extends Component {
                   onChange={e => this.onDateChange('formDate', e)}
                   name='formDate'
                   value={formDate}
+                  closeOnSelect
                   // defaultValue=''
                   renderInput={(e) => this.renderDateInput(e, 'formDate')}
                 />
