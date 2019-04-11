@@ -237,9 +237,16 @@ class Log extends Component {
     }
 
     return (
-      <div>
+      <div style={{ position: 'relative' }}>
+        { !this.state.canFilter && !this.state[name] && <Popup
+          content='Either fill in both date fields, or none'
+          trigger={
+            <Icon color='blue' name='info circle' size="large" style={{ position: 'absolute', 'left': -30, 'top': 7 }}/>
+          }
+
+        />}
         <Form.Input {...props}
-          error={!this.state.canFilter && !this.state[name]}
+          error={!this.state.canFilter && !this.state[name] }
           icon={
             <Icon link name='close' onClick={clear} />
           }
