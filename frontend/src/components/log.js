@@ -234,6 +234,7 @@ class Log extends Component {
                 content={dateRange ? 'Filter by single date' : 'Filter by date range'}
                 trigger={
                   <Icon
+                    data-cy='Toggle'
                     link
                     circular
                     inverted
