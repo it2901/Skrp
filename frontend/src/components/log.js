@@ -18,7 +18,8 @@ class Log extends Component {
       formAdaptIds: [],
       formDate: '',
       formDateFrom: '',
-      formDateTo: ''
+      formDateTo: '',
+      canFilter: true
     }
     this.logHeaders = [
       { key: 'system_log_id', text: 'Log id', value: 'system_log_id' },
@@ -130,51 +131,49 @@ class Log extends Component {
   }
   toggleDateRange () {
     this.setState({ dateRange: !this.state.dateRange })
+    this.checkIfCanFilter()
   }
   onChange = e => this.setState({ [e.name]: e.value })
 
-  onDateToChange = (name, e) => {
-    if (e.isAfter(this.state.formDateFrom)) {
-      this.setState({ [name]: e })
-    }
+  dateToIsValid = (current) => {
+    // checks if dateTo is after dateFrom
+
+    return this.state.formDateFrom ? current.isAfter(this.state.formDateFrom) : true
   }
   onDateChange = (name, e) => {
     // returns moment obj if valid date
     if (typeof e === 'object') {
+      // also check if can filter
       this.setState({ [name]: e })
+      this.checkIfCanFilter()
     }
   }
-  generateDateField (fields) {
-    return <Form.Field
-      control={Datetime}
-      label={fields.label || ''}
-      dateFormat="YYYY-MM-DD"
-      // timeFormat='HH:mm:ss'
-      timeFormat={false}
-      width={16}
-      onChange={e => this.onDateChange(fields.name, e)}
-      name={fields.name}
-      // value={fields.value}
-      // defaultValue=''
-      renderInput={this.renderDateInput}
-    />
+  checkIfCanFilter=() => {
+    setTimeout(() => {
+      this.setState({ canFilter: !(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)) })
+      // console.log(!(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)))
+    }, 100)
   }
-  renderDateInput (props) {
-    function clear () {
-      props.onChange({ target: { value: '' } })
+  renderDateInput = (props, name) => {
+    const clear = () => {
+      // props.onChange({ target: { value: '' } })
+      this.setState({ [name]: '' })
+      this.checkIfCanFilter()
     }
 
     return (
       <div>
-        <Form.Input {...props} icon={
-          <Icon link name='close' onClick={clear} />
-        } />
+        <Form.Input {...props}
+          icon={
+            <Icon link name='close' onClick={clear} />
+          }
+        />
       </div>
     )
   }
 
   render () {
-    const { column, data, direction, dateRange, formDesc, formDate, formDateFrom, formDateTo } = this.state
+    const { column, data, direction, dateRange, formDesc, formDate, formDateFrom, formDateTo, canFilter } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
@@ -221,12 +220,47 @@ class Log extends Component {
           {
             dateRange
               ? <Form.Group grouped >
-                {this.generateDateField({ label: 'From', name: 'formDateFrom', value: { formDateFrom } })}
-                {this.generateDateField({ label: 'To', name: 'formDateTo', value: { formDateTo } })}
+                <Form.Field
+                  control={Datetime}
+                  label={'From'}
+                  dateFormat='YYYY-MM-DD'
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
+                  width={16}
+                  onChange={e => this.onDateChange('formDateFrom', e)}
+                  name={'formDateFrom'}
+                  value={formDateFrom}
+                  // defaultValue=''
+                  renderInput={(e) => this.renderDateInput(e, 'formDateFrom')}
+                />
+                <Form.Field
+                  control={Datetime}
+                  label={'To'}
+                  dateFormat='YYYY-MM-DD'
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
+                  width={16}
+                  onChange={e => this.onDateChange('formDateTo', e)}
+                  name={'formDateTo'}
+                  isValidDate={this.dateToIsValid}
+                  value={formDateTo}
+                  // defaultValue=''
+                  renderInput={(e) => this.renderDateInput(e, 'formDateTo')}
+                />
               </Form.Group>
               : <Form.Group widths={1}>
-                {this.generateDateField({ name: 'formDate', value: { formDate } })}
-                {/* <Form.Button content="Clear" onClick={() => this.setState({ 'formDate': '' })} /> */}
+                <Form.Field
+                  control={Datetime}
+                  dateFormat='YYYY-MM-DD'
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
+                  width={16}
+                  onChange={e => this.onDateChange('formDate', e)}
+                  name='formDate'
+                  value={formDate}
+                  // defaultValue=''
+                  renderInput={(e) => this.renderDateInput(e, 'formDate')}
+                />
               </Form.Group>
           }
 
@@ -234,7 +268,9 @@ class Log extends Component {
             type="submit"
             onClick={() => this.filter()}
             content="Filter"
-            primary fluid />
+            primary fluid
+            disabled={ !canFilter }
+          />
         </Form>
         <Table sortable celled collapsing style={{ margin: '0', marginLeft: '40px' }}>
           <Table.Header>
