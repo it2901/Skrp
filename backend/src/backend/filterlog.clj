@@ -18,7 +18,8 @@
             [clojure.java.jdbc :as j]))
 
 (defn get-filtered-syslog
-  "Retrieve a filtered log from the database"
+  "Retrieve and filters data from the database table 'system_log'
+  based on input."
   [{:keys [device_id adaption_id description date date_from date_to]}]
   (def querystr "SELECT * FROM system_log WHERE")
   (def firstParam true)
@@ -57,5 +58,4 @@
               (def firstParam false))
           (def newstr (str " AND DATE(created) between '" date_from "' and '" date_to "'")))
         (def querystr (str querystr newstr))))
-  (println querystr)
   (j/query db [querystr]))
