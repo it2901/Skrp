@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Popup, Icon, Form } from 'semantic-ui-react'
+import { Table, Button, Popup, Icon, Form, Message } from 'semantic-ui-react'
 import _ from 'lodash'
 import Datetime from 'react-datetime'
 import 'moment/locale/nb'
@@ -149,10 +149,11 @@ class Log extends Component {
     }
   }
   checkIfCanFilter=() => {
+    // timeout cause state is fucked idk
     setTimeout(() => {
       this.setState({ canFilter: !(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)) })
       // console.log(!(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)))
-    }, 100)
+    }, 1)
   }
   renderDateInput = (props, name) => {
     const clear = () => {
@@ -162,9 +163,16 @@ class Log extends Component {
     }
 
     return (
-      <div>
+      <div style={{ position: 'relative' }}>
+        { !this.state.canFilter && !this.state[name] && <Popup
+          content='Either fill in both date fields, or none'
+          trigger={
+            <Icon color='blue' name='info circle' size="large" style={{ position: 'absolute', 'left': -30, 'top': 7 }}/>
+          }
+
+        />}
         <Form.Input {...props}
-          error={!this.state.canFilter && !this.state[name]}
+          error={!this.state.canFilter && !this.state[name] }
           icon={
             <Icon link name='close' onClick={clear} />
           }
@@ -183,7 +191,7 @@ class Log extends Component {
         flexDirection: 'row'
       }
       }>
-        <Form>
+        <Form warning={!canFilter} style={{ right: 0 }}>
           <Form.Input
             placeholder="Description"
             icon='search'
@@ -267,7 +275,6 @@ class Log extends Component {
                 />
               </Form.Group>
           }
-
           <Button
             type="submit"
             onClick={() => this.filter()}
