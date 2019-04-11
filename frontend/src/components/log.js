@@ -246,6 +246,7 @@ class Log extends Component {
 
         />}
         <Form.Input {...props}
+          data-cy={name}
           error={!this.state.canFilter && !this.state[name] }
           icon={
             <Icon link name={this.state[name] ? 'close' : undefined} onClick={clear} />
