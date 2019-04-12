@@ -5,6 +5,8 @@ import 'semantic-ui-css/semantic.min.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-draw/dist/leaflet.draw.css'
+
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
