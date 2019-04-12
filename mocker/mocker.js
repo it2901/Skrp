@@ -5,10 +5,10 @@ const port = 3001;
 
 
 setInterval(() => {
-    let geolocations = require('./Schemes/geolocations.json')  
-    let networkdomain = require('./Schemes/networkdomain.json')  
-    let networkgraph = require('./Schemes/networkgraph.json')  
-    let networkroutes = require('./Schemes/networkroutes.json')
+     geolocations = require('./Schemes/geolocations.json')  
+     networkdomain = require('./Schemes/networkdomain.json')  
+     networkgraph = require('./Schemes/networkgraph.json')  
+     networkroutes = require('./Schemes/networkroutes.json')
      geolocationsEnd = jsf.generate(geolocations).collection[0];
      networkdomainEnd = jsf.generate(networkdomain).collection[0];
      networkgraphEnd = jsf.generate(networkgraph).collection[0];
