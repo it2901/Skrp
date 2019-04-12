@@ -12,11 +12,18 @@ CREATE TABLE IF NOT EXISTS public.device(
   -- what does a device consist of?
 );
 
+CREATE TABLE IF NOT EXISTS config (
+  config_id SERIAL PRIMARY KEY NOT NULL,
+  device_id INTEGER NOT NULL REFERENCES device(device_id),
+  config JSONB NOT NULL,
+  created TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS public.adaption (
   adaption_id SERIAL PRIMARY KEY NOT NULL,
   adaption_type TEXT NOT NULL,
   adaption_description TEXT NOT NULL,
-  config_id INTEGER NOT NULL REFERENCES(device_id),
+  config_id INTEGER NOT NULL REFERENCES config(config_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.system_log (
@@ -41,12 +48,6 @@ CREATE TABLE IF NOT EXISTS public.position_log (
   created TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS config (
-  conf_id SERIAL PRIMARY KEY NOT NULL,
-  device_id INTEGER NOT NULL REFERENCES device(device_id),
-  config JSONB NOT NULL,
-  created TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
 
 
 
