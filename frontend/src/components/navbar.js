@@ -18,6 +18,7 @@ export default props => {
             <li className="menu-item" ><NavLink to="/nodegraph">Network graph</NavLink></li>
             <li className="menu-item"><NavLink to="/log">Adaption log</NavLink></li>
             <li className="menu-item"><NavLink to="/about">About</NavLink></li>
+            <li className="menu-item"><NavLink to="/maps">Map</NavLink></li>
           </ul>
         </div>
       </HashRouter>
