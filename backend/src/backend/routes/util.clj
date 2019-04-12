@@ -32,6 +32,13 @@
    :headers {"Content-Type" "application/json"}
    :body    (slurp (io/resource "networkgraph.json"))})
 
+(defmacro run-db
+  "Takes two functions, db and error.
+  Runs db, however if an exception is thrown error will be executed."
+  ([db error]
+   `(try ~db
+         (catch Exception e# ~error))))
+
 (defn error-handler-rep
   "HTTP error response template function"
   ([status msg]
