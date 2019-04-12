@@ -22,16 +22,16 @@
             [backend.routes.util :refer [error-handler-rep]]))
 
 (defn adaption-exists?
-  "Returns true if the adaption is registered, false otherwise"
+  "Returns true if the adaption_id is registered in the database, false otherwise"
   [adaption_id]
-  (if-not (= nil (type (get-adaption-from-id adaption_id)))
+  (if-not (= nil (get-adaption-from-id adaption_id))
     true
     false))
 
 (defn device-registered?
-  "Returns true if device is registered, false otherwise."
+  "Returns true if device is registered in the database, false otherwise"
   [device_id]
-  (if-not (= nil (type (get-device-from-id device_id)))
+  (if-not (= nil (get-device-from-id device_id))
     true
     false))
 
@@ -43,24 +43,25 @@
            (contains? params "device_id")
            (contains? params "description"))
     (error-handler-rep 400 "Invalid query" req)
-    (let [adaption_id (read-string (params "adaption_id"))
-          device_id (read-string (params "device_id"))
+    (let [adaption_id (Integer/parseInt (params "adaption_id"))
+          device_id (Integer/parseInt (params "device_id"))
           description (params "description")]
-      (if-not (device-registered? (read-string (params "device_id")))
-        (set-device-id device_id))
-      (cond
-        (not (adaption-exists? adaption_id)) (let [status 404
-                                                   body {"Error" "Invalid adaption_id"}]
-                                               {:status status
+      (try
+        (if-not (device-registered? (Integer/parseInt (params "device_id")))
+          (set-device-id device_id))
+        (catch Exception _))
+      (try
+        (cond
+          (not (adaption-exists? adaption_id)) {:status 404
                                                 :headers {"Content-Type" "application/json"}
-                                                :body body})
-        (and
-         (adaption-exists? adaption_id)
-         (device-registered? device_id)) (let [status 200
-                                               body (insert-syslog {:device_id device_id
-                                                                    :adaption_id adaption_id
-                                                                    :description description})]
-                                           {:status status
+                                                :body {"Error" "Invalid adaption_id"}}
+          (and
+           (adaption-exists? adaption_id)
+           (device-registered? device_id)) {:status 200
                                             :headers {"Content-Type" "application/json"}
-                                            :body body})
-        :else (error-handler-rep 400 "Database error" req)))))
+                                            :body (insert-syslog {:device_id device_id
+                                                                  :adaption_id adaption_id
+                                                                  :description description})}
+          :else (error-handler-rep 404 "Invalid query" req))
+        (catch Exception _
+          (error-handler-rep 503 "Cant connect to database:P" req))))))

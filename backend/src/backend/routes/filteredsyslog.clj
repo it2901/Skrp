@@ -23,7 +23,6 @@
   "Returns correct HTTP response according to system log database query result"
   {:arglist '([query-result])}
   [result]
-  ;; TODO: Find a way to handle db connection error
   (let [[status body] (if (= [] result)
                         [404 {"Error" "No query results found"}]
                         [200 result])]
@@ -31,12 +30,23 @@
      :headers {"Content-Type" "application/json"}
      :body body}))
 
-(defn filtered-syslog-handler
-  "HTTP get handler to filter data from the databse table 'system_log'.
-  Creates and passes a map to the fetch-function, containing info about which
-  variables to filter by. If no parameter i passed, the whole log will be retrieved.
-  Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
-  [{params :query-params :as req}]
+(defn params-check?
+  "Returns true if the parameters passed is a subset of allowed parameters,
+  false otherwise"
+  [currentParams]
+  (def allowedParams #{"device_id"
+                       "adaption_id"
+                       "description"
+                       "date"
+                       "date_from"
+                       "date_to"})
+  (if-not (clojure.set/subset? (set (keys currentParams)) allowedParams)
+    false
+    true))
+
+(defn create-filter-map
+  "Creates a map with what variables to filter by"
+  [params]
   (def logFilter {:device_id nil
                   :adaption_id nil
                   :description nil
@@ -55,7 +65,21 @@
     (def logFilter (update logFilter :date_from #(str (params "date_from") %))))
   (if (contains? params "date_to")
     (def logFilter (update logFilter :date_to #(str (params "date_to") %))))
+  logFilter)
 
-  (if (empty? params)
-    (filtered-syslog-check (get-syslog))
-    (filtered-syslog-check (get-filtered-syslog logFilter))))
+(defn filtered-syslog-handler
+  "HTTP get handler to filter data from the database table 'system_log'.
+  Passes a map to the fetch-function, containing info about which
+  variables to filter by. If no parameter i passed, the whole log will be retrieved.
+  Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
+  [{params :query-params :as req}]
+  (cond
+    (empty? params) (try
+                      (filtered-syslog-check (get-syslog))
+                      (catch Exception _
+                        (error-handler-rep 503 "Cant connect to the database" req)))
+    (params-check? params) (try
+                             (filtered-syslog-check (get-filtered-syslog (create-filter-map params)))
+                             (catch Exception _
+                               (error-handler-rep 503 "Cant connect to the database" req)))
+    :else (error-handler-rep 400 "Invalid query" req)))

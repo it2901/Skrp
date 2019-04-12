@@ -23,7 +23,6 @@
   query result"
   {:arglist '([query-result])}
   [result]
-  ;; TODO: Find a way to handle db connection error
   (let [[status body] (if (= [] result)
                         [404 {"Error" "No query results found"}]
                         [200 result])]
@@ -45,12 +44,21 @@
   Date has to be ISO formatted: yyyy-mm-dd"
   [{params :query-params :as req}]
   (cond
-    (empty? params) (syslog-check (get-syslog))
-    (contains? params "date") (syslog-check (get-syslog (params "date")))
+    (empty? params) (try
+                      (syslog-check (get-syslog))
+                      (catch Exception _
+                        (error-handler-rep 503 "Cant connect to the database" req)))
+    (contains? params "date") (try
+                                (syslog-check (get-syslog (params "date")))
+                                (catch Exception _
+                                  (error-handler-rep 503 "Cant connect to the database")))
     (and
      (contains? params "datefrom")
-     (contains? params "dateto")) (syslog-check
-                                   (get-syslog
-                                    (params "datefrom")
-                                    (params "dateto")))
+     (contains? params "dateto")) (try
+                                    (syslog-check
+                                     (get-syslog
+                                      (params "datefrom")
+                                      (params "dateto")))
+                                    (catch Exception _
+                                      (error-handler-rep 503 "Cant connect to the database" req)))
     :else (error-handler-rep 400 "Invalid query" req)))
