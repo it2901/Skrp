@@ -1,89 +1,277 @@
 import React, { Component } from 'react'
-import styled, { css } from 'styled-components'
-import fetch from 'isomorphic-fetch'
-
-const Table = styled.table`
-margin-left:100px;
-border:1px solid #ccc;
-border-spacing:0;
-height:600px;
-overflow-y:scroll;
-display:block;
-position:relative;
-& > tr:nth-child(even) {
-    background-color:#f1f1f1;
-}
-`
-const Head = styled.th`
-font-weight:bold;
-padding: 8px 14px;
-`
-const Row = styled.tr`
-background-color:#fff;
-color:#333;
-border-bottom:1px solid #ddd;
-text-align:left;
-${props => props.head && css`
-    position:sticky;
-    top:0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-`}
-
-& > td{
-    width:100px;
-    border:none;
-    padding: 8px 14px;
-    transition: all .3s cubic-bezier(.25,.8,.25,1);
-}
-`
+import { Table, Button, Popup, Icon, Form } from 'semantic-ui-react'
+import _ from 'lodash'
+import Datetime from 'react-datetime'
+import 'moment/locale/nb'
 
 class Log extends Component {
   constructor (props) {
     super(props)
     this.props = props
-    this.state = { logElements: [] }
+    this.state = {
+      data: [],
+      column: null,
+      direction: null,
+      dateRange: false,
+      formDesc: '',
+      formDevIds: [],
+      formAdaptIds: [],
+      formDate: '',
+      formDateFrom: '',
+      formDateTo: ''
+    }
+    this.logHeaders = [
+      { key: 'system_log_id', text: 'Log id', value: 'system_log_id' },
+      { key: 'device_id', text: 'Device id', value: 'device_id' },
+      { key: 'adaption_id', text: 'Adaption id', value: 'adaption_id' },
+      { key: 'description', text: 'Description', value: 'description' },
+      { key: 'created', text: 'Date', value: 'created' }
+    ]
+    this.adaptionIds = [
+      { key: 1, text: 1, value: 1 },
+      { key: 2, text: 2, value: 2 },
+      { key: 3, text: 3, value: 3 },
+      { key: 4, text: 4, value: 4 }
+    ]
+    this.deviceIds = [
+      { key: 1, text: 1, value: 1 },
+      { key: 2, text: 2, value: 2 },
+      { key: 3, text: 3, value: 3 },
+      { key: 4, text: 4, value: 4 }
+    ]
+    this.queryParams = {
+      'date': 'formDate',
+      'description': 'formDesc',
+      'device_id': 'formDevIds',
+      'adaption_id': 'formAdaptIds',
+      'date_from': 'formDateFrom',
+      'date_to': 'formDateTo'
+    }
+  }
+
+  handleSort = clickedColumn => () => {
+    const { column, data, direction } = this.state
+
+    if (column !== clickedColumn) {
+      this.setState({
+        column: clickedColumn,
+        data: _.sortBy(data, [clickedColumn]),
+        direction: 'ascending'
+      })
+
+      return
+    }
+
+    this.setState({
+      data: data.reverse(),
+      direction: direction === 'ascending' ? 'descending' : 'ascending'
+    })
   }
   componentDidMount () {
     // Fetch logs from rest api
-    // or something
-    //
-    this.fetchLog()
+    this.fetch()
   }
-  fetchLog () {
-    fetch('http://localhost:8090/syslog')
-      .then(res => {
-        return res.json()
-      }).then(data => {
-        this.setState({ logElements: data })
-      })
+  fetch (query) {
+    // not using fetch api cause cypress sucks..
+    query = query || ''
+    // console.log(query)
+
+    let xhttp = new XMLHttpRequest({ mozSystem: true })
+    let self = this
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        // Setstate
+        self.setState({ data: JSON.parse(xhttp.responseText) })
+      } else if (this.readyState === 4 && this.status === 404) {
+        // no results
+        console.log()
+
+        self.setState({ data: [] })
+      }
+    }
+    xhttp.open('GET', 'http://localhost:8090/filtersyslog' + query, true)
+    xhttp.send()
   }
-  
+  filter () {
+    // validate form
+    let queryList = []
+    let q = Object.assign({}, this.queryParams)
+    let queryString = ''
+
+    if (this.state.dateRange) {
+      // remove date entry if range is selected
+      delete q['date']
+    } else {
+      // and vice versa
+      delete q['date_from']
+      delete q['date_to']
+    }
+    // filter and add to query array
+    for (let i in q) {
+      let a = this.state[q[i]]
+      if (a.length !== 0) {
+        // not empty value
+        if (i.startsWith('date')) {
+          // is date string
+          // format [] escapes characters
+          a = a.format('YYYY-MM-DD')
+        }
+        queryList.push({ [i]: a })
+      }
+    }
+    // build string
+    if (queryList.length !== 0) {
+      // list not empty
+      queryString += '?'
+      queryString += queryList.map((o) => Object.keys(o)[0] + '=' + o[Object.keys(o)[0]]).join('&')
+    }
+    // console.log(queryString)
+
+    // and then fetch
+    this.fetch(queryString)
+  }
+  toggleDateRange () {
+    this.setState({ dateRange: !this.state.dateRange })
+  }
+  onChange = e => this.setState({ [e.name]: e.value })
+
+  onDateToChange = (name, e) => {
+    if (e.isAfter(this.state.formDateFrom)) {
+      this.setState({ [name]: e })
+    }
+  }
+  onDateChange = (name, e) => {
+    // returns moment obj if valid date
+    if (typeof e === 'object') {
+      this.setState({ [name]: e })
+    }
+  }
+
   render () {
+    const { column, data, direction, dateRange, formDesc, formDate, formDateFrom, formDateTo } = this.state
     return (
-      <Table>
-        <tbody>
-        <Row head>
-          <Head>system_log_id</Head>
-          <Head>device_id</Head>
-          <Head>adaption_id</Head>
-          <Head>description</Head>
-          <Head>created</Head>
-        </Row>
-        </tbody>
+      <div style={{
+        marginLeft: '20vw',
+        paddingTop: '50px',
+        display: 'flex',
+        flexDirection: 'row'
+      }
+      }>
+        <Form>
+          <Form.Input
+            placeholder="Description"
+            icon='search'
+            iconPosition='left'
+            name="formDesc"
+            onChange={e => this.onChange(e.target)}
+            value={formDesc}
+          />
+          <Form.Dropdown
+            options={this.deviceIds}
+            placeholder="Device ids"
+            name="formDevIds"
+            onChange={(e, data) => this.onChange(data)}
+            fluid selection clearable multiple />
+          <Form.Dropdown
+            options={this.adaptionIds}
+            placeholder="Adaption ids"
+            name="formAdaptIds"
+            onChange={(e, data) => this.onChange(data)}
+            fluid selection clearable multiple />
+          <Form.Field>
+            <span style={{ textAlign: 'center' }}>Date
+              <Popup
+                content={dateRange ? 'Filter by single date' : 'Filter by date range'}
+                trigger={
+                  <Icon
+                    link
+                    style={{ marginLeft: '5px' }}
+                    name='arrows alternate horizontal'
+                    onClick={() => this.toggleDateRange()}
+                  />}
+              />
+            </span>
+          </Form.Field>
+          {
+            dateRange
+              ? <Form.Group grouped >
+                <Form.Field
+                  control={Datetime}
+                  label="From"
+                  dateFormat="YYYY-MM-DD"
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
+                  width={16}
+                  onChange={e => this.onDateChange('formDateFrom', e)}
+                  name="formDateFrom"
+                  value={formDateFrom}
+                />
+                <Form.Field
+                  control={Datetime}
+                  label="To"
+                  dateFormat="YYYY-MM-DD"
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
+                  width={16}
+                  onChange={e => this.onDateToChange('formDateTo', e)}
+                  name="formDateTo"
+                  value={formDateTo}
+                />
+              </Form.Group>
+              : <Form.Group widths={1}>
+                <Form.Field
+                  control={Datetime}
+                  dateFormat="YYYY-MM-DD"
+                  // timeFormat='HH:mm:ss'
+                  timeFormat={false}
+                  width={16}
+                  onChange={e => this.onDateChange('formDate', e)}
+                  name="formDate"
+                  value={formDate}
+                />
+              </Form.Group>
+          }
 
-        {this.state.logElements.map(o => {
-          return (
-            <Row key={o['created']}>
-              <td>{o['system_log_id']}</td>
-              <td>{o['device_id']}</td>
-              <td>{o['adaption_id']}</td>
-              <td>{o['description']}</td>
-              <td>{o['created']}</td>
-            </Row>
-          )
-        })}
+          <Button
+            type="submit"
+            onClick={() => this.filter()}
+            content="Filter"
+            primary fluid />
+        </Form>
+        <Table sortable celled collapsing style={{ margin: '0', marginLeft: '40px' }}>
+          <Table.Header>
+            <Table.Row>
+              {
+                this.logHeaders.map(o => {
+                  return (
+                    <Table.HeaderCell
+                      key={o['value']}
+                      sorted={column === o['value'] ? direction : null}
+                      onClick={this.handleSort(o['value'])}
+                    >
+                      {o['text']}
+                    </Table.HeaderCell>
+                  )
+                })
+              }
+            </Table.Row>
+          </Table.Header>
+          <Table.Body data-cy='children'>
+            {data.map(o => {
+              return (
+                <Table.Row key={o['created']}>
+                  <Table.Cell>{o['system_log_id']}</Table.Cell>
+                  <Table.Cell>{o['device_id']}</Table.Cell>
+                  <Table.Cell>{o['adaption_id']}</Table.Cell>
+                  <Table.Cell>{o['description']}</Table.Cell>
+                  <Table.Cell>{o['created']}</Table.Cell>
+                </Table.Row>
+              )
+            })}
+          </Table.Body>
+        </Table>
 
-      </Table>
+      </div >
     )
   }
 }

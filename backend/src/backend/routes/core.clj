@@ -16,10 +16,11 @@
 (ns backend.routes.core
   (:require [backend.routes.syslog :refer [syslog-handler]]
             [backend.routes.logadaption :refer [adaption-handler]]
-            [backend.routes.config :refer [conf-handler]]
+            [backend.routes.config :refer [config-handler]]
             [backend.routes.util :refer [index-handler
                                          dummy-data-handler
                                          error-handler-rep]]
+            [backend.routes.filteredsyslog :refer [filtered-syslog-handler]]
             [compojure.core :refer :all]
             [compojure.route :refer [not-found]]
             [ring.middleware.reload :refer [wrap-reload]]
@@ -31,7 +32,8 @@
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
-  (GET "/configure" request (wrap-json-response conf-handler))
+  (GET "/configure" request (wrap-json-response config-handler))
+  (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
   (not-found (wrap-json-response
               (error-handler-rep 404 "Could not find route"))))
 
