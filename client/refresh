@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+echo "$(date) - Started SKRP client, send SIGINT to end process (CTRL + C)"
+
+while :
+do
+    sleep 5
+    RESULT="$(curl -s $SKRP_URL)"
+    PROTOCOL="$(echo $RESULT | jq -r '.protocol')"
+    CURRENT_PROTOCOL="$(cat config.json | jq -r '.protocol')"
+
+    if [ $PROTOCOL != $CURRENT_PROTOCOL ]; then
+        echo "$(date) - Writing new config"
+        echo "$(date) - Restaring service based on new config."
+        # Here we should actually write new config
+        echo "$(date) - Service restarted"
+        # And here actually restart the service
+    else
+        echo "$(date) - PROTOCOL is still $PROTOCOL, ignoring."
+    fi
+done
