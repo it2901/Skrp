@@ -3,6 +3,7 @@ import NavBar from './components/navbar'
 import NodeGraph from './components/NodeGraph'
 import About from './components/about'
 import Log from './components/log'
+import Maps from './components/maps'
 import errorcomponent from './components/errorcomponent'
 import tweakInput from './components/tweakInput'
 import { Helmet } from 'react-helmet'
@@ -34,6 +35,7 @@ class App extends Component {
                 <Route path="/nodegraph" component={NodeGraph} />
                 <Route path="/about" component={About} />
                 <Route path="/log" component={Log} />
+                <Route path="/maps" component={Maps} />
                 <Route component={errorcomponent} />
               </Switch>
             </div>
