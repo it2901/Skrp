@@ -14,6 +14,11 @@ exports[`renders correctly 1`] = `
   <form
     className="ui form"
     onSubmit={[Function]}
+    style={
+      Object {
+        "right": 0,
+      }
+    }
   >
     <div
       className="field"
@@ -260,7 +265,8 @@ exports[`renders correctly 1`] = `
         Date
         <i
           aria-hidden="true"
-          className="arrows alternate horizontal link icon"
+          className="arrows alternate horizontal circular inverted link icon"
+          data-cy="Toggle"
           onBlur={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
@@ -283,15 +289,38 @@ exports[`renders correctly 1`] = `
         <div
           className="rdt"
         >
-          <input
-            className="form-control"
-            onChange={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            type="text"
-            value=""
-          />
+          <div>
+            <div
+              style={
+                Object {
+                  "position": "relative",
+                }
+              }
+            >
+              <div
+                className="field form-control"
+              >
+                <div
+                  className="ui icon input"
+                  data-cy="formDate"
+                >
+                  <input
+                    onChange={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    type="text"
+                    value=""
+                  />
+                  <i
+                    aria-hidden="true"
+                    className="link icon"
+                    onClick={[Function]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             className="rdtPicker"
           >
@@ -490,14 +519,14 @@ exports[`renders correctly 1`] = `
                       10
                     </td>
                     <td
-                      className="rdtDay rdtToday"
+                      className="rdtDay"
                       data-value={11}
                       onClick={[Function]}
                     >
                       11
                     </td>
                     <td
-                      className="rdtDay"
+                      className="rdtDay rdtToday"
                       data-value={12}
                       onClick={[Function]}
                     >
@@ -678,13 +707,28 @@ exports[`renders correctly 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="ui fluid primary button"
-      onClick={[Function]}
-      type="submit"
+    <div
+      className="field"
     >
-      Filter
-    </button>
+      <button
+        className="ui fluid primary button"
+        onClick={[Function]}
+        type="submit"
+      >
+        Filter
+      </button>
+    </div>
+    <div
+      className="field"
+    >
+      <button
+        className="ui fluid negative button"
+        onClick={[Function]}
+        type="reset"
+      >
+        Reset
+      </button>
+    </div>
   </form>
   <table
     className="ui celled collapsing sortable table"
