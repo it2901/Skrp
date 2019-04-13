@@ -28,11 +28,11 @@
           t2 (run-mock "/configure")
           e1 {:status 503
               :headers {"Content-Type" "application/json"}
-              :body {"Error" "Can't connect to the database"}}
+              :body {"Error" [{"type" "org.postgresql.util.PSQLException", "message" "Connection to localhost:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.", "at" ["org.postgresql.core.v3.ConnectionFactoryImpl" "openConnectionImpl" "ConnectionFactoryImpl.java" 280]} {"type" "java.net.ConnectException", "message" "Connection refused (Connection refused)", "at" ["java.net.PlainSocketImpl" "socketConnect" "PlainSocketImpl.java" -2]}]}}
           e2 {:status 200
               :headers {"Content-Type" "application/json"}
               :body {"test" 1}}]
-      (is (= e1 t1))
+      (is (= (keys (:body e1)) (keys (:body t1))))
       (is (= (backend.routes.config/config-check []) {:status 404, :headers {"Content-Type" "application/json"}, :body {"Error" "No query results found"}}))
       (is (= (backend.routes.config/config-check "test") {:status 200, :headers {"Content-Type" "application/json"}, :body "test"}))
-      (is (= (e2 :body) (t2 :body))))))
+      (is (= (keys (:body e2)) (keys (:body t2)))))))

@@ -16,14 +16,13 @@
 (ns backend.routes.syslog
   "Functions for handling the /syslog endpoint"
   (:require [backend.logging :refer [get-syslog]]
-            [backend.routes.util :refer [error-handler-rep]]))
+            [backend.routes.util :refer [error-handler-rep, run-db]]))
 
 (defn syslog-check
   "Returns correct HTTP response according to system log database
   query result"
   {:arglist '([query-result])}
   [result]
-  ;; TODO: Find a way to handle db connection error
   (let [[status body] (if (= [] result)
                         [404 {"Error" "No query results found"}]
                         [200 result])]
@@ -45,12 +44,9 @@
   Date has to be ISO formatted: yyyy-mm-dd"
   [{params :query-params :as req}]
   (cond
-    (empty? params) (syslog-check (get-syslog))
-    (contains? params "date") (syslog-check (get-syslog (params "date")))
+    (empty? params) (run-db (syslog-check (get-syslog)))
+    (contains? params "date") (run-db (syslog-check (get-syslog (params "date"))))
     (and
      (contains? params "datefrom")
-     (contains? params "dateto")) (syslog-check
-                                   (get-syslog
-                                    (params "datefrom")
-                                    (params "dateto")))
-    :else (error-handler-rep 400 "Invalid query" req)))
+     (contains? params "dateto")) (run-db (syslog-check (get-syslog (params "datefrom") (params "dateto"))))
+    :else (error-handler-rep 400 "Invalid query")))
