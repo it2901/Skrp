@@ -35,7 +35,7 @@
   (GET "/configure" request (wrap-json-response config-handler))
   (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
   (not-found (wrap-json-response
-              (error-handler-rep 404 "Could not find route"))))
+              (constantly (error-handler-rep 404 "Could not find route")))))
 
 (def reloadable-app
   (wrap-reload #'app-routes))

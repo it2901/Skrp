@@ -34,18 +34,13 @@
 
 (defn error-handler-rep
   "HTTP error response template function"
-  ([status msg]
-   (fn [_]
-     {:status  status
-      :headers {"Content-Type" "application/json"}
-      :body    {"Error" msg}}))
-  ([status msg req]
-   {:status  status
-    :headers {"Content-Type" "application/json"}
-    :body    {"Error" msg}}))
+  [status msg]
+  {:status  status
+   :headers {"Content-Type" "application/json"}
+   :body    {"Error" msg}})
 
 (defmacro run-db
   "Runs db, however if an exception is thrown it it will be returned."
   ([db]
    `(try ~db
-         (catch Exception e# (error-handler-rep 503 (:via (Throwable->map e#)) "TODO: Remove this param")))))
+         (catch Exception e# (error-handler-rep 503 (:via (Throwable->map e#)))))))

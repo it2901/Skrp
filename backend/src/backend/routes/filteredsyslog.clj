@@ -76,4 +76,4 @@
   (cond
     (empty? params) (run-db (filtered-syslog-check (get-syslog)))
     (params-check? params) (run-db (filtered-syslog-check (get-filtered-syslog (create-filter-map params))))
-    :else (error-handler-rep 400 "Invalid query" req)))
+    :else (error-handler-rep 400 "Invalid query")))

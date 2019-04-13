@@ -42,7 +42,7 @@
            (contains? params "adaption_id")
            (contains? params "device_id")
            (contains? params "description"))
-    (error-handler-rep 400 "Invalid query" req)
+    (error-handler-rep 400 "Invalid query")
     (let [adaption_id (Integer/parseInt (params "adaption_id"))
           device_id (Integer/parseInt (params "device_id"))
           description (params "description")]
@@ -62,6 +62,6 @@
                                             :body (insert-syslog {:device_id device_id
                                                                   :adaption_id adaption_id
                                                                   :description description})}
-          :else (error-handler-rep 404 "Invalid query" req))
+          :else (error-handler-rep 404 "Invalid query"))
         (catch Exception _
-          (error-handler-rep 503 "Cant connect to database." req))))))
+          (error-handler-rep 503 "Cant connect to database."))))))

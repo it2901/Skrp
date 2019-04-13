@@ -49,4 +49,4 @@
     (and
      (contains? params "datefrom")
      (contains? params "dateto")) (run-db (syslog-check (get-syslog (params "datefrom") (params "dateto"))))
-    :else (error-handler-rep 400 "Invalid query" req)))
+    :else (error-handler-rep 400 "Invalid query")))
