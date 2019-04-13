@@ -64,4 +64,4 @@
                                                                   :description description})}
           :else (error-handler-rep 404 "Invalid query" req))
         (catch Exception _
-          (error-handler-rep 503 "Cant connect to database:P" req))))))
+          (error-handler-rep 503 "Cant connect to database." req))))))

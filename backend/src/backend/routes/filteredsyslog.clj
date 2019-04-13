@@ -17,7 +17,7 @@
   "Functions for handling the /filtersyslog endpoint"
   (:require [backend.logging :refer [get-syslog]]
             [backend.filterlog :refer [get-filtered-syslog]]
-            [backend.routes.util :refer [error-handler-rep]]))
+            [backend.routes.util :refer [error-handler-rep, run-db]]))
 
 (defn filtered-syslog-check
   "Returns correct HTTP response according to system log database query result"
@@ -74,12 +74,6 @@
   Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
   [{params :query-params :as req}]
   (cond
-    (empty? params) (try
-                      (filtered-syslog-check (get-syslog))
-                      (catch Exception _
-                        (error-handler-rep 503 "Cant connect to the database" req)))
-    (params-check? params) (try
-                             (filtered-syslog-check (get-filtered-syslog (create-filter-map params)))
-                             (catch Exception _
-                               (error-handler-rep 503 "Cant connect to the database" req)))
+    (empty? params) (run-db (filtered-syslog-check (get-syslog)))
+    (params-check? params) (run-db (filtered-syslog-check (get-filtered-syslog (create-filter-map params))))
     :else (error-handler-rep 400 "Invalid query" req)))

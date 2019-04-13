@@ -35,5 +35,5 @@
   Action: Inserts configuration in database if it fits the schema."
   [{params :query-params :as req}]
   (if (empty? params)
-    (run-db (config-check (read-config)) (error-handler-rep 503 "Can't read from the database" req))
-    (run-db (write-config params) (error-handler-rep 503 "Can't connect to the database" req))))
+    (run-db (config-check (read-config)))
+    (run-db (write-config params))))

@@ -16,7 +16,7 @@
 (ns backend.routes.syslog
   "Functions for handling the /syslog endpoint"
   (:require [backend.logging :refer [get-syslog]]
-            [backend.routes.util :refer [error-handler-rep]]))
+            [backend.routes.util :refer [error-handler-rep, run-db]]))
 
 (defn syslog-check
   "Returns correct HTTP response according to system log database
@@ -44,21 +44,9 @@
   Date has to be ISO formatted: yyyy-mm-dd"
   [{params :query-params :as req}]
   (cond
-    (empty? params) (try
-                      (syslog-check (get-syslog))
-                      (catch Exception _
-                        (error-handler-rep 503 "Cant connect to the database" req)))
-    (contains? params "date") (try
-                                (syslog-check (get-syslog (params "date")))
-                                (catch Exception _
-                                  (error-handler-rep 503 "Cant connect to the database")))
+    (empty? params) (run-db (syslog-check (get-syslog)))
+    (contains? params "date") (run-db (syslog-check (get-syslog (params "date"))))
     (and
      (contains? params "datefrom")
-     (contains? params "dateto")) (try
-                                    (syslog-check
-                                     (get-syslog
-                                      (params "datefrom")
-                                      (params "dateto")))
-                                    (catch Exception _
-                                      (error-handler-rep 503 "Cant connect to the database" req)))
+     (contains? params "dateto")) (run-db (syslog-check (get-syslog (params "datefrom") (params "dateto"))))
     :else (error-handler-rep 400 "Invalid query" req)))
