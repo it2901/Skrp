@@ -121,15 +121,14 @@
                         "Latitude": {
                           "type": "number",
                           "description": "North/South position in degrees relative to equator",
-                          "minimum": -90,
-                          "maximum": 90
+                          "minimum": 57.6,
+                          "maximum": 58
                         },
                         "Longitude": {
                           "type": "number",
                           "description": "East/West position in degrees relative to Greenwich",
-                          "minimum": -180,
-                          "maximum": 180,
-                          "exclusiveMaximum": true
+                          "minimum": 13.4,
+                          "maximum": 13.5
                         },
                         "AboveSeaLevel": {
                           "type": "integer",
@@ -292,8 +291,8 @@
           "links": {
               "type": "array",
               "title": "Links",
-              "minItems":40,
-              "maxItems":90,
+              "minItems":2,
+              "maxItems":2,
               "uniqueItems": true,
               "items": {
                   "type": "object",
