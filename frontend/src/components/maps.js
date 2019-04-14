@@ -11,51 +11,14 @@ export default class Maps extends React.Component {
         lng: 13.5,
         zoom: 18,
         nodes:{
-          "123.123.123.15":{
-            lat: [52.81956400463932],
-            lng: [13.5],
-            neighbours: 0},
-          "123.123.123.14":{
-            lat: [52.9],
-            lng: [13.47],
-            neighbours: 0}
+          "123.123.123.11": {
+          lat: 52.3,
+          lng: 13.5},
+          "123.123.123.12": {
+            lat: 52.2,
+            lng: 13.4}
         }
-    }
-  }
-    async setInitalState () {
-      let stateToBe= await fetch("http://localhost:3001/mapnod").then(response => {
-        return response.json()
-      }).catch(err => console.error(err))
-  
-      let nodes = stateToBe["nodes"]
-      let links = stateToBe["links"]
-      nodes.map(node =>{
-        console.table(node["id"],node["Location"]["Position"]["Latitude"],node["Location"]["Position"]["Longitude"])
-        this.setState(
-          {
-            nodes:{
-            [node["id"]]:
-            {
-            lat:[node["Location"]["Position"]["Latitude"]],
-            lng:[node["Location"]["Position"]["Longitude"]],
-            neighbours:0,
-            time: [node["Location"]["Time"]],
-          }}
-        })
-      })
-      
-       links.map(link => {
-         let x = link["source"]
-         console.log(x)
-
-         if (link["source"] in this.state){
-           //this.state["nodes"][link["source"]]["neighbours"] += 1
-         }
-       })
-
-
-    }
-   
+    }}
 
     updateDimensions() {
         const height = window.innerWidth >= 992 ? window.innerHeight : 400
@@ -64,7 +27,6 @@ export default class Maps extends React.Component {
     
       componentWillMount() {
         this.updateDimensions()
-        //this.setInitalState()
       }
 
     render() {
@@ -73,19 +35,28 @@ export default class Maps extends React.Component {
             [52.3, 13.4],
             [52.2, 13.3]
         ];
-        let nodes = Object.keys(this.state.nodes).map(key =>{
+        let nodes = Object.keys(this.state.nodes).map(key => {
           let node = this.state.nodes[key]
           let x = node["lng"]
           let y = node["lat"]
-
-          console.table([node["lat"],node["lng"],key,node["neighbours"]])
+          console.log(node["lat"])
           return (
+
             <Marker position={[y,x]}>
-                <Popup>{key}<b> lok </b></Popup>
-                <Circle name={key} center={[y,x]} radius={20} />
+                <Popup>{key}<br />Easily customizable.</Popup>
+                <Circle name={key}center={[y,x]} radius={20} />
+            </Marker>)
+        })
+
+        /*let nodes = this.state.nodes.map(node =>{
+            return (
+
+            <Marker position={[node[1][0],node[1][1]]}>
+                <Popup>{node[0]}<br />Easily customizable.</Popup>
+                <Circle name={node[0]}center={[node[1][0],node[1][1]]} radius={20} />
             </Marker>
             )
-        })
+        })*/
         const position = [this.state.lat, this.state.lng]
         return (
             <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
@@ -101,11 +72,9 @@ export default class Maps extends React.Component {
       }}
     />
     {nodes}
-   
     <Polyline color="lime" positions={latlngs}/>
   </FeatureGroup>
             </Map>
         )
         }
     }
-        
