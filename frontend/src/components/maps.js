@@ -47,16 +47,7 @@ export default class Maps extends React.Component {
                 <Circle name={key}center={[y,x]} radius={20} />
             </Marker>)
         })
-
-        /*let nodes = this.state.nodes.map(node =>{
-            return (
-
-            <Marker position={[node[1][0],node[1][1]]}>
-                <Popup>{node[0]}<br />Easily customizable.</Popup>
-                <Circle name={node[0]}center={[node[1][0],node[1][1]]} radius={20} />
-            </Marker>
-            )
-        })*/
+        
         const position = [this.state.lat, this.state.lng]
         return (
             <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >

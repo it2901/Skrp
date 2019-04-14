@@ -269,6 +269,53 @@ class Log extends Component {
     // also fetch new ok
     this.fetch()
   }
+  checkIfCanFilter=() => {
+    // timeout cause state is fucked idk
+    setTimeout(() => {
+      this.setState({ canFilter: !(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)) })
+      // console.log(!(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)))
+    }, 1)
+  }
+  renderDateInput = (props, name) => {
+    const clear = () => {
+      // props.onChange({ target: { value: '' } })
+      this.setState({ [name]: '' })
+      this.checkIfCanFilter()
+    }
+
+    return (
+      <div style={{ position: 'relative' }}>
+        { !this.state.canFilter && !this.state[name] && <Popup
+          content='Either fill in both date fields, or none'
+          trigger={
+            <Icon color='blue' name='info circle' size="large" style={{ position: 'absolute', 'left': -30, 'top': 7 }}/>
+          }
+
+        />}
+        <Form.Input {...props}
+          data-cy={name}
+          error={!this.state.canFilter && !this.state[name] }
+          icon={
+            <Icon link name={this.state[name] ? 'close' : undefined} onClick={clear} />
+          }
+        />
+      </div>
+    )
+  }
+  resetForm = () => {
+    // resets form
+    this.setState({
+      formAdaptIds: [],
+      formDate: '',
+      formDateFrom: '',
+      formDateTo: '',
+      formDesc: '',
+      formDevIds: [],
+      canFilter: true
+    })
+    // also fetch new ok
+    this.fetch()
+  }
 
   render () {
     const { column, data, direction,

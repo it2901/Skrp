@@ -709,6 +709,7 @@ exports[`renders correctly 1`] = `
     </div>
     <div
       className="field"
+<<<<<<< HEAD
     >
       <button
         className="ui fluid primary button"
@@ -721,6 +722,21 @@ exports[`renders correctly 1`] = `
     <div
       className="field"
       <button
+=======
+    >
+      <button
+        className="ui fluid primary button"
+        onClick={[Function]}
+        type="submit"
+      >
+        Filter
+      </button>
+    </div>
+    <div
+      className="field"
+    >
+      <button
+>>>>>>> 7d59f28c4a84123749c26497042a63fc600748bb
         className="ui fluid negative button"
         onClick={[Function]}
         type="reset"
