@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup,  FeatureGroup, Circle, Polyline  } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
   
-export default class Maps extends React.Component {
+export default class Maps extends Component {
     constructor() {
         super()
         this.state = {
             heigth: "1080px",
-        lat: 52.3,
-        lng: 13.5,
-        zoom: 18,
+        lat: 52.5,
+        lng: 13.3,
+        zoom: 12,
         links:[{
             cost:123,
             target:"123.123.123.11",
@@ -29,9 +29,10 @@ export default class Maps extends React.Component {
         }).catch(err => console.error(err))
         let nodes = stateToBe["nodes"]
         let links = stateToBe["links"]
-        let keys = nodes.map(node => {return node["id"]})
+
+     
         this.setState({
-            ["nodes"]:nodes.map(node =>{
+            nodes:nodes.map(node =>{
                 return {[node["id"]] :{
                   pos:[node["Location"]["Position"]["Latitude"],node["Location"]["Position"]["Longitude"]],
                   neighbours:0,
@@ -55,16 +56,19 @@ export default class Maps extends React.Component {
         })
       }
 
-      addNeighbour(id){}
+      addNeighbour(id){
+
+      }
 
 
       findLatLng(id){
         let nodes = this.state.nodes
         let pos = nodes.map(node => {
             let key = Object.keys(node)[0]
-            if (id == key){
+            if (id === key){
                  return node[key]["pos"] 
-            } 
+            }
+
         });
         return pos
       }
@@ -80,11 +84,6 @@ export default class Maps extends React.Component {
       }
 
     render() {
-        const latlngs = [
-            [52.3, 13.5],
-            [52.3, 13.4],
-            [52.2, 13.3]
-        ];
   
         let nodes = this.state.nodes.map(obj => {
             let key = Object.keys(obj)
@@ -92,27 +91,30 @@ export default class Maps extends React.Component {
           let pos = node["pos"]
           return (
 
-            <Marker position={pos}>
+            <Marker key={pos} position={pos}>
                 <Popup>{key}<br />Easily customizable.</Popup>
                 <Circle name={key}center={pos} radius={200} />
             </Marker>)
         })
-
+        console.log(this.state.nodes)
         let links = this.state.links.map(link => {
-            let source = this.findLatLng(link["source"])
-            let target = this.findLatLng(link["target"])
+            let src = link["source"]
+            let trg = link["target"]
+            let source = this.findLatLng(src)
+            let target = this.findLatLng(trg)
             let cost = link["cost"]
             let colors = ["green","lime","GreenYellow ","yellow","orange","OrangeRed ","red","Crimson","DarkRed ","black"]
             let targeter = Math.round(cost/1000000)
             //console.table([this.findLatLng(source),this.findLatLng(target)])
             //Only works for basecase (aka no fetch from mocker 
             //let pos = [this.findLatLng(source)[1],this.findLatLng(target)[0]]
-            let cleanedSource = source.filter((y) => { if (y != undefined) {return y}})
-            let cleanedTarget = target.filter((y) => { if (y != undefined) {return y}})
+            let cleanedSource = source.filter(y =>  y !== undefined )
+            let cleanedTarget = target.filter(y =>  y !== undefined )
             let pos = [cleanedSource,cleanedTarget]
-            console.log(pos)
             return (
-                <Polyline color={colors[targeter]} positions={pos} />
+                <Polyline key={cost}color={colors[targeter]} positions={pos}>
+                <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
+                </Polyline>
             )
         })
         
