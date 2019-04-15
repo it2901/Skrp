@@ -291,8 +291,8 @@
           "links": {
               "type": "array",
               "title": "Links",
-              "minItems":2,
-              "maxItems":2,
+              "minItems":45,
+              "maxItems":90,
               "uniqueItems": true,
               "items": {
                   "type": "object",
@@ -418,7 +418,8 @@
                       },
                       "cost": {
                           "type": "number",
-                          "minimum": 999999
+                          "minimum": 1000000,
+                          "maximum": 10000000
                       },
                       "cost_text": {
                           "type": "string"
