@@ -24,6 +24,7 @@
    :headers {"Content-Type" "text/html"}
    :body    "<h1>Hello World!</h1>"})
 
+; TODO: Remove if it is no longer used
 (defn dummy-data-handler
   "HTTP response for dummy networkgraph json data
   on the /networkgraph endpoint"
@@ -40,7 +41,7 @@
    :body    {"Error" msg}})
 
 (defmacro run-db
-  "Runs db, however if an exception is thrown it it will be returned."
+  "Executes a database call, however if an exception is thrown it will be returned."
   ([db]
    `(try ~db
          (catch Exception e# (error-handler-rep 503 (:via (Throwable->map e#)))))))

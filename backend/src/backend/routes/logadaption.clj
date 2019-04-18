@@ -36,7 +36,7 @@
     false))
 
 (defn adaption-handler
-  "POST request to log adaption"
+  "Inserts an adaption into the database"
   [{params :query-params :as req}]
   (if-not (and
            (contains? params "adaption_id")
