@@ -96,7 +96,6 @@ export default class Maps extends Component {
                 <Circle name={key}center={pos} radius={200} />
             </Marker>)
         })
-        console.log(this.state.nodes)
         let links = this.state.links.map(link => {
             let src = link["source"]
             let trg = link["target"]
