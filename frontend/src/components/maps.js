@@ -15,34 +15,32 @@ export default class Maps extends Component {
             target:"123.123.123.11",
             source:"123.123.123.12"
         }],
-        nodes:
-          [{"123.123.123.11": {
-          pos: [52.3,13.5]}},
-          {"123.123.123.12": {
-            pos:[52.2,13.4]}}
-          ]
+        nodes:{
+          "123.123.123.11" : [52.3,13.5],
+          "123.123.123.12" : [52.2,13.4]
+        }
     }}
+
 
     async setInitalState () {
         let stateToBe= await fetch("http://localhost:3001/mapnod").then(response => {
           return response.json()
         }).catch(err => console.error(err))
-        let nodes = stateToBe["nodes"]
+        let nodes = stateToBe["nodes"].map(node => {return node["id"]})
         let links = stateToBe["links"]
-
-     
-        this.setState({
-            nodes:nodes.map(node =>{
-                return {[node["id"]] :{
-                  pos:[node["Location"]["Position"]["Latitude"],node["Location"]["Position"]["Longitude"]],
-                  neighbours:0,
-                  time: node["Location"]["Time"]
-                }}
-
-            })
-        
+        let locs = stateToBe["Locations"].map(l => {
+          let pos = l["Location"]["Position"]
+          let lng = pos["Longitude"] 
+          let lat = pos["Latitude"]
+          return [lat,lng]
         })
-        
+        let x = {}
+        for (let i = 0; i < 51; i++) {
+          x[nodes[i]] = locs[i]
+        }
+        this.setState({
+            nodes:x
+        })
        this.setState({
             links:links.map(link =>{
                 return{
@@ -62,15 +60,9 @@ export default class Maps extends Component {
 
 
       findLatLng(id){
-        let nodes = this.state.nodes
-        let pos = nodes.map(node => {
-            let key = Object.keys(node)[0]
-            if (id === key){
-                 return node[key]["pos"] 
-            }
-
-        });
-        return pos
+        if (id in this.state.nodes){
+          return this.state.nodes[id]
+        }
       }
 
     updateDimensions() {
@@ -84,39 +76,34 @@ export default class Maps extends Component {
       }
 
     render() {
-  
-        let nodes = this.state.nodes.map(obj => {
-            let key = Object.keys(obj)
-          let node = obj[key]
-          let pos = node["pos"]
-          return (
 
-            <Marker key={pos} position={pos}>
+      let nodes = Object.keys(this.state.nodes).map(key => {
+        let pos = this.state.nodes[key]
+        return (
+
+          <Marker key={pos} position={pos}>
                 <Popup>{key}<br />Easily customizable.</Popup>
                 <Circle name={key}center={pos} radius={200} />
             </Marker>)
-        })
+
+      })
+
         let links = this.state.links.map(link => {
             let src = link["source"]
             let trg = link["target"]
             let source = this.findLatLng(src)
             let target = this.findLatLng(trg)
+            console.log(source,target)
             let cost = link["cost"]
             let colors = ["green","lime","GreenYellow ","yellow","orange","OrangeRed ","red","Crimson","DarkRed ","black"]
             let targeter = Math.round(cost/1000000)
-            //console.table([this.findLatLng(source),this.findLatLng(target)])
-            //Only works for basecase (aka no fetch from mocker 
-            //let pos = [this.findLatLng(source)[1],this.findLatLng(target)[0]]
-            let cleanedSource = source.filter(y =>  y !== undefined )
-            let cleanedTarget = target.filter(y =>  y !== undefined )
-            let pos = [cleanedSource,cleanedTarget]
+            let pos = [source,target]
             return (
                 <Polyline key={cost}color={colors[targeter]} positions={pos}>
                 <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
                 </Polyline>
             )
         })
-        
         const position = [this.state.lat, this.state.lng]
         return (
             <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
@@ -133,6 +120,7 @@ export default class Maps extends Component {
     />
     {nodes}
     {links}
+    
   </FeatureGroup>
             </Map>
         )
