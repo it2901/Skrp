@@ -526,7 +526,7 @@ exports[`renders correctly 1`] = `
                       11
                     </td>
                     <td
-                      className="rdtDay rdtToday"
+                      className="rdtDay"
                       data-value={12}
                       onClick={[Function]}
                     >
@@ -584,7 +584,7 @@ exports[`renders correctly 1`] = `
                       19
                     </td>
                     <td
-                      className="rdtDay"
+                      className="rdtDay rdtToday"
                       data-value={20}
                       onClick={[Function]}
                     >
@@ -709,20 +709,6 @@ exports[`renders correctly 1`] = `
     </div>
     <div
       className="field"
-<<<<<<< HEAD
-    >
-      <button
-        className="ui fluid primary button"
-        onClick={[Function]}
-        type="submit"
-      >
-        Filter
-      </button>
-    </div>
-    <div
-      className="field"
-      <button
-=======
     >
       <button
         className="ui fluid primary button"
@@ -736,7 +722,6 @@ exports[`renders correctly 1`] = `
       className="field"
     >
       <button
->>>>>>> 7d59f28c4a84123749c26497042a63fc600748bb
         className="ui fluid negative button"
         onClick={[Function]}
         type="reset"
@@ -749,6 +734,15 @@ exports[`renders correctly 1`] = `
     className="ui celled collapsing sortable table"
     style={
       Object {
+        "margin": "0",
+        "marginLeft": "40px",
+      }
+    }
+  >
+    <thead
+      className=""
+    >
+      <tr
         className=""
       >
         <th

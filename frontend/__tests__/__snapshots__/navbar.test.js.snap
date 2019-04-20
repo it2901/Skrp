@@ -110,6 +110,17 @@ exports[`renders correctly 1`] = `
                 About
               </a>
             </li>
+            <li
+              className="menu-item"
+            >
+              <a
+                aria-current={null}
+                href="#/maps"
+                onClick={[Function]}
+              >
+                Map
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
