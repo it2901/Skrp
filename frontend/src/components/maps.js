@@ -16,8 +16,8 @@ export default class Maps extends Component {
             source:"123.123.123.12"
         }],
         nodes:{
-          "123.123.123.11" : [52.3,13.5],
-          "123.123.123.12" : [52.2,13.4]
+          "123.123.123.11" : {pos:[52.3,13.5], neighbours:[]},
+          "123.123.123.12" : {pos:[52.2,13.4], neighbours:[]}
         }
     }}
 
@@ -36,7 +36,7 @@ export default class Maps extends Component {
         })
         let x = {}
         for (let i = 0; i < 51; i++) {
-          x[nodes[i]] = locs[i]
+          x[nodes[i]] = {pos:locs[i],neighbours:[]}
         }
         this.setState({
             nodes:x
@@ -52,16 +52,30 @@ export default class Maps extends Component {
 
             })
         })
+        this.addNeighbours()
       }
 
-      addNeighbour(id){
+      addNeighbours(){
+        const newState = this.state
+        let links = this.state.links
+        let nodes = this.state.nodes
+        links.forEach(link => {
+          let src = link["source"]
+          let trg = link["target"]
+          nodes[src]["neighbours"].push(trg)
+          nodes[trg]["neighbours"].push(src)
+        })
+        newState.nodes = nodes
+        console.log(newState)
+        this.setState(newState)
+        
 
       }
 
 
       findLatLng(id){
         if (id in this.state.nodes){
-          return this.state.nodes[id]
+          return this.state.nodes[id]["pos"]
         }
       }
 
@@ -73,16 +87,20 @@ export default class Maps extends Component {
       componentWillMount() {
         this.updateDimensions()
         this.setInitalState()
+        
       }
 
-    render() {
 
+      
+
+    render() {
       let nodes = Object.keys(this.state.nodes).map(key => {
-        let pos = this.state.nodes[key]
+        let pos = this.state.nodes[key]["pos"]
+        let neighbours = this.state.nodes[key]["neighbours"]
         return (
 
           <Marker key={pos} position={pos}>
-                <Popup>{key}<br />Easily customizable.</Popup>
+                <Popup>{key}<br />Neighbours: {neighbours}.</Popup>
                 <Circle name={key}center={pos} radius={200} />
             </Marker>)
 
@@ -93,7 +111,6 @@ export default class Maps extends Component {
             let trg = link["target"]
             let source = this.findLatLng(src)
             let target = this.findLatLng(trg)
-            console.log(source,target)
             let cost = link["cost"]
             let colors = ["green","lime","GreenYellow ","yellow","orange","OrangeRed ","red","Crimson","DarkRed ","black"]
             let targeter = Math.round(cost/1000000)
