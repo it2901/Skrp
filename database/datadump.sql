@@ -31,8 +31,8 @@ COPY public.device (device_id) FROM stdin;
 --
 
 COPY public.config (config_id, device_id, config, created) FROM stdin;
-1	1	{"id": 1, "data": "aaa"}	2019-04-12 07:39:11.230053+00
-2	2	{"id": 3, "data": "aaeouaoeuaa"}	2019-04-12 07:39:21.996719+00
+1	1	{"param1": 20, "param2": 40, "param3": 200}	2019-04-12 07:39:11.230053+00
+2	2	{"param1": 18, "param2": 70, "param3": 200}	2019-04-12 07:39:21.996719+00
 \.
 
 

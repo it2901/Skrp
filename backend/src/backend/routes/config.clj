@@ -15,7 +15,7 @@
 
 (ns backend.routes.config
   (:require [backend.configuration :refer [write-config, read-config]]
-            [backend.routes.util :refer [error-handler-rep]]))
+            [backend.routes.util :refer [error-handler-rep, run-db]]))
 
 (defn config-check
   "Returns correct HTTP response according to configuration result"
@@ -35,12 +35,5 @@
   Action: Inserts configuration in database if it fits the schema."
   [{params :query-params :as req}]
   (if (empty? params)
-    (try
-      (config-check (read-config))
-      (catch Exception _
-        (error-handler-rep 503 "Can't read from the database" req)))
-    (try
-      (write-config params)
-      (catch Exception _
-        (error-handler-rep 503 "Can't connect to the database" req)))))
-
+    (run-db (config-check (read-config)))
+    (run-db (write-config params))))
