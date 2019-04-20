@@ -6,6 +6,7 @@ export default class Maps extends Component {
     constructor() {
         super()
         this.state = {
+          liveUpdate: false,
             heigth: "1080px",
         lat: 52.5,
         lng: 13.3,
@@ -66,12 +67,10 @@ export default class Maps extends Component {
           nodes[trg]["neighbours"].push(src)
         })
         newState.nodes = nodes
-        console.log(newState)
         this.setState(newState)
         
 
       }
-
 
       findLatLng(id){
         if (id in this.state.nodes){
@@ -83,10 +82,22 @@ export default class Maps extends Component {
         const height = window.innerWidth >= 992 ? window.innerHeight : 400
         this.setState({ height: height })
       }
+
+      componentDidMount(){
+        if (this.state.liveUpdate){
+        setInterval(() => {
+          this.setInitalState()
+          
+        }, 5000);
+      }
+      else{
+        this.setInitalState()
+      }
+
+      }
     
       componentWillMount() {
         this.updateDimensions()
-        this.setInitalState()
         
       }
 
