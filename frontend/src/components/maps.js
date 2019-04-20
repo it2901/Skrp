@@ -100,7 +100,7 @@ export default class Maps extends Component {
         return (
 
           <Marker key={pos} position={pos}>
-                <Popup>{key}<br />Neighbours: {neighbours}.</Popup>
+                <Popup>Name: {key}<br />Neighbours: {neighbours}<br /> Amount of neighbours: {neighbours.length}.</Popup>
                 <Circle name={key}center={pos} radius={200} />
             </Marker>)
 
