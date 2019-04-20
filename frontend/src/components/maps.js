@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup,  FeatureGroup, Circle, Polyline  } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
+import Control from 'react-leaflet-control';
+
   
 export default class Maps extends Component {
     constructor() {
         super()
         this.state = {
+          updaters: [],
           liveUpdate: false,
+          liveUpdater: 0,
             heigth: "1080px",
         lat: 52.5,
         lng: 13.3,
@@ -22,6 +26,26 @@ export default class Maps extends Component {
         }
     }}
 
+    change () {
+      console.log("Change")
+      let liveUpdater = this.state.liveUpdater
+        if (this.state.liveUpdate){
+          console.log("Should start")
+            liveUpdater = setInterval(() => {
+            this.setInitalState()
+          }, 5000);
+          console.log(liveUpdater)
+         this.setState({
+           liveUpdater:liveUpdater
+         })
+        }
+        else{
+          console.log("should stop")
+          clearInterval(this.state.liveUpdater)
+
+        }
+        console.log(this.state.liveUpdater)
+    }
 
     async setInitalState () {
         let stateToBe= await fetch("http://localhost:3001/mapnod").then(response => {
@@ -84,17 +108,12 @@ export default class Maps extends Component {
       }
 
       componentDidMount(){
-        if (this.state.liveUpdate){
-        setInterval(() => {
-          this.setInitalState()
-          
-        }, 5000);
-      }
-      else{
+        this.change()
+        console.log("Component did Mount")
+        if (!this.state.liveUpdate){
         this.setInitalState()
-      }
-
-      }
+    }
+  } 
     
       componentWillMount() {
         this.updateDimensions()
@@ -135,6 +154,7 @@ export default class Maps extends Component {
         const position = [this.state.lat, this.state.lng]
         return (
             <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+            <div>{this.state.liveUpdate} </div>
             <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -148,7 +168,22 @@ export default class Maps extends Component {
     />
     {nodes}
     {links}
-    
+    <Control position="topleft" >
+        <button 
+          onClick={ () => 
+            {
+              this.setState(prevState => ({
+            liveUpdate: !prevState.liveUpdate,
+
+          }))
+          this.change()
+        }
+        
+        }
+        >
+          Toogle Live Update
+        </button>
+      </Control>
   </FeatureGroup>
             </Map>
         )
