@@ -9,7 +9,7 @@ export default class Maps extends Component {
         super()
         this.state = {
           updaters: [],
-          liveUpdate: false,
+          liveUpdate: true,
           liveUpdater: 0,
             heigth: "1080px",
         lat: 52.5,
@@ -27,24 +27,19 @@ export default class Maps extends Component {
     }}
 
     change () {
-      console.log("Change")
       let liveUpdater = this.state.liveUpdater
         if (this.state.liveUpdate){
-          console.log("Should start")
             liveUpdater = setInterval(() => {
             this.setInitalState()
           }, 5000);
-          console.log(liveUpdater)
          this.setState({
            liveUpdater:liveUpdater
          })
         }
         else{
-          console.log("should stop")
           clearInterval(this.state.liveUpdater)
 
         }
-        console.log(this.state.liveUpdater)
     }
 
     async setInitalState () {
@@ -109,7 +104,6 @@ export default class Maps extends Component {
 
       componentDidMount(){
         this.change()
-        console.log("Component did Mount")
         if (!this.state.liveUpdate){
         this.setInitalState()
     }
