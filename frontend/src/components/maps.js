@@ -38,7 +38,9 @@ export default class Maps extends Component {
         }
         else{
           clearInterval(this.state.liveUpdater)
-
+          this.setState({
+            liveUpdater:0
+          })
         }
     }
 
@@ -103,7 +105,6 @@ export default class Maps extends Component {
       }
 
       componentDidMount(){
-        this.change()
         if (!this.state.liveUpdate){
         this.setInitalState()
     }
@@ -168,7 +169,6 @@ export default class Maps extends Component {
             {
               this.setState(prevState => ({
             liveUpdate: !prevState.liveUpdate,
-
           }))
           this.change()
         }
