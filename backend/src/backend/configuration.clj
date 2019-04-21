@@ -24,8 +24,9 @@
   "Writes a map into the config table of the database.
   The key corresponds to the column name and the value will be inserted in this column.
   The keys used must match with the database schema of the config table."
-  [params]
-  (j/insert! db "config" (fmap read-string params)))
+  [id params]
+  ;(println params))
+  (j/insert! db "config" {"device_id" (read-string id), "config" (fmap read-string params)}))
 
 ;; Add support for Postgres JSONB
 (add-jsonb-type clojure.data.json/write-str clojure.data.json/read-str)

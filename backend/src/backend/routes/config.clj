@@ -34,6 +34,6 @@
   Input: GET request with all configuration parameters
   Action: Inserts configuration in database if it fits the schema."
   [{params :query-params :as req}]
-  (if (empty? params)
-    (run-db (config-check (read-config)))
-    (run-db (write-config params))))
+  (cond (empty? params) (run-db (config-check (read-config)))
+        (contains? params "device_id") (run-db (write-config (get params "device_id") (dissoc params "device_id")))
+        :else (error-handler-rep 503 "You must supply 'device_id' as a parameter in order to write a configuration.")))
