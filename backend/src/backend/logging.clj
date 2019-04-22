@@ -46,10 +46,10 @@
   (j/insert! db :device
              {:device_id device_id}))
 
-(defn get-adaption-from-id
+(defn get-adaption-from-type
   "Queries the database for adaption with input as id"
-  [adaption_id]
-  (j/get-by-id db :adaption adaption_id :adaption_id))
+  [adaption_type]
+  (j/query db (str "SELECT * FROM adaption WHERE adaption_type='" adaption_type "'")))
 
 (extend-type java.sql.Timestamp
   json/JSONWriter

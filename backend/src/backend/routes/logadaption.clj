@@ -18,13 +18,13 @@
   (:require [backend.logging :refer [insert-syslog
                                      get-device-from-id
                                      set-device-id
-                                     get-adaption-from-id]]
+                                     get-adaption-from-type]]
             [backend.routes.util :refer [error-handler-rep]]))
 
 (defn adaption-exists?
   "Returns true if the adaption_id is registered in the database, false otherwise"
   [adaption_id]
-  (if-not (= nil (get-adaption-from-id adaption_id))
+  (if-not (= nil (get-adaption-from-type adaption_id))
     true
     false))
 
@@ -39,11 +39,11 @@
   "POST request to log adaption"
   [{params :query-params :as req}]
   (if-not (and
-           (contains? params "adaption_id")
+           (contains? params "adaption_type")
            (contains? params "device_id")
            (contains? params "description"))
-    (error-handler-rep 400 "Invalid query")
-    (let [adaption_id (Integer/parseInt (params "adaption_id"))
+    (error-handler-rep 400 "Invalid query!")
+    (let [adaption_type (params "adaption_type")
           device_id (Integer/parseInt (params "device_id"))
           description (params "description")]
       (try
@@ -52,15 +52,15 @@
         (catch Exception _))
       (try
         (cond
-          (not (adaption-exists? adaption_id)) {:status 404
-                                                :headers {"Content-Type" "application/json"}
-                                                :body {"Error" "Invalid adaption_id"}}
+          (not (adaption-exists? adaption_type)) {:status 404
+                                                  :headers {"Content-Type" "application/json"}
+                                                  :body {"Error" "Invalid adaption_type"}}
           (and
-           (adaption-exists? adaption_id)
+           (adaption-exists? adaption_type)
            (device-registered? device_id)) {:status 200
                                             :headers {"Content-Type" "application/json"}
                                             :body (insert-syslog {:device_id device_id
-                                                                  :adaption_id adaption_id
+                                                                  :adaption_id (get (first (get-adaption-from-type adaption_type)) :adaption_id)
                                                                   :description description})}
           :else (error-handler-rep 404 "Invalid query"))
         (catch Exception _
