@@ -81,17 +81,15 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        console.log('GOOD RESPONSE')
-
         self.processData(JSON.parse(xhttp.responseText))
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
-        console.log('BAD RESPONSE')
-
+        console.log('no resultsssss!')
+        
         self.setState({ data: {
-          nodes: [{ id: 'Harry' }, { id: 'Sally' }, { id: 'Alice' }],
-          links: [{ source: 'Harry', target: 'Sally' }, { source: 'Harry', target: 'Alice' }]
+          nodes: [],
+          links: []
           // links: []
         } })
       }
@@ -133,6 +131,7 @@ class NodeGraph extends Component {
 
         { this.state.data.nodes.length &&
         <Graph
+          style={{ border: '1px solid black' }}
           id="networkgraph"
           data={this.state.data}
           // config={this.state.config}
