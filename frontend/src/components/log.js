@@ -68,26 +68,7 @@ class Log extends Component {
       direction: direction === 'ascending' ? 'descending' : 'ascending'
     })
   }
-
-  handleSort = clickedColumn => () => {
-    const { column, data, direction } = this.state
-
-    if (column !== clickedColumn) {
-      this.setState({
-        column: clickedColumn,
-        data: _.sortBy(data, [clickedColumn]),
-        direction: 'ascending'
-      })
-
-      return
-    }
-
-    this.setState({
-      data: data.reverse(),
-      direction: direction === 'ascending' ? 'descending' : 'ascending'
-    })
-  }
-  componentDidMount() {
+  componentDidMount () {
     // Fetch logs from rest api
     this.fetch()
   }
@@ -254,20 +235,6 @@ class Log extends Component {
         />
       </div>
     )
-  }
-  resetForm = () => {
-    // resets form
-    this.setState({
-      formAdaptIds: [],
-      formDate: '',
-      formDateFrom: '',
-      formDateTo: '',
-      formDesc: '',
-      formDevIds: [],
-      canFilter: true
-    })
-    // also fetch new ok
-    this.fetch()
   }
   checkIfCanFilter=() => {
     // timeout cause state is fucked idk
