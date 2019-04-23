@@ -6,6 +6,8 @@ class NodeGraph extends Component {
     super(props)
     this.props = props
     this.state = {
+      liveUpdate: true,
+      liveUpdater: 0,
       data: {
         // dårlig lib loool
         nodes: [],
@@ -73,6 +75,26 @@ class NodeGraph extends Component {
   componentDidMount () {
     this.fetch()
   }
+
+
+  change () {
+    let liveUpdater = this.state.liveUpdater
+      if (this.state.liveUpdate){
+          liveUpdater = setInterval(() => {
+          this.fetch()
+        }, 5000);
+       this.setState({
+         liveUpdater:liveUpdater
+       })
+      }
+      else{
+        clearInterval(this.state.liveUpdater)
+        this.setState({
+          liveUpdater:0
+        })
+      }
+  }
+
   fetch () {
     console.log('fetched')
 
@@ -128,6 +150,14 @@ class NodeGraph extends Component {
     // )
     return (
       <div>
+        <button onClick={() =>{
+          this.setState(prevState => ({
+          liveUpdate: !prevState.liveUpdate
+        }))
+        this.change()
+      }
+
+          }> Hey</button>
 
         { this.state.data.nodes.length &&
         <Graph
