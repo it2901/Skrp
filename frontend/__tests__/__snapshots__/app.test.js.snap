@@ -278,10 +278,21 @@ exports[`renders correctly 1`] = `
     <div
       className="SKRP"
     >
-      <div>
+      <div
+        style={
+          Object {
+            "width": "100%",
+          }
+        }
+      >
         <img
           alt="Logo"
           src="test-file-stub"
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
         />
       </div>
     </div>
