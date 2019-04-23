@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Graph } from 'react-d3-graph'
+import { Button, Message } from 'semantic-ui-react'
 
 class NodeGraph extends Component {
   constructor (props) {
@@ -8,66 +9,31 @@ class NodeGraph extends Component {
     this.state = {
       liveUpdate: true,
       liveUpdater: 0,
+      nodeSelected: false,
       data: {
-        // dårlig lib loool
         nodes: [],
         links: []
       },
+      info: {
+        type: 'type',
+        protocol: 'protocol',
+        metric: 'metric',
+        version: 'version'
+      },
       config: {
-        'automaticRearrangeAfterDropNode': true,
-        'collapsible': true,
-        'directed': true,
-        'focusAnimationDuration': 0.75,
-        'focusZoom': 1,
-        'height': 400,
-        'highlightDegree': 2,
-        'highlightOpacity': 0.2,
-        'linkHighlightBehavior': true,
-        'maxZoom': 12,
-        'minZoom': 0.05,
-        'nodeHighlightBehavior': true,
-        'panAndZoom': false,
-        'staticGraph': false,
-        'width': 800,
-        'd3': {
-          'alphaTarget': 0.05,
-          'gravity': -250,
-          'linkLength': 120,
-          'linkStrength': 2
-        },
-        'node': {
-          'color': '#d3d3d3',
-          'fontColor': 'black',
-          'fontSize': 10,
-          'fontWeight': 'normal',
-          'highlightColor': 'red',
-          'highlightFontSize': 14,
-          'highlightFontWeight': 'bold',
-          'highlightStrokeColor': 'red',
-          'highlightStrokeWidth': 1.5,
-          'mouseCursor': 'crosshair',
-          'opacity': 0.9,
-          'renderLabel': true,
-          'size': 200,
-          'strokeColor': 'none',
-          'strokeWidth': 1.5,
-          'svg': '',
-          'symbolType': 'circle'
-        },
-        'link': {
-          'color': 'lightgray',
-          'fontColor': 'black',
-          'fontSize': 8,
-          'fontWeight': 'normal',
-          'highlightColor': 'red',
-          'highlightFontSize': 8,
-          'highlightFontWeight': 'normal',
-          'labelProperty': 'label',
-          'mouseCursor': 'pointer',
-          'opacity': 1,
-          'renderLabel': false,
-          'semanticStrokeWidth': true,
-          'strokeWidth': 3
+        directed: false,
+        height: window.innerHeight,
+        width: window.innerWidth,
+        nodeHighlightBehavior: true,
+        highlightOpacity: 0.2,
+        node: {
+          color: '#d3d3d3',
+          fontSize: 10,
+          highlightColor: 'red',
+          highlightFontSize: 14,
+          highlightFontWeight: 'bold',
+          highlightStrokeColor: 'red',
+          highlightStrokeWidth: 1.5
         }
       }
     }
@@ -76,29 +42,24 @@ class NodeGraph extends Component {
     this.fetch()
   }
 
-
   change () {
     let liveUpdater = this.state.liveUpdater
-      if (this.state.liveUpdate){
-          liveUpdater = setInterval(() => {
-          this.fetch()
-        }, 5000);
-       this.setState({
-         liveUpdater:liveUpdater
-       })
-      }
-      else{
-        clearInterval(this.state.liveUpdater)
-        this.setState({
-          liveUpdater:0
-        })
-      }
+    if (this.state.liveUpdate) {
+      liveUpdater = setInterval(() => {
+        this.fetch()
+      }, 5000)
+      this.setState({
+        liveUpdater: liveUpdater
+      })
+    } else {
+      clearInterval(this.state.liveUpdater)
+      this.setState({
+        liveUpdater: 0
+      })
+    }
   }
 
-  
-
   fetch () {
-
     let xhttp = new XMLHttpRequest({ mozSystem: true })
     let self = this
     xhttp.onreadystatechange = function () {
@@ -108,7 +69,7 @@ class NodeGraph extends Component {
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
-        
+
         self.setState({ data: {
           nodes: [],
           links: []
@@ -119,12 +80,19 @@ class NodeGraph extends Component {
     xhttp.open('GET', 'http://localhost:3001/netgph', true)
     xhttp.send()
   }
+  mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
   processData (data) {
     let nodes = data.nodes
     let nodeIds = nodes.map(e => e.id)
-    let links = data.links.filter(e => {
-      return nodeIds.includes(e.source) && nodeIds.includes(e.target)
-    })
+    // map min and max value of nodes to HSL color spectrum
+    let linkMin = data.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
+    let linkMax = data.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
+    let links = data.links
+      .filter(e => {
+        return nodeIds.includes(e.source) && nodeIds.includes(e.target)
+      }).map(e => Object.assign(
+        { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
+        , e))
 
     let info = {
       type: data.type,
@@ -141,11 +109,14 @@ class NodeGraph extends Component {
       info: info
     })
   }
+  getLinks (nodeId) {
+    // not making a dict cause mocker has duplicate values xx
+    return this.state.data.links.filter(e => e.source == nodeId || e.target == nodeId).length
+  }
   render () {
-
     const onClickNode = (nodeId) => {
-      console.log(`Clicked node ${nodeId}`);
-  };
+      this.setState({ nodeSelected: nodeId })
+    }
     // return (
     // <div style={{ height: '100vh', position: 'absolute', width: '100vw', left: 0, right: 0 }}>
     /* <iframe src="http://localhost:3000/graph/visualizer.html" title="Nodegraph" height="100%" width="100%"></iframe> */
@@ -153,16 +124,37 @@ class NodeGraph extends Component {
     // )
     return (
       <div>
-        <button style={{position:"absolute",
-          top: "3%",
-        right:"2%"}} onClick={() =>{
-          this.setState(prevState => ({
-          liveUpdate: !prevState.liveUpdate
-        }))
-        this.change()
-      }
+        <div style={{ position: 'absolute', top: '3%', right: '2%', display: 'flex', flexDirection: 'column' }}>
+          <Message style={{ display: 'flex', flexDirection: 'column' }}>
+            <Message.Header><strong>{this.state.info.type}</strong></Message.Header>
+            <span><strong>protocol:</strong> {this.state.info.protocol}</span>
+            <span><strong>version:</strong> {this.state.info.version}</span>
+            <span><strong>metric:</strong> {this.state.info.metric}</span>
+            <span><strong>nodes:</strong> {this.state.data.nodes.length}</span>
+            <span><strong>links:</strong> {this.state.data.links.length}</span>
+          </Message>
+          {this.state.nodeSelected &&
+          <Message style={{ display: 'flex', flexDirection: 'column' }}>
+            <span><strong>id:</strong> {this.state.nodeSelected}</span>
+            <span><strong>links:</strong> {this.getLinks(this.state.nodeSelected)}</span>
+          </Message>
+          }
+          <Button
+            style={{
+              background: this.state.liveUpdate ? 'green' : 'red',
+              color: 'white'
+            }}
+            fluid
+            content='Toggle Live Update'
+            onClick={() => {
+              this.setState(prevState => ({
+                liveUpdate: !prevState.liveUpdate
+              }))
+              this.change()
+            }}
+          />
 
-          }> Toogle Live Updating </button>
+        </div>
 
         { this.state.data.nodes.length &&
         <Graph
@@ -170,23 +162,8 @@ class NodeGraph extends Component {
           id="networkgraph"
           data={this.state.data}
           onClickNode={onClickNode}
-          // config={this.state.config}
-          config={{
-            directed: true,
-            height: window.innerHeight,
-            width: window.innerWidth,
-            nodeHighlightBehavior: true,
-            highlightOpacity: 0.2,
-            node: {
-              color: 'blue',
-              fontSize: 10,
-              highlightColor: 'red',
-              highlightFontSize: 14,
-              highlightFontWeight: 'bold',
-              highlightStrokeColor: 'red',
-              highlightStrokeWidth: 1.5
-            }
-          }}
+          config={this.state.config}
+          // config={this.s}
         />}
       </div>
     )
