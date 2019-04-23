@@ -20,8 +20,12 @@
 (defn get-filtered-syslog
   "Retrieve and filters data from the database table 'system_log'
   based on input."
-  [{:keys [device_id adaption_id description date date_from date_to]}]
-  (def querystr "SELECT * FROM system_log WHERE")
+  [{:keys [device_id adaption_id adaption_type description date date_from date_to]}]
+  (def querystr "SELECT system_log.system_log_id, system_log.device_id, system_log.adaption_id, adaption.adaption_type, adaption.adaption_description, adaption.config_id, system_log.description, system_log.created
+                FROM system_log
+                INNER JOIN adaption
+                ON system_log.adaption_id=adaption.adaption_id
+                WHERE")
   (def firstParam true)
 
   (if-not (= device_id nil)
@@ -33,9 +37,16 @@
 
   (if-not (= adaption_id nil)
     (do (if (true? firstParam)
-          (do (def newstr (str " adaption_id IN (" adaption_id ")"))
+          (do (def newstr (str " system_log.adaption_id IN (" adaption_id ")"))
               (def firstParam false))
-          (def newstr (str " AND adaption_id IN (" adaption_id ")")))
+          (def newstr (str " AND system_log.adaption_id IN (" adaption_id ")")))
+        (def querystr (str querystr newstr))))
+
+  (if-not (= adaption_type nil)
+    (do (if (true? firstParam)
+          (do (def newstr (str " adaption_type IN (" adaption_type ")"))
+              (def firstParam false))
+          (def newstr (str " AND adaption_type IN (" adaption_type ")")))
         (def querystr (str querystr newstr))))
 
   (if-not (= description nil)
