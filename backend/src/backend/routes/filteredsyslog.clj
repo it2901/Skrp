@@ -49,6 +49,7 @@
   [params]
   (def logFilter {:device_id nil
                   :adaption_id nil
+                  :adaption_type nil
                   :description nil
                   :date nil
                   :date_from nil
@@ -57,6 +58,8 @@
     (def logFilter (update logFilter :device_id #(str (params "device_id") %))))
   (if (contains? params "adaption_id")
     (def logFilter (update logFilter :adaption_id #(str (params "adaption_id") %))))
+  (if (contains? params "adaption_type")
+    (def logFilter (update logFilter :adaption_type #(str (params "adaption_type") %))))
   (if (contains? params "description")
     (def logFilter (update logFilter :description #(str (params "description") %))))
   (if (contains? params "date")
