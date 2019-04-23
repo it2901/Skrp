@@ -167,11 +167,12 @@ class NodeGraph extends Component {
           // config={this.state.config}
           config={{
             directed: true,
-            height: 800,
+            height: window.innerHeight,
+            width: window.innerWidth,
             nodeHighlightBehavior: true,
             highlightOpacity: 0.2,
             node: {
-              color: '#d3d3d3',
+              color: 'blue',
               fontSize: 10,
               highlightColor: 'red',
               highlightFontSize: 14,
