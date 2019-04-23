@@ -95,8 +95,9 @@ class NodeGraph extends Component {
       }
   }
 
+  
+
   fetch () {
-    console.log('fetched')
 
     let xhttp = new XMLHttpRequest({ mozSystem: true })
     let self = this
@@ -107,7 +108,6 @@ class NodeGraph extends Component {
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
-        console.log('no resultsssss!')
         
         self.setState({ data: {
           nodes: [],
@@ -125,7 +125,6 @@ class NodeGraph extends Component {
     let links = data.links.filter(e => {
       return nodeIds.includes(e.source) && nodeIds.includes(e.target)
     })
-    console.log(links)
 
     let info = {
       type: data.type,
@@ -143,6 +142,10 @@ class NodeGraph extends Component {
     })
   }
   render () {
+
+    const onClickNode = (nodeId) => {
+      console.log(`Clicked node ${nodeId}`);
+  };
     // return (
     // <div style={{ height: '100vh', position: 'absolute', width: '100vw', left: 0, right: 0 }}>
     /* <iframe src="http://localhost:3000/graph/visualizer.html" title="Nodegraph" height="100%" width="100%"></iframe> */
@@ -150,20 +153,23 @@ class NodeGraph extends Component {
     // )
     return (
       <div>
-        <button onClick={() =>{
+        <button style={{position:"absolute",
+          top: "3%",
+        right:"2%"}} onClick={() =>{
           this.setState(prevState => ({
           liveUpdate: !prevState.liveUpdate
         }))
         this.change()
       }
 
-          }> Hey</button>
+          }> Toogle Live Updating </button>
 
         { this.state.data.nodes.length &&
         <Graph
           style={{ border: '1px solid black' }}
           id="networkgraph"
           data={this.state.data}
+          onClickNode={onClickNode}
           // config={this.state.config}
           config={{
             directed: true,
