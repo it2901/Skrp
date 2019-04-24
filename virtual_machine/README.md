@@ -25,3 +25,23 @@ Password is: `fiskesuppe`. The password is the same for root.
 
 The VM will also expose a webserver to port 7654, visit it in your browser
 (outside the VM) at `http://localhost:7654`
+
+## Setup & debug
+The VM runs two systemd-services, a postgres database and an apache2 webserver.
+Relevant files:
+
+`/etc/systemd/system/skrp.service`
+
+`/etc/systemd/system/mocker.service`
+
+`/etc/apache2/sites-availible/000-default.conf`
+
+## Starting and stopping services
+
+`systemctl [stop|start|restart|reload|status] <some>.service`
+
+## Accessing database
+
+From skrp user;
+
+`psql -d netjson_dev`
