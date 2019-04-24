@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup,  FeatureGroup, Circle, Polyline  } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
 import Control from 'react-leaflet-control';
+import { Button, Message } from 'semantic-ui-react'
 
   
 export default class Maps extends Component {
@@ -164,19 +165,20 @@ export default class Maps extends Component {
     {nodes}
     {links}
     <Control position="topleft" >
-        <button 
-          onClick={ () => 
-            {
+    <Button
+            style={{
+              background: this.state.liveUpdate ? 'green' : 'red',
+              color: 'white'
+            }}
+            fluid
+            content='Toggle Live Update'
+            onClick={() => {
               this.setState(prevState => ({
-            liveUpdate: !prevState.liveUpdate,
-          }))
-          this.change()
-        }
-        
-        }
-        >
-          Toogle Live Update
-        </button>
+                liveUpdate: !prevState.liveUpdate
+              }))
+              this.change()
+            }}
+          />
       </Control>
   </FeatureGroup>
             </Map>
