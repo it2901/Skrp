@@ -1,7 +1,6 @@
-# Virtual image can be fetched at
-Address: `https://ibuprofen.samfundet.no/~yngvem/ntnu/skrp_deliverable.ova`
-
-Size is ~ 2Gb
+# Virtual image 
+Url: `https://ibuprofen.samfundet.no/~yngvem/ntnu/skrp_deliverable.ova` Image
+created and tested exclusively in VirtualBox 6.0 for debian 9.8.
 
 # Image includes
 - Backend API
@@ -12,11 +11,14 @@ Size is ~ 2Gb
 - Okse broker
 - Adaption client
 
-# Ssh to server
-Once VM is started you can ssh to it on port 3022
-`ssh -p 3022 skrp@localhost`
+# VM UI
+The VM does not include an X-server and desktop environment. The only way to
+interface with it is with a shell. This can either be done with ssh, or through
+your preferred virtualization client.
+
+Once VM is started you can ssh to it on port 3022 `ssh -p 3022 skrp@localhost`
 
 Password is: fiskesuppe
 
-The VM will also expose a webserver to port 7654,
-visit it in your browser at `http://localhost:7654`
+The VM will also expose a webserver to port 7654, visit it in your browser
+(outside the VM) at `http://localhost:7654`
