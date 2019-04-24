@@ -33,7 +33,7 @@ class TweakInput extends Component {
     
   sendToConfigure(){
     let state = this.state
-    let statement = "?"
+    let statement = "?device_id=1&"
     Object.entries(state).map(x=>statement+=x[0]+"="+x[1]+"&")
     statement = statement.substring(0, statement.length-1)
     fetch("http://localhost:8090/configure"+statement)
@@ -41,7 +41,7 @@ class TweakInput extends Component {
 
 
   sendToAdaptation(name,value){
-    let id = 1
+    let id = 2
     let description = `parameter ${name} has been changed to ${value}`
     console.log(description)
     let statement = `http://localhost:8090/logadaption?adaption_id=${id}&device_id=${id}&description=${description}`
