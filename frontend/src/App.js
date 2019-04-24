@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import NavBar from './components/navbar'
-import NodeGraph from './components/NodeGraph'
+import NodeGraph from './components/nodegraph'
 import About from './components/about'
 import Log from './components/log'
 import Maps from './components/maps'

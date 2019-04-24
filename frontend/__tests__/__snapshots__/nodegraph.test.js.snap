@@ -1,22 +1,83 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<div
-  style={
-    Object {
-      "height": "100vh",
-      "left": 0,
-      "position": "absolute",
-      "right": 0,
-      "width": "100vw",
+<div>
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "column",
+        "position": "absolute",
+        "right": "2%",
+        "top": "3%",
+      }
     }
-  }
->
-  <iframe
-    height="100%"
-    src="http://localhost:3000/graph/visualizer.html"
-    title="Nodegraph"
-    width="100%"
-  />
+  >
+    <div
+      className="ui message"
+      style={
+        Object {
+          "display": "flex",
+          "flexDirection": "column",
+        }
+      }
+    >
+      <div
+        className="header"
+      >
+        <strong>
+          type
+        </strong>
+      </div>
+      <span>
+        <strong>
+          protocol:
+        </strong>
+         
+        protocol
+      </span>
+      <span>
+        <strong>
+          version:
+        </strong>
+         
+        version
+      </span>
+      <span>
+        <strong>
+          metric:
+        </strong>
+         
+        metric
+      </span>
+      <span>
+        <strong>
+          nodes:
+        </strong>
+         
+        0
+      </span>
+      <span>
+        <strong>
+          links:
+        </strong>
+         
+        0
+      </span>
+    </div>
+    <button
+      className="ui fluid button"
+      onClick={[Function]}
+      style={
+        Object {
+          "background": "green",
+          "color": "white",
+        }
+      }
+    >
+      Toggle Live Update
+    </button>
+  </div>
+  0
 </div>
 `;
