@@ -82,18 +82,15 @@ class NodeGraph extends Component {
   }
   mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
   processData (data) {
-    let nodes = data.nodes
-    let nodeIds = nodes.map(e => e.id)
+    // ensures no dupes
+    let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
     // map min and max value of nodes to HSL color spectrum
     let linkMin = data.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
     let linkMax = data.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
     let links = data.links
-      .filter(e => {
-        return nodeIds.includes(e.source) && nodeIds.includes(e.target)
-      }).map(e => Object.assign(
+      .map(e => Object.assign(
         { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
         , e))
-
     let info = {
       type: data.type,
       protocol: data.protocol,
