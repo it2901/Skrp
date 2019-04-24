@@ -13,12 +13,6 @@ class TweakInput extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      p1:100,
-      p2:100,
-      p3:100,
-      p4:100,
-      p5:100,
-      p6:100
     }
     this.props = props
   }
@@ -29,8 +23,7 @@ class TweakInput extends Component {
 
   async setInitalState (){
   const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json()}).catch(err => console.error(err))
-  let parameters = stateToBe[0]
-  delete parameters['conf_id']
+  let parameters = stateToBe[0]["config"]
   Object.entries(parameters).map(p=>(
     this.setState({
         [p[0]]:p[1]
