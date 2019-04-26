@@ -113,6 +113,7 @@ export default class Maps extends Component {
     
       componentWillMount() {
         this.updateDimensions()
+        this.setInitalState()
         
       }
 
