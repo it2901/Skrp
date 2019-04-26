@@ -168,7 +168,7 @@ export default class Maps extends Component {
     <Control position="topleft" >
     <Button
             style={{
-              background: this.state.liveUpdate ? 'green' : 'red',
+              background: this.state.liveUpdate ? 'red' : 'green',
               color: 'white'
             }}
             fluid

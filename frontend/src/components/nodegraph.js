@@ -138,7 +138,7 @@ class NodeGraph extends Component {
           }
           <Button
             style={{
-              background: this.state.liveUpdate ? 'green' : 'red',
+              background: this.state.liveUpdate ? 'red' : 'green',
               color: 'white'
             }}
             fluid
