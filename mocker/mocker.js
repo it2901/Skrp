@@ -7,8 +7,15 @@ const cwd = `${__dirname}/Schemes`;
 
 const  config = JSON.parse(fs.readFileSync('./config.JSON'))
 
-
 //Fetch API endpoints
+let mapnodesEnd = process.env.MAP_AND_NODES_END_POINT
+let networkroutesEnd = process.env.NETWORK_ROUTES_END_POINT
+let geolocationsEnd = process.env.GEOGRAPHIC_LOCATION_END_POINT
+let networkdomainEnd = process.env.NETWORK_DOMAIN_END_POINT
+let networkgraphEnd = process.env.NETWORK_GRAPH_END_POINT
+let deviceconfigurationEnd = process.env.DEVICE_CONFIGURATION_END_POINT
+let devicemonitoringEnd = process.env.DEVICE_MONITORING_END_POINT
+
 
 const port =  config.PORT
 let mapnodesEnd =  config.MAP_AND_NODES_END_POINT
