@@ -106,7 +106,7 @@ export default class Maps extends Component {
       }
 
     updateDimensions() {
-        const height = window.innerWidth >= 992 ? window.innerHeight : 400
+        const height = window.innerHeight
         this.setState({ height: height })
       }
 
