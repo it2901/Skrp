@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import { Graph } from 'react-d3-graph'
 import { Button, Message } from 'semantic-ui-react'
 
+let nfrq = process.env.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY
+let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
+let updateFrequency = (nfrq == 0 || nfrq == undefined) ? gfrq : nfrq
+
+console.log(updateFrequency)
+
 class NodeGraph extends Component {
   constructor (props) {
     super(props)
@@ -47,7 +53,7 @@ class NodeGraph extends Component {
     if (this.state.liveUpdate) {
       liveUpdater = setInterval(() => {
         this.fetch()
-      }, 5000)
+      }, updateFrequency)
       this.setState({
         liveUpdater: liveUpdater
       })
@@ -77,7 +83,7 @@ class NodeGraph extends Component {
         } })
       }
     }
-    xhttp.open('GET', 'http://localhost:3001/netgph', true)
+    xhttp.open('GET', process.env.REACT_APP_NETWORK_GRAPH, true)
     xhttp.send()
   }
   mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2

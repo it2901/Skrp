@@ -4,7 +4,12 @@ import { EditControl } from "react-leaflet-draw"
 import Control from 'react-leaflet-control';
 import { Button, Message } from 'semantic-ui-react'
 
-  
+let mfrq = process.env.REACT_APP_MAPS_UPDATE_FREQUENCY
+let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
+let updateFrequency = (mfrq == 0 || mfrq == undefined) ? gfrq : mfrq
+
+
+console.log(updateFrequency)
 export default class Maps extends Component {
     constructor() {
         super()
@@ -32,7 +37,7 @@ export default class Maps extends Component {
         if (this.state.liveUpdate){
             liveUpdater = setInterval(() => {
             this.setInitalState()
-          }, 5000);
+          }, updateFrequency);
          this.setState({
            liveUpdater:liveUpdater
          })
@@ -46,7 +51,7 @@ export default class Maps extends Component {
     }
 
     async setInitalState () {
-        let stateToBe= await fetch("http://localhost:3001/mapnod").then(response => {
+        let stateToBe= await fetch(process.env.REACT_APP_MAP_AND_NODES).then(response => {
           return response.json()
         }).catch(err => console.error(err))
         let nodes = stateToBe["nodes"].map(node => {return node["id"]})
