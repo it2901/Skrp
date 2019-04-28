@@ -29,6 +29,7 @@ export default class Maps extends Component {
     this.config = {
     }
   }
+
     async setConfig (){
       const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
       this.config = config
