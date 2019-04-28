@@ -170,7 +170,7 @@ export default class Maps extends Component {
     />
     {nodes}
     {links}
-    <Control position="topleft" >
+    <Control position="topright" >
     <Button
             style={{
               background: this.state.liveUpdate ? 'red' : 'green',
