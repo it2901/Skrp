@@ -155,7 +155,7 @@ export default class Maps extends Component {
         })
         const position = [this.state.lat, this.state.lng]
         return (
-            <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+            <Map zoomControl= {false} center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
             <div>{this.state.liveUpdate} </div>
             <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
