@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup,  FeatureGroup, Circle, Polyline  } from 'react-leaflet'
-import { EditControl } from "react-leaflet-draw"
-import Control from 'react-leaflet-control';
-import { Button, Message } from 'semantic-ui-react'
+import { Map, TileLayer, Marker, Popup, FeatureGroup, Circle, Polyline } from 'react-leaflet'
+import { EditControl } from 'react-leaflet-draw'
+import Control from 'react-leaflet-control'
+import { Button } from 'semantic-ui-react'
 
 export default class Maps extends Component {
     constructor() {
@@ -116,13 +116,8 @@ export default class Maps extends Component {
         this.setState({ height: height })
       }
 
-      componentDidMount(){
-        if (!this.state.liveUpdate){
-        this.setInitalState()
-    }
-  } 
-    
-      async componentWillMount() {
+
+       componentWillMount() {
         this.setConfig().then(res =>{
           this.setInitalState()
         })
@@ -130,6 +125,12 @@ export default class Maps extends Component {
           
         
         
+      }
+
+      componentDidMount () {
+        if (!this.state.liveUpdate) {
+          this.setInitalState()
+        }
       }
 
 
@@ -178,26 +179,26 @@ export default class Maps extends Component {
         rectangle: true
       }}
     />
-    {nodes}
-    {links}
-    <Control position="topright" >
-    <Button
-            style={{
-              background: this.state.liveUpdate ? 'red' : 'green',
-              color: 'white'
-            }}
-            fluid
-            content='Toggle Live Update'
-            onClick={() => {
-              this.setState(prevState => ({
-                liveUpdate: !prevState.liveUpdate
-              }))
-              this.change()
-            }}
-          />
-      </Control>
-  </FeatureGroup>
-            </Map>
-        )
-        }
-    }
+          {nodes}
+          {links}
+          <Control position="topright" >
+            <Button
+              style={{
+                background: this.state.liveUpdate ? 'red' : 'green',
+                color: 'white'
+              }}
+              fluid
+              content={'Live Update: ' + (this.state.liveUpdate ? 'OFF' : 'ON') }
+              onClick={() => {
+                this.setState(prevState => ({
+                  liveUpdate: !prevState.liveUpdate
+                }))
+                this.change()
+              }}
+            />
+          </Control>
+        </FeatureGroup>
+      </Map>
+    )
+  }
+}
