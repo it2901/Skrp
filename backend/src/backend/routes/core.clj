@@ -14,7 +14,8 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.routes.core
-  (:require [backend.routes.syslog :refer [syslog-handler]]
+  (:require [backend.routes.adaption :refer [adaption-request-handler]]
+            [backend.routes.syslog :refer [syslog-handler]]
             [backend.routes.logadaption :refer [adaption-handler]]
             [backend.routes.config :refer [config-handler]]
             [backend.routes.util :refer [index-handler
@@ -31,6 +32,7 @@
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
+  (GET "/adaption" request (wrap-json-response adaption-request-handler))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
   (GET "/configure" request (wrap-json-response config-handler))
   (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
