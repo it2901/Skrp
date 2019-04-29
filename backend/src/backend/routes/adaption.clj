@@ -1,6 +1,6 @@
 (ns backend.routes.adaption
-  :require [backend.logging :refer [get-network-collection]
-            backend.routes.util :refer [error-handler-rep]])
+  (:require [backend.logging :refer [get-network-collection]]
+            [backend.routes.util :refer [error-handler-rep]]))
 
 (defn adaption-request-handler
   "HTTP GET handler for requesting network adaptions. This endpoint
