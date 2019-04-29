@@ -24,6 +24,8 @@ class Log extends Component {
       formAdaptIds: [],
       adaptionIds: [],
       deviceIds: [],
+      adaptionTypes: [],
+      formAdaptionType: '',
       formDate: '',
       formDateFrom: '',
       formDateTo: '',
@@ -94,10 +96,17 @@ class Log extends Component {
           .map(o => {
             return { text: o, key: o, value: o }
           })
+        let adaptionTypes = d
+          .map(o => o.adaption_type)
+          .filter((v, i, a) => a.indexOf(v) === i)
+          .map(o => {
+            return { text: o, key: o, value: o }
+          })
         this.setState({
           data: d,
           deviceIds: deviceIds,
-          adaptionIds: adaptionIds
+          adaptionIds: adaptionIds,
+          adaptionTypes: adaptionTypes
         })
       })
   }
@@ -327,7 +336,8 @@ class Log extends Component {
     const { column, data, direction,
       dateRange, formDesc, formAdaptIds,
       formDevIds, formDate, formDateFrom,
-      formDateTo, canFilter, adaptionIds, deviceIds } = this.state
+      formDateTo, canFilter, adaptionIds,
+      deviceIds, formAdaptionType, adaptionTypes } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
@@ -359,6 +369,13 @@ class Log extends Component {
             value={formAdaptIds}
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
+          <Form.Dropdown
+            options={adaptionTypes}
+            placeholder="Adaption types"
+            name="formAdaptionType"
+            value={formAdaptionType}
+            onChange={(e, data) => this.onChange(data)}
+            fluid selection />
           <Form.Field>
             <span style={{ textAlign: 'center' }}>Date
               <Popup
