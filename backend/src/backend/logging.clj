@@ -21,11 +21,11 @@
 (defn get-syslog
   "Returns entries from the system_log table"
   ([]
-   (j/query db "SELECT * FROM system_log"))
+   (j/query db "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id"))
   ([date]
-   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) = '" date "'")]))
+   (j/query db [(str "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id WHERE DATE(created) = '" date "'")]))
   ([from to]
-   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
+   (j/query db [(str "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id WHERE DATE(created) between '" from "' and '" to "'")])))
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
