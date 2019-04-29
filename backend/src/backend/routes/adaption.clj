@@ -2,6 +2,15 @@
   (:require [backend.logging :refer [get-network-collection]]
             [backend.routes.util :refer [error-handler-rep]]))
 
+(defn command-builder
+  "Builds the response map"
+  [{:keys [eq-proto? protos]}]
+  {:name "Adaption Command"
+   :type "Change Protocol"
+   :options {:protocol (if eq-proto?
+                         (:current protos)
+                         (:new protos))}})
+
 (defn adaption-request-handler
   "HTTP GET handler for requesting network adaptions. This endpoint
   will log the data it recieves and respond with a suitable adaption."
@@ -21,12 +30,3 @@
          {:current db-proto
           :new req-proto}))
       (error-handler-rep 400 "Bad Request"))))
-
-(defn command-builder
-  "Builds the response map"
-  [{:keys [eq-proto? protos]}]
-  {:name "Adaption Command"
-   :type "Change Protocol"
-   :options {:protocol (if eq-proto?
-                         (:current protos)
-                         (:new protos))}})
