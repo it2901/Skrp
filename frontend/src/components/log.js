@@ -29,22 +29,24 @@ class Log extends Component {
       formDate: '',
       formDateFrom: '',
       formDateTo: '',
-      canFilter: true
+      canFilter: true,
+      logHeaders: []
     }
-    this.logHeaders = [
-      { key: 'system_log_id', text: 'Log id', value: 'system_log_id' },
-      { key: 'device_id', text: 'Device id', value: 'device_id' },
-      { key: 'adaption_id', text: 'Adaption id', value: 'adaption_id' },
-      { key: 'description', text: 'Description', value: 'description' },
-      { key: 'created', text: 'Date', value: 'created' }
-    ]
+    // this.logHeaders = [
+    //   { key: 'system_log_id', text: 'Log id', value: 'system_log_id' },
+    //   { key: 'device_id', text: 'Device id', value: 'device_id' },
+    //   { key: 'adaption_id', text: 'Adaption id', value: 'adaption_id' },
+    //   { key: 'description', text: 'Description', value: 'description' },
+    //   { key: 'created', text: 'Date', value: 'created' }
+    // ]
     this.queryParams = {
       'date': 'formDate',
       'description': 'formDesc',
       'device_id': 'formDevIds',
       'adaption_id': 'formAdaptIds',
       'date_from': 'formDateFrom',
-      'date_to': 'formDateTo'
+      'date_to': 'formDateTo',
+      'adaption_type': 'formAdaptionType'
     }
   }
 
@@ -106,7 +108,14 @@ class Log extends Component {
           data: d,
           deviceIds: deviceIds,
           adaptionIds: adaptionIds,
-          adaptionTypes: adaptionTypes
+          adaptionTypes: adaptionTypes,
+          logHeaders: Object.keys(d[0]).map(o => {
+            return {
+              key: o,
+              text: o.split('_').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' '), // prettify? oof
+              value: o
+            }
+          })
         })
       })
   }
@@ -337,7 +346,7 @@ class Log extends Component {
       dateRange, formDesc, formAdaptIds,
       formDevIds, formDate, formDateFrom,
       formDateTo, canFilter, adaptionIds,
-      deviceIds, formAdaptionType, adaptionTypes } = this.state
+      deviceIds, formAdaptionType, adaptionTypes, logHeaders } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
@@ -460,7 +469,7 @@ class Log extends Component {
           <Table.Header>
             <Table.Row>
               {
-                this.logHeaders.map(o => {
+                logHeaders.map(o => {
                   return (
                     <Table.HeaderCell
                       key={o['value']}
