@@ -13,12 +13,6 @@ class TweakInput extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      p1:100,
-      p2:100,
-      p3:100,
-      p4:100,
-      p5:100,
-      p6:100
     }
     this.props = props
   }
@@ -29,7 +23,7 @@ class TweakInput extends Component {
 
   async setInitalState (){
   const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json()}).catch(err => console.error(err))
-  let parameters = stateToBe[0]
+  let parameters = stateToBe[0]["config"]
   delete parameters['conf_id']
   Object.entries(parameters).map(p=>(
     this.setState({
@@ -40,7 +34,7 @@ class TweakInput extends Component {
     
   sendToConfigure(){
     let state = this.state
-    let statement = "?"
+    let statement = "?device_id=1&"
     Object.entries(state).map(x=>statement+=x[0]+"="+x[1]+"&")
     statement = statement.substring(0, statement.length-1)
     fetch("http://localhost:8090/configure"+statement)
@@ -51,7 +45,7 @@ class TweakInput extends Component {
     let id = 1
     let description = `parameter ${name} has been changed to ${value}`
     console.log(description)
-    let statement = `http://localhost:8090/logadaption?adaption_id=${id}&device_id=${id}&description=${description}`
+    let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch (statement,{method:"POST"})
   }
   valdiator (value) {
