@@ -1,0 +1,1824 @@
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "definitions": {
+
+    "DeviceConfiguration":{
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+          "type",
+          "general",
+          "hardware",
+          "operating_system",
+          "radios",
+          "interfaces",
+          "routes",
+          "dns_servers",
+          "dns_search"
+
+      ],
+      "properties": {
+          "type": {
+              "type": "string",
+              "enum": ["DeviceConfiguration"]
+          },
+          "general": {
+              "type": "object",
+              "title": "General",
+              "required":[
+                  "timezone"
+              ],
+              "additionalProperties": true,
+              "properties": {
+                  "hostname": {
+                      "type": "string"
+                  },
+                  "timezone": {
+                      "type": "string",
+                      "pattern": "GMT[+-]([0-9]|1[0-2])"
+                  },
+                  "maintainer": {
+                      "type": "string",
+                      "pattern": "[a-zA-Z]{5}"
+                  },
+                  "description": {
+                      "type": "string"
+                      
+                  },
+                  "ula_prefix": {
+                      "type": "string",
+                      "format":"ipv4"
+                  }
+              }
+          },
+          "hardware": {
+              "type": "object",
+              "title": "Hardware",
+              "required":
+                          [
+                              "manufacturer",
+                              "model",
+                              "version",
+                              "cpu"  
+                          ],
+              "additionalProperties": true,
+              "properties": {
+                  "manufacturer": {
+                      "type": "string"
+                  },
+                  "model": {
+                      "type": "string",
+                      "pattern": "[a-zA-Z]{5,10}"
+                  },
+                  "version": {
+                    "type": "string",
+                    "pattern": "[0-9][.][0-9]{1,2}"
+                },
+                  "cpu": {
+                      "type": "string"
+                  }
+              }
+          },
+          "operating_system": {
+              "type": "object",
+              "title": "Operating System",
+              "required":[
+                  "name",
+                  "kernel",
+                  "version",
+                  "description"
+              ],
+              "additionalProperties": true,
+              "properties": {
+                  "name": {
+                      "type": "string", 
+                      "enum":[
+                          "Aqua","Little Boi","King Kang"
+                      ]
+                  },
+                  "kernel": {
+                      "type": "string",
+                      "enum":[
+                          "Darwin","SPARTAN","XNU","Trix","Windows NT"
+                      ]
+                  },
+                  "version": {
+                    "type": "string",
+                    "pattern": "[0-9][.][0-9]{1,2}"
+                },
+                  "revision": {
+                      "type": "string"
+                  },
+                  "description": {
+                      "type": "string"
+                  }
+              }
+          },
+          "radios": {
+              "type": "array",
+              "title": "Radios",
+              "uniqueItems": true,
+              "minItems":5,
+              "maxItems":10,
+              "additionalItems": true,
+              "items": {
+                  "type": "object",
+                  "title": "Radio",
+                  "additionalProperties": true,
+                  "required": [
+                      "name",
+                      "protocol",
+                      "channel",
+                      "channel_width",
+                      "tx_power",
+                      "country",
+                      "disabled"
+                  ],
+                  "properties": {
+                      "name": {
+                          "type": "string",
+                          "enum": [
+                              "The Bear","WVAQ","Jamz","WKDF","LOTR","The Shire","Elevator Music","Killroys Truck station"
+                          ]
+                      },
+                      "protocol": {
+                          "type": "string",
+                          "pattern": "[A-Z]{3,4}"
+                      },
+                      "phy": {
+                          "type": "string",
+                          "enum": ["1-Wire","ARINC 818","Etherloop","DSL"]
+                      },
+                      "channel": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10000
+                      },
+                      "channel_width": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                      },
+                      "tx_power": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 1000
+                      },
+                      "country": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 2
+                      },
+                      "disabled": {
+                          "type": "boolean",
+                          "default": false
+                      }
+                  }
+              }
+          },
+          "interfaces": {
+              "type": "array",
+              "title": "Interfaces",
+              "uniqueItems": true,
+              "minimum": 3,
+              "additionalItems": true,
+              "items": {
+                  "oneOf": [
+                    {
+                      "title": "Network interface",
+                      "allOf": [
+                          {
+                              "required":[
+                                  "type"
+                              ],
+                              "properties": {
+                                  "type": {
+                                      "type": "string",
+                                      "enum": [
+                                          "ethernet",
+                                          "virtual",
+                                          "loopback",
+                                          "other"
+                                      ]
+                                  }
+                              }
+                          },
+                          {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "required": [
+                                "name",
+                                "mac",
+                                "mtu",
+                                "type",
+                                "txqueuelen",
+                                "autostart",
+                                "disabled",
+                                "addresses"
+              
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "maxLength": 15,
+                                    "pattern": "^[^\\s]*$"
+                                },
+                                "mac": {
+                                  "type": "string",
+                                  "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                              },
+                                "mtu": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "default": 1500
+                                },
+                                "txqueuelen": {
+                                    "type": "integer"
+                                },
+                                "autostart": {
+                                    "type": "boolean",
+                                    "default": true
+                                },
+                                "disabled": {
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "addresses": {
+                                    "type": "array",
+                                    "title": "Addresses",
+                                    "uniqueItems": true,
+                                    "additionalItems": true,
+                                    "items": {
+                                        "type": "object",
+                                        "title": "Address",
+                                        "additionalProperties": true,
+                                        "required": [
+                                            "proto",
+                                            "family",
+                                            "address",
+                                            "mask",
+                                            "gateway"
+              
+                                        ],
+                                        "properties": {
+                                            "proto": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "static",
+                                                    "dhcp"
+                                                ]
+                                            },
+                                            "family": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ipv4",
+                                                    "ipv6"
+                                                ]
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "format":"ipv6"
+                                            },
+                                            "mask": {
+                                                "type": "integer",
+                                                "minimum":0,
+                                                "maximum": 1000
+                                            },
+                                            "gateway": {
+                                              "type": "string",
+                                              "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                                          }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                      ]
+                  },
+                  {
+                    "title": "Wireless interface",
+                    "allOf": [
+                        {"required":["type"],
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["wireless"],
+                                    "default": "wireless"
+                                }
+                            }
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "required": [
+                              "name",
+                              "mac",
+                              "mtu",
+                              "type",
+                              "txqueuelen",
+                              "autostart",
+                              "disabled",
+                              "addresses"
+            
+                          ],
+                          "properties": {
+                              "name": {
+                                  "type": "string",
+                                  "maxLength": 15,
+                                  "pattern": "^[^\\s]*$"
+                              },
+                              "mac": {
+                                "type": "string",
+                                "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                            },
+                              "mtu": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "default": 1500
+                              },
+                              "txqueuelen": {
+                                  "type": "integer"
+                              },
+                              "autostart": {
+                                  "type": "boolean",
+                                  "default": true
+                              },
+                              "disabled": {
+                                  "type": "boolean",
+                                  "default": false
+                              },
+                              "addresses": {
+                                  "type": "array",
+                                  "title": "Addresses",
+                                  "uniqueItems": true,
+                                  "additionalItems": true,
+                                  "items": {
+                                      "type": "object",
+                                      "title": "Address",
+                                      "additionalProperties": true,
+                                      "required": [
+                                          "proto",
+                                          "family",
+                                          "address",
+                                          "mask",
+                                          "gateway"
+            
+                                      ],
+                                      "properties": {
+                                          "proto": {
+                                              "type": "string",
+                                              "enum": [
+                                                  "static",
+                                                  "dhcp"
+                                              ]
+                                          },
+                                          "family": {
+                                              "type": "string",
+                                              "enum": [
+                                                  "ipv4",
+                                                  "ipv6"
+                                              ]
+                                          },
+                                          "address": {
+                                              "type": "string",
+                                              "format":"ipv6"
+                                          },
+                                          "mask": {
+                                              "type": "integer",
+                                              "minimum":0,
+                                              "maximum": 1000
+                                          },
+                                          "gateway": {
+                                            "type": "string",
+                                            "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                                        }
+                                      }
+                                  }
+                              }
+                          }
+                      },
+                        {"required":["wireless"],
+                            "properties": {
+                                "wireless": {
+                                    "type": "object",
+                                    "title": "Wireless Interface",
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "radio",
+                                        "mode",
+                                        "ssid",
+                                        "bssid",
+                                        "hidden",
+                                        "ack_distance",
+                                        "rts_threshold",
+                                        "frag_threshold",
+                                        "encryption"
+      
+                                    ],
+                                    "properties": {
+                                        "radio": {
+                                            "type": "string"
+                                        },
+                                        "mode": {
+                                            "type": "string",
+                                            "enum": [
+                                                "access_point",
+                                                "station",
+                                                "adhoc",
+                                                "wds",
+                                                "monitor",
+                                                "802.11s"
+                                            ]
+                                        },
+                                        "ssid": {
+                                            "type": "string",
+                                            "maxLength": 32
+                                        },
+                                        "bssid": {
+                                          "type": "string",
+                                          "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                                      },
+                                        "hidden": {
+                                            "type": "boolean",
+                                            "default": false
+                                        },
+                                        "ack_distance": {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        },
+                                        "rts_threshold": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 2346
+                                        },
+                                        "frag_threshold": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 2346
+                                        },
+                                        "encryption": {
+                                            "type": "object",
+                                            "title": "Encryption",
+                                            "required": [
+                                                "protocol",
+                                                "key",
+                                                "cipher",
+                                                "disabled"
+                                            ],
+                                            "properties": {
+                                                "protocol": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "wep_open",
+                                                        "wep_shared",
+                                                        "wpa_personal",
+                                                        "wpa2_personal",
+                                                        "wpa_personal_mixed",
+                                                        "wpa_enterprise",
+                                                        "wpa2_enterprise",
+                                                        "wpa_enterprise_mixed",
+                                                        "wps"
+                                                    ]
+                                                },
+                                                "key": {
+                                                    "type": "string"
+                                                },
+                                                "cipher": {
+                                                    "type": "string"
+                                                },
+                                                "disabled": {
+                                                    "type": "boolean",
+                                                    "default": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                  "title": "Bridge interface",
+                  "required": [
+                      "bridge_members"
+                  ],
+                  "allOf": [
+                      {
+                          "properties": {
+                              "type": {
+                                  "type": "string",
+                                  "enum": ["bridge"]
+                              }
+                          }
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "required": [
+                            "name",
+                            "mac",
+                            "mtu",
+                            "type",
+                            "txqueuelen",
+                            "autostart",
+                            "disabled",
+                            "addresses"
+          
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "maxLength": 15,
+                                "pattern": "^[^\\s]*$"
+                            },
+                            "mac": {
+                              "type": "string",
+                              "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                          },
+                            "mtu": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "default": 1500
+                            },
+                            "txqueuelen": {
+                                "type": "integer"
+                            },
+                            "autostart": {
+                                "type": "boolean",
+                                "default": true
+                            },
+                            "disabled": {
+                                "type": "boolean",
+                                "default": false
+                            },
+                            "addresses": {
+                                "type": "array",
+                                "title": "Addresses",
+                                "uniqueItems": true,
+                                "additionalItems": true,
+                                "items": {
+                                    "type": "object",
+                                    "title": "Address",
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "proto",
+                                        "family",
+                                        "address",
+                                        "mask",
+                                        "gateway"
+          
+                                    ],
+                                    "properties": {
+                                        "proto": {
+                                            "type": "string",
+                                            "enum": [
+                                                "static",
+                                                "dhcp"
+                                            ]
+                                        },
+                                        "family": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ipv4",
+                                                "ipv6"
+                                            ]
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "format":"ipv6"
+                                        },
+                                        "mask": {
+                                            "type": "integer",
+                                            "minimum":0,
+                                            "maximum": 1000
+                                        },
+                                        "gateway": {
+                                          "type": "string",
+                                          "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+                                      }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                      {
+                          "properties": {
+                              "bridge_members": {
+                                  "type": "array",
+                                  "title": "Bridge Members",
+                                  "uniqueItems": true,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 15,
+                                    "pattern": "^[^\\s]*$"
+                                }
+                              }
+                          }
+                      }
+                  ]
+              }
+                  ]
+              }
+          },
+          "routes": {
+              "type": "array",
+              "title": "Routes",
+              "uniqueItems": true,
+              "additionalItems": true,
+              "items": {
+                  "type": "object",
+                  "title": "Route",
+                  "additionalProperties": true,
+                  "required": [
+                      "device",
+                      "destination",
+                      "next"
+                  ],
+                  "properties": {
+                      "device": {
+                          "type": "string",
+                          "format":"ipv6"
+                      },
+                      "next": {
+                          "type": "string",
+                          "format":"ipv6"
+                      },
+                      "destination": {
+                          "type": "string",
+                          "format":"ipv6"
+                      }
+                  }
+              }
+          },
+          "dns_servers": {
+              "title": "DNS Servers",
+              "type": "array",
+              "uniqueItems": true,
+              "additionalItems": true,
+              "items": {
+                  "type": "string",
+                  "pattern": "[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}"
+              }
+          },
+          "dns_search": {
+              "title": "DNS Search",
+              "type": "array",
+              "uniqueItems": true,
+              "additionalItems": true,
+              "items": {
+                  "type": "string",
+                  "pattern": "[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}"
+              }
+          }
+      }
+    },
+    "DeviceMonitoring": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+          "type",
+          "general",
+          "resources",
+          "interfaces"
+      ],
+      "properties": {
+          "type": {
+              "type": "string",
+              "enum": ["DeviceMonitoring"]
+          },
+          "general": {
+              "type": "object",
+              "title": "General",
+              "additionalProperties": true,
+              "required":[
+                  "local_time",
+                  "uptime"
+              ],
+              "properties": {
+                  "local_time": {
+                      "type": "integer"
+                  },
+                  "uptime": {
+                      "type": "integer",
+                      "minimum": 0
+                  }
+              }
+          },
+          "resources": {
+              "type": "object",
+              "title": "Resources",
+              "additionalProperties": true,
+              "required":[
+                  "load",
+                  "memory",
+                  "swap",
+                  "connections",
+                  "processes",
+                  "cpu",
+                  "flash",
+                  "storage"
+              ],
+              "properties": {
+                  "load": {
+                      "type": "array",
+                      "items": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1000,
+                          "minItems": 3,
+                          "maxItems": 3
+                      }
+                  },
+                  "memory": {
+                      "id": "memory",
+                      "type": "object",
+                      "properties": {
+                          "total": {
+                              "type": "integer",
+                              "minimum": 4096,
+                              "maximum": 4096
+                          },
+                          "free": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4096
+                          },
+                          "buffered": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4096
+                          },
+                          "cache": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4096
+                          }
+                      }
+                  },
+                  "swap": {
+                      "type": "object",
+                      "properties": {
+                          "total": {
+                              "type": "integer",
+                              "minimum": 4096,
+                              "maximum": 4096
+                          },
+                          "free": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4096
+                          }
+                      }
+                  },
+                  "connections": {
+                      "type": "object",
+                      "required":[
+                          "ipv4",
+                          "ipv6"
+                      ],
+  
+                      "properties": {
+                          "ipv4": {
+                              "type": "object",
+                              "required":[
+                                  "tcp",
+                                  "udp"
+                              ],
+                              "properties": {
+                                  "tcp": {
+                                      "type": "integer",
+                                      "minimum": 0
+                                  },
+                                  "udp": {
+                                      "type": "integer",
+                                      "minimum": 0
+                                  }
+                              }
+                          },
+                          "ipv6": {
+                              "type": "object",
+                              "required":[
+                                  "tcp",
+                                  "udp"
+                              ],
+                              "properties": {
+                                  "tcp": {
+                                      "type": "integer",
+                                      "minimum": 0
+                                  },
+                                  "udp": {
+                                      "type": "integer",
+                                      "minimum": 0
+                                  }
+                              }
+                          }
+                      }
+                  },
+                  "processes": {
+                      "type": "object",
+                      "required":[
+                          "running",
+                          "sleeping",
+                          "blocked",
+                          "zombie",
+                          "stopped",
+                          "paging"
+                      ],
+                      "properties": {
+                          "running": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "sleeping": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "blocked": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "zombie": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "stopped": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "paging": {
+                              "type": "integer",
+                              "minimum": 0
+                          }
+                      }
+                  },
+                  "cpu": {
+                      "type": "object",
+                      "required":[
+                          "frequency",
+                          "user",
+                          "system",
+                          "nice",
+                          "idle",
+                          "iowait",
+                          "irq",
+                          "softirq"
+                      ],
+                      "properties": {
+  
+                          "frequency": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "user": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "system": {
+                              "type": "integer",
+                              "minimum": 0
+                          },
+                          "nice": {
+                               "type": "integer",
+                              "minimum": 0
+                          },
+                          "idle": {
+                               "type": "integer",
+                              "minimum": 0
+                          },
+                          "iowait": {
+                               "type": "integer",
+                              "minimum": 0
+                          },
+                          "irq": {
+                               "type": "integer",
+                              "minimum": 0
+                          },
+                          "softirq": {
+                               "type": "integer",
+                              "minimum": 0
+                          }
+                      }
+                  },
+                  "flash": {
+                      "type": "object",
+                      "required":[
+                          "total",
+                          "free"
+                      ],
+                      "properties": {
+                          "total": {
+                              "type": "integer",
+                              "minimum": 4096
+                          },
+                          "free": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4096
+                          }
+                      }
+                  },
+                  "storage": {
+                      "type": "object",
+                      "required":[
+                          "total",
+                          "free"
+                      ],
+                      "properties": {
+                          "total": {
+                              "type": "integer",
+                              "minimum": 4096
+                          },
+                          "free": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4096
+                          }
+                      }
+                  }
+              }
+          },
+          "interfaces": {
+              "type": "array",
+              "title": "Interfaces",
+              "uniqueItems": true,
+              "additionalItems": true,
+              "items": {
+                  "type": "object",
+                  "title": "Interface",
+                  "minItems":20,
+                  "additionalProperties": true,
+                  "required": [
+                      "name",
+                      "uptime",
+                      "statistics"
+                  ],
+                  "properties": {
+                      "name": {
+                          "type": "string"
+                      },
+                      "uptime": {
+                          "type": "integer",
+                          "minimum": 0
+                      },
+                      "statistics": {
+                          "type": "object",
+                          "required":[
+                              "collisions",
+                              "rx_frame_errors",
+                              "tx_compressed",
+                              "rx_compressed",
+                              "multicast",
+                              "rx_length_errors",
+                              "tx_dropped",
+                              "rx_bytes",
+                              "rx_missed_errors",
+                              "tx_errors",
+                              "rx_over_errors",
+                              "tx_fifo_errors",
+                              "rx_crc_errors",
+                              "rx_packets",
+                              "tx_heartbeat_errors",
+                              "rx_dropped",
+                              "tx_aborted_errors",
+                              "tx_packets",
+                              "rx_errors",
+                              "tx_bytes",
+                              "tx_window_errors",
+                              "rx_fifo_errors",
+                              "tx_carrier_errors"
+  
+                          ],
+                          "properties": {
+                              "collisions": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_frame_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_compressed": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "multicast": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_length_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_dropped": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_bytes": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_missed_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_compressed": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_over_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_fifo_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_crc_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_packets": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_heartbeat_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_dropped": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_aborted_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_packets": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_bytes": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_window_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "rx_fifo_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              },
+                              "tx_carrier_errors": {
+                                  "type": "integer",
+                                  "minimum": 0
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+    },
+    "NetworkRoutes": {
+    "$schema": "http://json-schema.org/schema#",
+    "Routes": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "collection"  
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["NetworkCollection"]
+        },
+        "collection": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "Route": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "type",
+                "protocol",
+                "version",
+                "revision",
+                "metric",
+                "router_id",
+                "routes"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["NetworkRoutes"]
+                },
+                "protocol": {
+                  "type": "string",
+                  "pattern": "^[a-z]{4}$[0-9]"
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "0[.][0-9][.][0-9]"
+                },
+                "metric": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}$_^[a-z]{3}$_metric"
+                },
+                "revision": {
+                  "type": "string",
+                  "maxLength": 12,
+                  "pattern": "v[0-9][.,][0-9][.,][0-9][_-][0-9][-_][0-9][a-z0-9]+"
+                },
+                "router_id": {
+                  "type": "string",
+                  "format": "ipv4"
+                },
+                "topology_id": {
+                  "type": "string"
+                },
+                "routes": {
+                  "type": "array",
+                  "title": "Routes",
+                  "minItems":4,
+                  "items": {
+                    "type": "object",
+                    "title": "Route",
+                    "additionalProperties": true,
+                    "required": [
+                      "destination",
+                      "next",
+                      "cost",
+                      "device"
+                    ],
+                    "properties": {
+                      "destination": {
+                        "type": "string",
+                        "format": "ipv4"
+                      },
+                      "next": {
+                        "type": "string",
+                        "format": "ipv4"
+                      },
+                      "device": {
+                        "type": "string",
+                        "pattern": "eth[0-9]"
+                      },
+                      "cost": {
+                        "type": "integer",
+                        "minimum": 999999
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "cost_txt": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    },
+    "NetworkGraph":{
+        "$schema": "http://json-schema.org/schema#",
+        "Graphs": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "collection"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["NetworkCollection"]
+            },
+            "collection": {
+              "type": "array",
+              "maxItems": 1,
+              "items": {
+                "Graph": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": [
+                    "type",
+                    "protocol",
+                    "version",
+                    "metric",
+                    "nodes",
+                    "links"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["NetworkGraph"]
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "maxLength": 4,
+                      "pattern": "[A-Z]+"
+                    },
+                    "version": {
+                      "type": "string",
+                      "pattern": "[0-9][.][0-9][.][0-9][.][0-9]"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "metric": {
+                      "type": "string",
+                      "pattern": "[A-Z]{3}"
+                    },
+                    "router_id": {
+                      "type": "string"
+                    },
+                    "topology_id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "nodes": {
+                      "type": "array",
+                      "minItems":51,
+                      "maxItems": 51,
+                      "uniqueItems": true,
+                      "title": "Nodes",
+                      "items": {
+                          "title": "Node",
+                        "type": "object",
+                        "additionalProperties": true,
+                        "required": [
+                          "id"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string", 
+                            "enum": [
+                              "123.123.123.0",
+                              "123.123.123.1",
+                              "123.123.123.2",
+                              "123.123.123.3",
+                              "123.123.123.4",
+                              "123.123.123.5",
+                              "123.123.123.6",
+                              "123.123.123.7",
+                              "123.123.123.8",
+                              "123.123.123.9",
+                              "123.123.123.10",
+                              "123.123.123.11",
+                              "123.123.123.12",
+                              "123.123.123.13",
+                              "123.123.123.14",
+                              "123.123.123.15",
+                              "123.123.123.16",
+                              "123.123.123.17",
+                              "123.123.123.18",
+                              "123.123.123.19",
+                              "123.123.123.20",
+                              "123.123.123.21",
+                              "123.123.123.22",
+                              "123.123.123.23",
+                              "123.123.123.24",
+                              "123.123.123.25",
+                              "123.123.123.26",
+                              "123.123.123.27",
+                              "123.123.123.28",
+                              "123.123.123.29",
+                              "123.123.123.30",
+                              "123.123.123.31",
+                              "123.123.123.32",
+                              "123.123.123.33",
+                              "123.123.123.34",
+                              "123.123.123.35",
+                              "123.123.123.36",
+                              "123.123.123.37",
+                              "123.123.123.38",
+                              "123.123.123.39",
+                              "123.123.123.40",
+                              "123.123.123.41",
+                              "123.123.123.42",
+                              "123.123.123.43",
+                              "123.123.123.44",
+                              "123.123.123.45",
+                              "123.123.123.46",
+                              "123.123.123.47",
+                              "123.123.123.48",
+                              "123.123.123.49",
+                              "123.123.123.50"
+                            ]
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "local_addresses": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "properties": {
+                            "type": "object",
+                            "additionalProperties": true
+                            }
+                          }
+                        }
+                    },
+                    "links": {
+                        "type": "array",
+                        "title": "Links",
+                        "minItems":40,
+                        "maxItems":90,
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "title": "Link",
+                            "additionalProperties": true,
+                            "required": [
+                                "source",
+                                "target",
+                                "cost"
+                            ],
+                            "properties": {
+                                "source": {
+                                    "type": "string",
+                                    "enum": [
+                                      "123.123.123.0",
+                                      "123.123.123.1",
+                                      "123.123.123.2",
+                                      "123.123.123.3",
+                                      "123.123.123.4",
+                                      "123.123.123.5",
+                                      "123.123.123.6",
+                                      "123.123.123.7",
+                                      "123.123.123.8",
+                                      "123.123.123.9",
+                                      "123.123.123.10",
+                                      "123.123.123.11",
+                                      "123.123.123.12",
+                                      "123.123.123.13",
+                                      "123.123.123.14",
+                                      "123.123.123.15",
+                                      "123.123.123.16",
+                                      "123.123.123.17",
+                                      "123.123.123.18",
+                                      "123.123.123.19",
+                                      "123.123.123.20",
+                                      "123.123.123.21",
+                                      "123.123.123.22",
+                                      "123.123.123.23",
+                                      "123.123.123.24",
+                                      "123.123.123.25",
+                                      "123.123.123.26",
+                                      "123.123.123.27",
+                                      "123.123.123.28",
+                                      "123.123.123.29",
+                                      "123.123.123.30",
+                                      "123.123.123.31",
+                                      "123.123.123.32",
+                                      "123.123.123.33",
+                                      "123.123.123.34",
+                                      "123.123.123.35",
+                                      "123.123.123.36",
+                                      "123.123.123.37",
+                                      "123.123.123.38",
+                                      "123.123.123.39",
+                                      "123.123.123.40",
+                                      "123.123.123.41",
+                                      "123.123.123.42",
+                                      "123.123.123.43",
+                                      "123.123.123.44",
+                                      "123.123.123.45",
+                                      "123.123.123.46",
+                                      "123.123.123.47",
+                                      "123.123.123.48",
+                                      "123.123.123.49",
+                                      "123.123.123.50"
+                                    ]
+                                },
+                                "target": {
+                                    "type": "string",
+                                    "enum": [
+                                      "123.123.123.0",
+                                      "123.123.123.1",
+                                      "123.123.123.2",
+                                      "123.123.123.3",
+                                      "123.123.123.4",
+                                      "123.123.123.5",
+                                      "123.123.123.6",
+                                      "123.123.123.7",
+                                      "123.123.123.8",
+                                      "123.123.123.9",
+                                      "123.123.123.10",
+                                      "123.123.123.11",
+                                      "123.123.123.12",
+                                      "123.123.123.13",
+                                      "123.123.123.14",
+                                      "123.123.123.15",
+                                      "123.123.123.16",
+                                      "123.123.123.17",
+                                      "123.123.123.18",
+                                      "123.123.123.19",
+                                      "123.123.123.20",
+                                      "123.123.123.21",
+                                      "123.123.123.22",
+                                      "123.123.123.23",
+                                      "123.123.123.24",
+                                      "123.123.123.25",
+                                      "123.123.123.26",
+                                      "123.123.123.27",
+                                      "123.123.123.28",
+                                      "123.123.123.29",
+                                      "123.123.123.30",
+                                      "123.123.123.31",
+                                      "123.123.123.32",
+                                      "123.123.123.33",
+                                      "123.123.123.34",
+                                      "123.123.123.35",
+                                      "123.123.123.36",
+                                      "123.123.123.37",
+                                      "123.123.123.38",
+                                      "123.123.123.39",
+                                      "123.123.123.40",
+                                      "123.123.123.41",
+                                      "123.123.123.42",
+                                      "123.123.123.43",
+                                      "123.123.123.44",
+                                      "123.123.123.45",
+                                      "123.123.123.46",
+                                      "123.123.123.47",
+                                      "123.123.123.48",
+                                      "123.123.123.49",
+                                      "123.123.123.50"
+                                    ]
+                                },
+                                "cost": {
+                                    "type": "number",
+                                    "minimum": 999999
+                                },
+                                "cost_text": {
+                                    "type": "string"
+                                },
+                                "properties": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "GeoLocations":{
+          "id": "http://json-schema.org/schema#",
+            "description": "A list of geo-positions",
+            "Locations": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "collection"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["NetworkCollection"]
+                },
+                "collection": {
+                  "type": "array",
+                  "items": {
+                    "Location":{
+                      "type": "object",
+                      "description": "A single location including id, position, time, speed and status",
+                      "additionalProperties": true,
+                      "required": [
+                        "type",
+                        "Index",
+                        "Status",
+                        "Originator",
+                        "Position",
+                        "Time"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "description": "type of netjson object",
+                          "enum": ["GeoLocation"]
+                        },
+                        "Originator" : {
+                          "type": "string",
+                          "description": "Originator that generates this position, same as route_id in netjsoninfo routes/graph-nodes"
+                        },
+                        "Index": {
+                          "type": "integer",
+                          "description": "Position index generated by the originator",
+                          "minimum": 0
+                        },
+                        "Status": {
+                          "type": "integer",
+                          "description": "Originator specific status field",
+                          "minimum": 0,
+                          "maximum": 65535
+                        },
+                        "Position": {
+                          "type": "object",
+                          "description": "Position relative to Earth",
+                          "additionalProperties": true,
+                          "required": [
+                            "Latitude",
+                            "Longitude",
+                            "AboveSeaLevel"
+                          ],
+                          "properties": {
+                            "Latitude": {
+                              "type": "number",
+                              "description": "North/South position in degrees relative to equator",
+                              "minimum": -90,
+                              "maximum": 90
+                            },
+                            "Longitude": {
+                              "type": "number",
+                              "description": "East/West position in degrees relative to Greenwich",
+                              "minimum": -180,
+                              "maximum": 180,
+                              "exclusiveMaximum": true
+                            },
+                            "AboveSeaLevel": {
+                              "type": "integer",
+                              "description": "Height in meters relative to sea level",
+                              "minimum": 0,
+                              "maximum":8848
+                            }
+                          }
+                        },
+                        "Time": {
+                          "type": "object",
+                          "description": "UTC timestamp when this position was defined",
+                          "additionalProperties": true,
+                          "required": [
+                            "Year4Digit",
+                            "MonthNumeric",
+                            "Day",
+                            "HourTime",
+                            "MinuteTime",
+                            "SecondTime"
+                          ],
+                          "properties": {
+                            "Year4Digit": {
+                              "type": "integer",
+                              "description": "Year when the position was defined"
+                            },
+                            "MonthNumeric": {
+                              "type": "integer",
+                              "description": "Month of the year when the position was defined",
+                              "minimum": 1,
+                              "maximum": 12
+                            },
+                            "Day": {
+                              "type": "integer",
+                              "description": "Day of month when the position was defined",
+                              "minimum": 1,
+                              "maximum": 31
+                            },
+                            "HourTime": {
+                              "type": "integer",
+                              "description": "Hour of the day when the position was defined",
+                              "minimum": 0,
+                              "maximum": 23
+                            },
+                            "MinuteTime": {
+                              "type": "integer",
+                              "description": "Minute of the hour when the position was defined",
+                              "minimum": 0,
+                              "maximum": 59
+                            },
+                            "SecondTime": {
+                              "type": "integer",
+                              "description": "Second of the minute when the position was defined, can include leap seconds",
+                              "minimum": 0,
+                              "maximum": 61
+                            }
+                          }
+                        },
+                        "Movement": {
+                          "type": "object",
+                          "description": "Movement of the position relative to the ground",
+                          "additionalProperties": true,
+                          "required": [
+                            "Bearing",
+                            "Speed"
+                          ],
+                          "properties": {
+                            "Bearing": {
+                              "type": "number",
+                              "description": "Direction of movement in degrees relative to geographic north",
+                              "minimum": 0,
+                              "maximum": 360,
+                              "exclusiveMaximum": true
+                            },
+                            "Speed": {
+                              "type": "number",
+                              "description": "Speed in meters per second above the ground without height change",
+                              "minimum": 0
+                            },
+                            "VerticalChange": {
+                              "type": "number",
+                              "description": "Altitude change in meters per second"
+                            }
+                          }
+                        }
+                      }
+                    } 
+                  }
+                }
+              }
+            }
+    },
+    "NetworkDomains":{
+      "id": "http://json-schema.org/schema#",
+      "description": "Overview of traffic domains",
+        "Domains": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "collection"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["NetworkCollection"]
+            },
+            "collection": {
+              "type": "array",
+              "minItems":5,
+              "items": {
+                "Domain": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": [
+                      "protocol",
+                      "domain"
+                    ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "type of netjson object",
+                      "enum": [ "NetworkDomain" ]
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "routing protocol running on the node"
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "Version of the routing protocol"
+                    },
+                    "revision": {
+                      "type": "string",
+                      "description": "Exact revision of the routing protocol"
+                    },
+                    "domain": {
+                      "type": "array",
+                      "description": "Array of domains describing the multi-topology options on the node",
+                      "items": {
+                        "type": "object",
+                        "description": "Description of one domain",
+                        "additionalProperties": true,
+                        "required": [
+                          "number",
+                          "router_id",
+                          "router_addr",
+                          "mpr"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Topology ID of the domain"
+                          },
+                          "number": {
+                            "type": "integer",
+                            "description": "Numeric ID of the domain",
+                            "minimum": 0,
+                            "maximum": 255
+                          },
+                          "router_id": {
+                            "type": "string",
+                            "description": "Router id of the local router for this domain"
+                          },
+                          "router_addr": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "description": "IPv4 address of the local router for this domain",
+                                "format": "ipv4"
+                              },
+                              {
+                                "type": "string",
+                                "description": "IPv6 address of the local router for this domain",
+                                "format": "ipv6"
+                              }
+                            ]
+                          },
+                          "metric": {
+                            "type": "string",
+                            "description": "Routing metric active on this domain"
+                          },
+                          "mpr": {
+                            "type": "string",
+                            "description": "MPR algorithm active on this domain"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+  "additionalProperties": true,
+  "required": [
+      "type",
+      "collection"
+  ],
+  "properties": {
+      "type": {
+          "type": "string",
+          "enum": ["NetworkCollection"]
+      },
+      "collection": {
+          "type": "array",
+          "title": "NetJSON Objects",
+          "minItems":1,
+          "maxItems":3,
+          "uniqueItems": true,
+          "additionalItems": true,
+          "items": {
+              "type": "object",
+              "title": "NetJSON Object",
+              "additionalProperties": true,
+              "required": [
+                  "type"
+              ],
+              "properties": {
+                  "type": {
+                      "type": "object",
+                      "title": "Type",
+                      "required":[
+                          "NetworkDomains",
+                          "GeoLocations",
+                          "NetworkGraph",
+                          "NetworkRoutes",
+                          "DeviceMonitoring",
+                          "DeviceConfiguration"
+
+                      ],
+                      "properties": {
+                        "NetworkDomains":{
+                        "$ref": "#/definitions/NetworkDomains"
+                        },
+                        "GeoLocations":{
+                        "$ref":"#/definitions/GeoLocations"
+                        },
+                        "NetworkGraph":{
+                        "$ref":"#/definitions/NetworkGraph"
+                        },
+                        "NetworkRoutes":{
+                        "$ref":"#/definitions/NetworkRoutes"
+                        },
+                        "DeviceMonitoring":{
+                        "$ref":"#/definitions/DeviceMonitoring"
+                        },
+                        "DeviceConfiguration":{
+                          "$ref":"#/definitions/DeviceConfiguration"
+                        }
+                      }
+                  }
+              }
+          }
+      }
+  }
+}

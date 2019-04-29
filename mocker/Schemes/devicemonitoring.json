@@ -1,0 +1,418 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+        "type",
+        "general",
+        "resources",
+        "interfaces"
+    ],
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": ["DeviceMonitoring"]
+        },
+        "general": {
+            "type": "object",
+            "title": "General",
+            "additionalProperties": true,
+            "required":[
+                "local_time",
+                "uptime"
+            ],
+            "properties": {
+                "local_time": {
+                    "type": "integer"
+                },
+                "uptime": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+        "resources": {
+            "type": "object",
+            "title": "Resources",
+            "additionalProperties": true,
+            "required":[
+                "load",
+                "memory",
+                "swap",
+                "connections",
+                "processes",
+                "cpu",
+                "flash",
+                "storage"
+            ],
+            "properties": {
+                "load": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000,
+                        "minItems": 3,
+                        "maxItems": 3
+                    }
+                },
+                "memory": {
+                    "id": "memory",
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "minimum": 4096,
+                            "maximum": 4096
+                        },
+                        "free": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 4096
+                        },
+                        "buffered": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 4096
+                        },
+                        "cache": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 4096
+                        }
+                    }
+                },
+                "swap": {
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "minimum": 4096,
+                            "maximum": 4096
+                        },
+                        "free": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 4096
+                        }
+                    }
+                },
+                "connections": {
+                    "type": "object",
+                    "required":[
+                        "ipv4",
+                        "ipv6"
+                    ],
+
+                    "properties": {
+                        "ipv4": {
+                            "type": "object",
+                            "required":[
+                                "tcp",
+                                "udp"
+                            ],
+                            "properties": {
+                                "tcp": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                },
+                                "udp": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }
+                            }
+                        },
+                        "ipv6": {
+                            "type": "object",
+                            "required":[
+                                "tcp",
+                                "udp"
+                            ],
+                            "properties": {
+                                "tcp": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                },
+                                "udp": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                "processes": {
+                    "type": "object",
+                    "required":[
+                        "running",
+                        "sleeping",
+                        "blocked",
+                        "zombie",
+                        "stopped",
+                        "paging"
+                    ],
+                    "properties": {
+                        "running": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "sleeping": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "blocked": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "zombie": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "stopped": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "paging": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                },
+                "cpu": {
+                    "type": "object",
+                    "required":[
+                        "frequency",
+                        "user",
+                        "system",
+                        "nice",
+                        "idle",
+                        "iowait",
+                        "irq",
+                        "softirq"
+                    ],
+                    "properties": {
+
+                        "frequency": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "user": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "system": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "nice": {
+                             "type": "integer",
+                            "minimum": 0
+                        },
+                        "idle": {
+                             "type": "integer",
+                            "minimum": 0
+                        },
+                        "iowait": {
+                             "type": "integer",
+                            "minimum": 0
+                        },
+                        "irq": {
+                             "type": "integer",
+                            "minimum": 0
+                        },
+                        "softirq": {
+                             "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                },
+                "flash": {
+                    "type": "object",
+                    "required":[
+                        "total",
+                        "free"
+                    ],
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "minimum": 4096
+                        },
+                        "free": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 4096
+                        }
+                    }
+                },
+                "storage": {
+                    "type": "object",
+                    "required":[
+                        "total",
+                        "free"
+                    ],
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "minimum": 4096
+                        },
+                        "free": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 4096
+                        }
+                    }
+                }
+            }
+        },
+        "interfaces": {
+            "type": "array",
+            "title": "Interfaces",
+            "uniqueItems": true,
+            "additionalItems": true,
+            "items": {
+                "type": "object",
+                "title": "Interface",
+                "minItems":20,
+                "additionalProperties": true,
+                "required": [
+                    "name",
+                    "uptime",
+                    "statistics"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "uptime": {
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    "statistics": {
+                        "type": "object",
+                        "required":[
+                            "collisions",
+                            "rx_frame_errors",
+                            "tx_compressed",
+                            "rx_compressed",
+                            "multicast",
+                            "rx_length_errors",
+                            "tx_dropped",
+                            "rx_bytes",
+                            "rx_missed_errors",
+                            "tx_errors",
+                            "rx_over_errors",
+                            "tx_fifo_errors",
+                            "rx_crc_errors",
+                            "rx_packets",
+                            "tx_heartbeat_errors",
+                            "rx_dropped",
+                            "tx_aborted_errors",
+                            "tx_packets",
+                            "rx_errors",
+                            "tx_bytes",
+                            "tx_window_errors",
+                            "rx_fifo_errors",
+                            "tx_carrier_errors"
+
+                        ],
+                        "properties": {
+                            "collisions": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_frame_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_compressed": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "multicast": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_length_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_dropped": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_bytes": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_missed_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_compressed": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_over_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_fifo_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_crc_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_packets": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_heartbeat_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_dropped": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_aborted_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_packets": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_bytes": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_window_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "rx_fifo_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "tx_carrier_errors": {
+                                "type": "integer",
+                                "minimum": 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
