@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Popup, Icon, Form, Message } from 'semantic-ui-react'
+import { Table, Popup, Icon, Form } from 'semantic-ui-react'
 import _ from 'lodash'
 import Datetime from 'react-datetime'
 import 'moment/locale/nb'
@@ -22,6 +22,8 @@ class Log extends Component {
       formDesc: '',
       formDevIds: [],
       formAdaptIds: [],
+      adaptionIds: [],
+      deviceIds: [],
       formDate: '',
       formDateFrom: '',
       formDateTo: '',
@@ -33,18 +35,6 @@ class Log extends Component {
       { key: 'adaption_id', text: 'Adaption id', value: 'adaption_id' },
       { key: 'description', text: 'Description', value: 'description' },
       { key: 'created', text: 'Date', value: 'created' }
-    ]
-    this.adaptionIds = [
-      { key: 1, text: 1, value: 1 },
-      { key: 2, text: 2, value: 2 },
-      { key: 3, text: 3, value: 3 },
-      { key: 4, text: 4, value: 4 }
-    ]
-    this.deviceIds = [
-      { key: 1, text: 1, value: 1 },
-      { key: 2, text: 2, value: 2 },
-      { key: 3, text: 3, value: 3 },
-      { key: 4, text: 4, value: 4 }
     ]
     this.queryParams = {
       'date': 'formDate',
@@ -84,26 +74,63 @@ class Log extends Component {
       this.fetch()
     )
     // Fetch logs from rest api
-    
+    // map unique id values for headers
+    this.fetch()
+      .then((e) => {
+        let d = JSON.parse(e.target.response)
+        // eslint sucks, but this totally works :ooo
+        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+
+        let adaptionIds = d
+          .map(o => o.adaption_id)
+          .filter((v, i, a) => a.indexOf(v) === i)
+          .map(o => {
+            return { text: o, key: o, value: o }
+          })
+
+        let deviceIds = d
+          .map(o => o.adaption_id)
+          .filter((v, i, a) => a.indexOf(v) === i)
+          .map(o => {
+            return { text: o, key: o, value: o }
+          })
+        this.setState({
+          data: d,
+          deviceIds: deviceIds,
+          adaptionIds: adaptionIds
+        })
+      })
   }
   fetch (query) {
     // not using fetch api cause cypress sucks..
     query = query || ''
     // console.log(query)
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest()
+      xhr.open('GET', 'http://localhost:8090/filtersyslog' + query)
+      xhr.onload = resolve
+      xhr.onerror = reject
+      xhr.send()
+    })
+    // old code below, keep it like we don't have git OMEGALUL
 
-    let xhttp = new XMLHttpRequest({ mozSystem: true })
-    let self = this
-    xhttp.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200) {
-        // Setstate
-        self.setState({ data: JSON.parse(xhttp.responseText) })
-      } else if (this.readyState === 4 && this.status === 404) {
-        // no results
-        self.setState({ data: [] })
-      }
-    }
-    xhttp.open('GET', 'http://localhost:8090/filtersyslog' + query, true)
-    xhttp.send()
+    // let xhttp = new XMLHttpRequest({ mozSystem: true })
+    // let self = this
+    // xhttp.onreadystatechange = function () {
+    //   if (this.readyState === 4 && this.status === 200) {
+    //     // Setstate
+    //     let d = JSON.parse(xhttp.responseText)
+    //     // fuck eslint
+    //     d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+    //     self.setState({ data: d })
+    //     return d
+    //   } else if (this.readyState === 4 && this.status === 404) {
+    //     // no results
+    //     self.setState({ data: [] })
+    //   }
+    // }
+    // xhttp.open('GET', 'http://localhost:8090/filtersyslog' + query, true)
+    // xhttp.send()
   }
   filter () {
     // validate form
@@ -142,6 +169,12 @@ class Log extends Component {
 
     // and then fetch
     this.fetch(queryString)
+      .then(e => {
+        let d = JSON.parse(e.target.response)
+        // eslint sucks, but this totally works :ooo
+        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        this.setState({ data: d })
+      })
   }
   toggleDateRange () {
     this.setState({ dateRange: !this.state.dateRange })
@@ -208,6 +241,12 @@ class Log extends Component {
     })
     // also fetch new ok
     this.fetch()
+      .then(e => {
+        let d = JSON.parse(e.target.response)
+        // eslint sucks, but this totally works :ooo
+        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        this.setState({ data: d })
+      })
   }
   generateDateField (fields) {
     return <Form.Field
@@ -283,26 +322,12 @@ class Log extends Component {
       </div>
     )
   }
-  resetForm = () => {
-    // resets form
-    this.setState({
-      formAdaptIds: [],
-      formDate: '',
-      formDateFrom: '',
-      formDateTo: '',
-      formDesc: '',
-      formDevIds: [],
-      canFilter: true
-    })
-    // also fetch new ok
-    this.fetch()
-  }
 
   render () {
     const { column, data, direction,
       dateRange, formDesc, formAdaptIds,
       formDevIds, formDate, formDateFrom,
-      formDateTo, canFilter } = this.state
+      formDateTo, canFilter, adaptionIds, deviceIds } = this.state
     return (
       <div style={{
         marginLeft: '20vw',
@@ -321,14 +346,14 @@ class Log extends Component {
             value={formDesc}
           />
           <Form.Dropdown
-            options={this.deviceIds}
+            options={deviceIds}
             placeholder="Device ids"
             name="formDevIds"
             value={formDevIds}
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
           <Form.Dropdown
-            options={this.adaptionIds}
+            options={adaptionIds}
             placeholder="Adaption ids"
             name="formAdaptIds"
             value={formAdaptIds}
