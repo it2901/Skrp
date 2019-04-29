@@ -30,15 +30,13 @@ class Log extends Component {
       formDateFrom: '',
       formDateTo: '',
       canFilter: true,
-      logHeaders: []
+      logHeaders: [],
+      liveUpdate: true,
+      liveUpdater: 0
     }
-    // this.logHeaders = [
-    //   { key: 'system_log_id', text: 'Log id', value: 'system_log_id' },
-    //   { key: 'device_id', text: 'Device id', value: 'device_id' },
-    //   { key: 'adaption_id', text: 'Adaption id', value: 'adaption_id' },
-    //   { key: 'description', text: 'Description', value: 'description' },
-    //   { key: 'created', text: 'Date', value: 'created' }
-    // ]
+    // used for live polling
+    this.queryString = ''
+
     this.queryParams = {
       'date': 'formDate',
       'description': 'formDesc',
@@ -178,12 +176,12 @@ class Log extends Component {
       }
     }
     // build string
-    if (queryList.length !== 0) {
+    if (queryList.length) {
       // list not empty
       queryString += '?'
       queryString += queryList.map((o) => Object.keys(o)[0] + '=' + o[Object.keys(o)[0]]).join('&')
     }
-    // console.log(queryString)
+    this.queryString = queryString
 
     // and then fetch
     this.fetch(queryString)
@@ -281,32 +279,6 @@ class Log extends Component {
       renderInput={this.renderDateInput}
     />
   }
-  renderDateInput = (props, name) => {
-    const clear = () => {
-      // props.onChange({ target: { value: '' } })
-      this.setState({ [name]: '' })
-      this.checkIfCanFilter()
-    }
-
-    return (
-      <div style={{ position: 'relative' }}>
-        { !this.state.canFilter && !this.state[name] && <Popup
-          content='Either fill in both date fields, or none'
-          trigger={
-            <Icon color='blue' name='info circle' size="large" style={{ position: 'absolute', 'left': -30, 'top': 7 }}/>
-          }
-
-        />}
-        <Form.Input {...props}
-          data-cy={name}
-          error={!this.state.canFilter && !this.state[name] }
-          icon={
-            <Icon link name={this.state[name] ? 'close' : undefined} onClick={clear} />
-          }
-        />
-      </div>
-    )
-  }
   checkIfCanFilter=() => {
     // timeout cause state is fucked idk
     setTimeout(() => {
@@ -314,31 +286,27 @@ class Log extends Component {
       // console.log(!(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)))
     }, 1)
   }
-  renderDateInput = (props, name) => {
-    const clear = () => {
-      // props.onChange({ target: { value: '' } })
-      this.setState({ [name]: '' })
-      this.checkIfCanFilter()
+  liveUpdateChange () {
+    let liveUpdater = this.state.liveUpdater
+    if (this.state.liveUpdate) {
+      liveUpdater = setInterval(() => {
+        this.fetch(this.queryString)
+          .then(e => {
+            let d = JSON.parse(e.target.response)
+            // eslint sucks, but this totally works :ooo
+            d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+            this.setState({ data: d })
+          })
+      }, 5000)
+      this.setState({
+        liveUpdater: liveUpdater
+      })
+    } else {
+      clearInterval(this.state.liveUpdater)
+      this.setState({
+        liveUpdater: 0
+      })
     }
-
-    return (
-      <div style={{ position: 'relative' }}>
-        { !this.state.canFilter && !this.state[name] && <Popup
-          content='Either fill in both date fields, or none'
-          trigger={
-            <Icon color='blue' name='info circle' size="large" style={{ position: 'absolute', 'left': -30, 'top': 7 }}/>
-          }
-
-        />}
-        <Form.Input {...props}
-          data-cy={name}
-          error={!this.state.canFilter && !this.state[name] }
-          icon={
-            <Icon link name={this.state[name] ? 'close' : undefined} onClick={clear} />
-          }
-        />
-      </div>
-    )
   }
 
   render () {
@@ -463,6 +431,20 @@ class Log extends Component {
             content="Reset"
             negative fluid
             onClick={this.resetForm}
+          />
+          <Form.Button
+            style={{
+              background: this.state.liveUpdate ? 'red' : 'green',
+              color: 'white'
+            }}
+            fluid
+            content='Toggle Live Update'
+            onClick={() => {
+              this.setState(prevState => ({
+                liveUpdate: !prevState.liveUpdate
+              }))
+              this.liveUpdateChange()
+            }}
           />
         </Form>
         <Table sortable celled collapsing style={{ margin: '0', marginLeft: '40px' }}>
