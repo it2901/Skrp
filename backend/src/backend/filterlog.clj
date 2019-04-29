@@ -18,8 +18,14 @@
             [clojure.java.jdbc :as j]))
 
 (defn get-filtered-syslog
-  "Retrieve and filters data from the database table 'system_log'
-  based on input."
+  "Returns filtered data from the database table 'system_log' based on filter input.
+  Valid filter keys are 
+  * device_id
+  * adaption_id
+  * description
+  * date
+  * date_from
+  * date_to"
   [{:keys [device_id adaption_id description date date_from date_to]}]
   (def querystr "SELECT * FROM system_log WHERE")
   (def firstParam true)

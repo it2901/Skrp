@@ -19,7 +19,7 @@
             [clojure.java.jdbc :as j]))
 
 (defn get-syslog
-  "Retrieves entries in the system log table"
+  "Returns entries from the system_log table"
   ([]
    (j/query db "SELECT * FROM system_log"))
   ([date]
@@ -41,16 +41,18 @@
   (j/get-by-id db :device device_id :device_id))
 
 (defn set-device-id
-  "Registers a device in the database"
+  "Inserts a device into database"
   [device_id]
   (j/insert! db :device
              {:device_id device_id}))
 
 (defn get-adaption-from-id
-  "Queries the database for adaption with input as id"
+  "Returns an adaption with id equal to the input"
   [adaption_id]
   (j/get-by-id db :adaption adaption_id :adaption_id))
 
+; The timestamp type must be extended in order to handle the timestamps from
+; Postgres
 (extend-type java.sql.Timestamp
   json/JSONWriter
   (-write [date out]
