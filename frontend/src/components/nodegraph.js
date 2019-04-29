@@ -142,7 +142,7 @@ class NodeGraph extends Component {
               color: 'white'
             }}
             fluid
-            content='Toggle Live Update'
+            content={'Live Update: ' + (this.state.liveUpdate ? 'OFF' : 'ON') }
             onClick={() => {
               this.setState(prevState => ({
                 liveUpdate: !prevState.liveUpdate
