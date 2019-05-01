@@ -18,12 +18,12 @@ setInterval(() => {
      networkroutes = require('./Schemes/networkroutes.json')
      devmonEnd = jsf.generate(devmon)
      devconfEnd = jsf.generate(devconf)
-     netcollEnd = jsf.generate(netcoll).collection[0];
-     mapnodesEnd = jsf.generate(mapnodes).collection[0];
-     geolocationsEnd = jsf.generate(geolocations).collection[0];
-     networkdomainEnd = jsf.generate(networkdomain).collection[0];
-     networkgraphEnd = jsf.generate(networkgraph,cwd).collection[0];
-     networkroutesEnd = jsf.generate(networkroutes).collection[0];
+     netcollEnd = jsf.generate(netcoll);
+     mapnodesEnd = jsf.generate(mapnodes);
+     geolocationsEnd = jsf.generate(geolocations);
+     networkdomainEnd = jsf.generate(networkdomain);
+     networkgraphEnd = jsf.generate(networkgraph,cwd);
+     networkroutesEnd = jsf.generate(networkroutes);
 }, 5000);
 
 app.get('/devmon',(req,res) => res.send(devmonEnd))
