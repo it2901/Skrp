@@ -24,7 +24,8 @@
   "Mock the database query in the adaption request handler"
   [param-map]
   (with-redefs
-   [backend.logging/get-network-collection (constantly dummy-db-req)]
+   [backend.logging/get-network-collection (constantly dummy-db-req)
+    backend.logging/insert-network-collection (constantly nil)]
     (as-> param-map m
       (mock/request :get "/adaption" m)
       ((wrap-params app-routes) m)
