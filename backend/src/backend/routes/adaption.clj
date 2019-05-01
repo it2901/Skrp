@@ -40,5 +40,4 @@
           :protos {:current db-proto
                    :new req-proto}
           :device-id (Integer/parseInt (params "device-id"))}))
-
       (error-handler-rep 400 "Bad Request"))))
