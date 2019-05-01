@@ -1,30 +1,35 @@
 const express = require('express');
 const jsf =  require('json-schema-faker');
-require('dotenv').config()
+const fetch = require('node-fetch')
 const app = express()
-const port = process.env.PORT;
+const fs = require('fs')
 const cwd = `${__dirname}/Schemes`;
+
+const  config = JSON.parse(fs.readFileSync('./config.JSON'))
 
 
 //Fetch API endpoints
-let mapnodesEnd = process.env.MAP_AND_NODES_END_POINT
-let networkroutesEnd = process.env.NETWORK_ROUTES_END_POINT
-let geolocationsEnd = process.env.GEOGRAPHIC_LOCATION_END_POINT
-let networkdomainEnd = process.env.NETWORK_DOMAIN_END_POINT
-let networkgraphEnd = process.env.NETWORK_GRAPH_END_POINT
-let deviceconfigurationEnd = process.env.DEVICE_CONFIGURATION_END_POINT
-let devicemonitoringEnd = process.env.DEVICE_MONITORING_END_POINT
 
+const port =  config.PORT
+let mapnodesEnd =  config.MAP_AND_NODES_END_POINT
+let networkroutesEnd =  config.NETWORK_ROUTES_END_POINT
+let geolocationsEnd = config.GEOGRAPHIC_LOCATION_END_POINT
+let networkdomainEnd = config.NETWORK_DOMAIN_END_POINT
+let networkgraphEnd = config.NETWORK_GRAPH_END_POINT
+let deviceconfigurationEnd =  config.DEVICE_CONFIGURATION_END_POINT
+let devicemonitoringEnd = config.DEVICE_MONITORING_END_POINT
 
 //fetch update frequencies
-let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
-let mfrq = process.env.MAP_AND_NODES_UPDATE_FREQUENCY
-let glfrq = process.env.GEOGRAPHIC_LOCATION_UPDATE_FREQUENCY
-let ndfrq = process.env.NETWORK_DOMAIN_UPDATE_FREQUENCY
-let ngfrq = process.env.NETWORK_GRAPH_UPDATE_FREQUENCY
-let nrfrq = process.env.NETWORK_ROUTES_UPDATE_FREQUENCY
-let dcfrq = process.env.DEVICE_CONFIGURATION_UPDATE_FREQUENCY
-let dmfrq = process.env.DEVICE_MONITORING_UPDATE_FREQUENCY
+
+
+let gfrq =  config.GLOBAL_UPDATE_FREQUENCY
+let mfrq =  config.MAP_AND_NODES_UPDATE_FREQUENCY
+let glfrq =  config.GEOGRAPHIC_LOCATION_UPDATE_FREQUENCY
+let ndfrq =  config.NETWORK_DOMAIN_UPDATE_FREQUENCY
+let ngfrq =  config.NETWORK_GRAPH_UPDATE_FREQUENCY
+let nrfrq =  config.NETWORK_ROUTES_UPDATE_FREQUENCY
+let dcfrq =  config.DEVICE_CONFIGURATION_UPDATE_FREQUENCY
+let dmfrq =  config.DEVICE_MONITORING_UPDATE_FREQUENCY
 
 
 let mupdateFrequency = (mfrq == 0 || mfrq == undefined) ? gfrq : mfrq
@@ -45,6 +50,8 @@ console.table([
      ["NetG",ngfrq,networkgraphEnd],
      ["NetR",nrfrq,networkroutesEnd],])
 */
+
+
 //Device Config
 setInterval(() => {
      devconf = require('./Schemes/deviceconfiguration.json')
@@ -90,8 +97,7 @@ app.get(networkroutesEnd,(req,res) => res.send(networkroutesData))
 app.get(geolocationsEnd,(req,res) => res.send(geolocationsData))
 app.get(networkdomainEnd,(req,res) => res.send(networkdomainData))
 app.get(networkgraphEnd,(req,res) => res.send(networkgraphData))
-app.listen(port, () => console.log(`Server running @${port}`))
-
+app.listen(3000, () => console.log(`Server running @${port}`))
 
 
 
