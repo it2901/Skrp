@@ -29,14 +29,14 @@
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
-  [{:keys [device_id adaption_id description]}]
+  [{:keys [device_id adaption_type description]}]
   (j/insert! db :system_log
              {:device_id     device_id
-              :adaption_id   adaption_id
+              :adaption_type   adaption_type
               :description   description}))
 
 (defn get-device-from-id
-  "Queries the database for devices with input as id"
+  "Queries the database for a specific device"
   [device_id]
   (j/get-by-id db :device device_id :device_id))
 
@@ -45,11 +45,6 @@
   [device_id]
   (j/insert! db :device
              {:device_id device_id}))
-
-(defn get-adaption-from-type
-  "Queries the database for adaption with input as id"
-  [adaption_type]
-  (j/query db (str "SELECT * FROM adaption WHERE adaption_type='" adaption_type "'")))
 
 (defn get-network-collection
   "Returns a network collection"
@@ -67,6 +62,12 @@
   [coll]
   (j/insert! db :network_collection
              {:collection coll}))
+
+(defn get-adaption-id
+  "Queries the database for an adaption with the specified adaption_type, returns id of result"
+  [adaption_type]
+  (let [adaptionID (j/query db [(str "SELECT adaption_id FROM adaption WHERE LOWER(adaption_type) = LOWER('" adaption_type "')")])]
+    (get (first adaptionID) :adaption_id)))
 
 ; The timestamp type must be extended in order to handle the timestamps from
 ; Postgres
