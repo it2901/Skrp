@@ -24,17 +24,17 @@
   "Mock the database query in the adaption request handler"
   [param-map]
   (with-redefs
-    [backend.logging/get-network-collection (constantly dummy-db-req)]
+   [backend.logging/get-network-collection (constantly dummy-db-req)]
     (as-> param-map m
       (mock/request :get "/adaption" m)
       ((wrap-params app-routes) m)
-      (update m :body read-str))))
-    
+      (update m :body read-str :key-fn keyword))))
 
 (deftest adaption-dummy-request
-  (testing "Dummy route for adaption commenad request"
+  (testing "Dummy route for adaption command request"
     (let [response (mock-db-query {:device-id 300
                                    :collection (write-str dummy-coll)})
           body (:body response)]
       (is (= (:status response) 200))
-      (is (= (:device-id body) (get-in dummy-coll [:collection 0 :protocol]))))))
+      (is (= (get-in body [:options :protocol]) (get-in dummy-coll [:collection 0 :protocol])))
+      (is (= 300 (:device-id body))))))
