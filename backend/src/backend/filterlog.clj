@@ -17,51 +17,65 @@
   (:require [backend.database :refer [db]]
             [clojure.java.jdbc :as j]))
 
+(defn device-filter
+  [device_id queryStr]
+  (if-not (= nil device_id)
+    (let [basicQueryString "SELECT * FROM system_log WHERE"]
+      (if-not (= queryStr basicQueryString)
+        (str queryStr " AND device_id IN (" device_id ")")
+        (str queryStr " device_id IN (" device_id ")")))
+    queryStr))
+
+(defn adaption-filter
+  [adaption_type queryStr]
+  (if-not (= nil adaption_type)
+    (let [basicQueryString "SELECT * FROM system_log WHERE"]
+      (if-not (= queryStr basicQueryString)
+        (str queryStr " AND LOWER(adaption_type) ~ LOWER('" adaption_type "')")
+        (str queryStr " LOWER(adaption_type) ~ LOWER('" adaption_type "')")))
+    queryStr))
+
+(defn description-filter
+  [description queryStr]
+  (if-not (= nil description)
+    (let [basicQueryString "SELECT * FROM system_log WHERE"]
+      (if-not (= queryStr basicQueryString)
+        (str queryStr " AND LOWER(description) ~ LOWER('" description "')")
+        (str queryStr " LOWER(description) ~ LOWER('" description "')")))
+    queryStr))
+
+(defn date-filter
+  [date queryStr]
+  (if-not (= nil date)
+    (let [basicQueryString "SELECT * FROM system_log WHERE"]
+      (if-not (= queryStr basicQueryString)
+        (str queryStr " AND DATE(created) = '" date "'")
+        (str queryStr " DATE(created) = '" date "'")))
+    queryStr))
+
+(defn date-from-to-filter
+  [date_from date_to queryStr]
+  (if-not (or (= nil date_from) (= nil date_to))
+    (let [basicQueryString "SELECT * FROM system_log WHERE"]
+      (if-not (= queryStr basicQueryString)
+        (str queryStr " AND DATE(created) between '" date_from "' and '" date_to "'")
+        (str queryStr " DATE(created) between '" date_from "' and '" date_to "'")))
+    queryStr))
+
 (defn get-filtered-syslog
   "Returns filtered data from the database table 'system_log' based on filter input.
-  Valid filter keys are 
+  Valid filter keys are
   * device_id
-  * adaption_id
+  * adaption_type
   * description
   * date
   * date_from
   * date_to"
-  [{:keys [device_id adaption_id description date date_from date_to]}]
-  (def querystr "SELECT * FROM system_log WHERE")
-  (def firstParam true)
-
-  (if-not (= device_id nil)
-    (do (if (true? firstParam)
-          (do (def newstr (str " device_id IN (" device_id ")"))
-              (def firstParam false))
-          (def newstr (str " AND device_id IN (" device_id ")")))
-        (def querystr (str querystr newstr))))
-
-  (if-not (= adaption_id nil)
-    (do (if (true? firstParam)
-          (do (def newstr (str " adaption_id IN (" adaption_id ")"))
-              (def firstParam false))
-          (def newstr (str " AND adaption_id IN (" adaption_id ")")))
-        (def querystr (str querystr newstr))))
-
-  (if-not (= description nil)
-    (do (if (true? firstParam)
-          (do (def newstr (str " LOWER(description) ~ LOWER('" description "')"))
-              (def firstParam false))
-          (def newstr (str " AND LOWER(description) ~ LOWER('" description "')")))
-        (def querystr (str querystr newstr))))
-
-  (if-not (= date nil)
-    (do (if (true? firstParam)
-          (do (def newstr (str " DATE(created) = '" date "'"))
-              (def firstParam false))
-          (def newstr (str " AND DATE(created) = '" date "'")))
-        (def querystr (str querystr newstr))))
-
-  (if-not (or (= date_from nil) (= date_to nil))
-    (do (if (true? firstParam)
-          (do (def newstr (str " DATE(created) between '" date_from "' and '" date_to "'"))
-              (def firstParam false))
-          (def newstr (str " AND DATE(created) between '" date_from "' and '" date_to "'")))
-        (def querystr (str querystr newstr))))
-  (j/query db [querystr]))
+  [{:keys [device_id adaption_type description date date_from date_to]}]
+  (let [queryStr "SELECT * FROM system_log WHERE"]
+    (let [filterQuery (date-from-to-filter date_from date_to
+                                           (date-filter date
+                                                        (description-filter description
+                                                                            (adaption-filter adaption_type
+                                                                                             (device-filter device_id queryStr)))))]
+      (j/query db [filterQuery]))))

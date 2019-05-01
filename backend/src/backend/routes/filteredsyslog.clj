@@ -19,6 +19,11 @@
             [backend.filterlog :refer [get-filtered-syslog]]
             [backend.routes.util :refer [error-handler-rep, run-db]]))
 
+(defn- str-or-nil
+  "Casts arg to string or returns nil"
+  [arg]
+  (when arg (str arg)))
+
 (defn filtered-syslog-check
   "Returns correct HTTP response according to system log database query result"
   {:arglist '([query-result])}
@@ -34,38 +39,24 @@
   "Returns true if the parameters passed is a subset of allowed parameters,
   false otherwise"
   [currentParams]
-  (def allowedParams #{"device_id"
-                       "adaption_id"
-                       "description"
-                       "date"
-                       "date_from"
-                       "date_to"})
-  (if-not (clojure.set/subset? (set (keys currentParams)) allowedParams)
+  (if-not (clojure.set/subset? (set (keys currentParams)) #{"device_id"
+                                                            "adaption_type"
+                                                            "description"
+                                                            "date"
+                                                            "date_from"
+                                                            "date_to"})
     false
     true))
 
 (defn create-filter-map
   "Creates a map with what variables to filter by"
   [params]
-  (def logFilter {:device_id nil
-                  :adaption_id nil
-                  :description nil
-                  :date nil
-                  :date_from nil
-                  :date_to nil})
-  (if (contains? params "device_id")
-    (def logFilter (update logFilter :device_id #(str (params "device_id") %))))
-  (if (contains? params "adaption_id")
-    (def logFilter (update logFilter :adaption_id #(str (params "adaption_id") %))))
-  (if (contains? params "description")
-    (def logFilter (update logFilter :description #(str (params "description") %))))
-  (if (contains? params "date")
-    (def logFilter (update logFilter :date #(str (params "date") %))))
-  (if (contains? params "date_from")
-    (def logFilter (update logFilter :date_from #(str (params "date_from") %))))
-  (if (contains? params "date_to")
-    (def logFilter (update logFilter :date_to #(str (params "date_to") %))))
-  logFilter)
+  {:device_id (str-or-nil (params "device_id"))
+   :adaption_type (str-or-nil (params "adaption_type"))
+   :description (str-or-nil (params "description"))
+   :date (str-or-nil (params "date"))
+   :date_from (str-or-nil (params "date_from"))
+   :date_to (str-or-nil (params "date_to"))})
 
 (defn filtered-syslog-handler
   "HTTP get handler to filter data from the database table 'system_log'.
