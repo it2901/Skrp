@@ -97,7 +97,7 @@ app.get(networkroutesEnd,(req,res) => res.send(networkroutesData))
 app.get(geolocationsEnd,(req,res) => res.send(geolocationsData))
 app.get(networkdomainEnd,(req,res) => res.send(networkdomainData))
 app.get(networkgraphEnd,(req,res) => res.send(networkgraphData))
-app.listen(3000, () => console.log(`Server running @${port}`))
+app.listen(port, () => console.log(`Server running @${port}`))
 
 
 
