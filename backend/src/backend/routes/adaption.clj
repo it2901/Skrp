@@ -4,12 +4,17 @@
 
 (defn command-builder
   "Builds the response map"
-  [{:keys [eq-proto? protos]}]
+  [{:keys [eq-proto? protos device-id]}]
   {:name "Adaption Command"
    :type "Change Protocol"
+   :device-id device-id
    :options {:protocol (if eq-proto?
                          (:current protos)
-                         (:new protos))}})
+                         (:new protos))
+             :keep-alive-period 10
+             :max-retries 3
+             :waiting-time 10}})
+
 
 (defn adaption-request-handler
   "HTTP GET handler for requesting network adaptions. This endpoint
@@ -28,5 +33,7 @@
         (command-builder
          (= req-proto db-proto)
          {:current db-proto
-          :new req-proto}))
+          :new req-proto}
+         ()))
+        
       (error-handler-rep 400 "Bad Request"))))
