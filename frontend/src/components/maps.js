@@ -46,9 +46,10 @@ export default class Maps extends Component {
     }
 
     async setInitalState () {
-        let stateToBe= await fetch("http://localhost:3001/mapnod").then(response => {
-          return response.json()
-        }).catch(err => console.error(err))
+        let stateToBe= await fetch("http://localhost:3001/mapnod")
+        .then(response => response.json())
+        .then(data => data.collection[0])
+        .catch(err => console.error(err))
         let nodes = stateToBe["nodes"].map(node => {return node["id"]})
         let links = stateToBe["links"]
         let locs = stateToBe["Locations"].map(l => {
