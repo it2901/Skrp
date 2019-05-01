@@ -1,5 +1,6 @@
 (ns backend.routes.adaption
-  (:require [backend.logging :refer [get-network-collection]]
+  (:require [backend.logging :refer [get-network-collection
+                                     insert-network-collection]]
             [backend.routes.util :refer [error-handler-rep]]
             [clojure.data.json :refer [read-str]]))
 
@@ -33,6 +34,7 @@
       (let [[_ data _] (get-network-collection :latest)
             db-proto (get-proto (:collection data))
             req-proto (get-proto (:collection netcoll))]
+        (insert-network-collection (params "collection"))
         (command-builder
          {:eq-proto? (= req-proto db-proto)
           :protos {:current db-proto
