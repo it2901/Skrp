@@ -34,6 +34,5 @@
          (= req-proto db-proto)
          {:current db-proto
           :new req-proto}
-         ()))
-        
+         (:device-id params)))        
       (error-handler-rep 400 "Bad Request"))))
