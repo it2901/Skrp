@@ -1099,7 +1099,9 @@
       "type": "object",
       "additionalProperties": true,
       "required": [
-        "collection"  
+
+        "collection",
+        "type"
       ],
       "properties": {
         "type": {
@@ -1204,7 +1206,8 @@
           "type": "object",
           "additionalProperties": true,
           "required": [
-            "collection"
+            "collection",
+            "type"
           ],
           "properties": {
             "type": {
@@ -1498,7 +1501,8 @@
               "type": "object",
               "additionalProperties": true,
               "required": [
-                "collection"
+                "collection",
+                "type"
               ],
               "properties": {
                 "type": {
@@ -1662,7 +1666,8 @@
           "type": "object",
           "additionalProperties": true,
           "required": [
-            "collection"
+            "collection",
+            "type"
           ],
           "properties": {
             "type": {

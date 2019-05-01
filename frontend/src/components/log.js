@@ -4,15 +4,11 @@ import _ from 'lodash'
 import Datetime from 'react-datetime'
 import 'moment/locale/nb'
 
-let lfrq = process.env.REACT_APP_LOG_UPDATE_FREQUENCY
-let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
-let updateFrequency = (lfrq == 0 || lfrq == undefined) ? gfrq : lfrq
-console.log(updateFrequency)
-
 class Log extends Component {
   constructor (props) {
     super(props)
     this.props = props
+    this.config ={}
     this.state = {
       data: [],
       column: null,
@@ -55,6 +51,11 @@ class Log extends Component {
     }
   }
 
+  async setConfig (){
+    const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
+    this.config = config
+    this.config.updateFrequency  = (config.REACT_APP_LOG_UPDATE_FREQUENCY == 0 || config.REACT_APP_LOG_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_LOG_UPDATE_FREQUENCY
+    }
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state
 
@@ -74,8 +75,11 @@ class Log extends Component {
     })
   }
   componentDidMount () {
+    this.setConfig().then(
+      this.fetch()
+    )
     // Fetch logs from rest api
-    this.fetch()
+    
   }
   fetch (query) {
     // not using fetch api cause cypress sucks..

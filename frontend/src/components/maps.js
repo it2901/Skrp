@@ -4,12 +4,6 @@ import { EditControl } from "react-leaflet-draw"
 import Control from 'react-leaflet-control';
 import { Button, Message } from 'semantic-ui-react'
 
-let mfrq = process.env.REACT_APP_MAPS_UPDATE_FREQUENCY
-let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
-let updateFrequency = (mfrq == 0 || mfrq == undefined) ? gfrq : mfrq
-
-
-console.log(updateFrequency)
 export default class Maps extends Component {
     constructor() {
         super()
@@ -30,14 +24,25 @@ export default class Maps extends Component {
           "123.123.123.11" : {pos:[52.3,13.5], neighbours:[]},
           "123.123.123.12" : {pos:[52.2,13.4], neighbours:[]}
         }
-    }}
+    
+    }
+    this.config = {
+    }
+  }
 
+    async setConfig (){
+      const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
+      this.config = config
+      this.config.updateFrequency  = (config.REACT_APP_MAPS_UPDATE_FREQUENCY == 0 || config.REACT_APP_MAPS_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_MAPS_UPDATE_FREQUENCY
+      }
+      
     change () {
       let liveUpdater = this.state.liveUpdater
+      console.log(this.config.updateFrequency)
         if (this.state.liveUpdate){
             liveUpdater = setInterval(() => {
             this.setInitalState()
-          }, updateFrequency);
+          }, this.config.updateFrequency);
          this.setState({
            liveUpdater:liveUpdater
          })
@@ -51,9 +56,10 @@ export default class Maps extends Component {
     }
 
     async setInitalState () {
-        let stateToBe= await fetch(process.env.REACT_APP_MAP_AND_NODES).then(response => {
+        let stateToBe= await fetch(this.config.REACT_APP_MAP_AND_NODES).then(response => {
           return response.json()
         }).catch(err => console.error(err))
+        console.log(stateToBe)
         let nodes = stateToBe["nodes"].map(node => {return node["id"]})
         let links = stateToBe["links"]
         let locs = stateToBe["Locations"].map(l => {
@@ -116,9 +122,13 @@ export default class Maps extends Component {
     }
   } 
     
-      componentWillMount() {
+      async componentWillMount() {
+        this.setConfig().then(res =>{
+          this.setInitalState()
+        })
         this.updateDimensions()
-        this.setInitalState()
+          
+        
         
       }
 

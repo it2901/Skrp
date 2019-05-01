@@ -14,7 +14,7 @@ let networkdomainEnd = process.env.NETWORK_DOMAIN_END_POINT
 let networkgraphEnd = process.env.NETWORK_GRAPH_END_POINT
 let deviceconfigurationEnd = process.env.DEVICE_CONFIGURATION_END_POINT
 let devicemonitoringEnd = process.env.DEVICE_MONITORING_END_POINT
-let networkcollectionEnd = process.env.NETWORK_COLLECTION_END_POINT
+
 
 //fetch update frequencies
 let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
@@ -25,7 +25,7 @@ let ngfrq = process.env.NETWORK_GRAPH_UPDATE_FREQUENCY
 let nrfrq = process.env.NETWORK_ROUTES_UPDATE_FREQUENCY
 let dcfrq = process.env.DEVICE_CONFIGURATION_UPDATE_FREQUENCY
 let dmfrq = process.env.DEVICE_MONITORING_UPDATE_FREQUENCY
-let ncfrq = process.env.NETWORK_COLLECTION_UPDATE_FREQUENCY
+
 
 let mupdateFrequency = (mfrq == 0 || mfrq == undefined) ? gfrq : mfrq
 let glupdateFrequency = (glfrq == 0 || glfrq == undefined) ? gfrq : glfrq
@@ -34,10 +34,8 @@ let ngupdateFrequency = (ngfrq == 0 || ngfrq == undefined) ? gfrq : ngfrq
 let nrupdateFrequency = (nrfrq == 0 || nrfrq == undefined) ? gfrq : nrfrq
 let dcupdateFrequency = (dcfrq == 0 || dcfrq == undefined) ? gfrq : dcfrq
 let dmupdateFrequency = (dmfrq == 0 || dmfrq == undefined) ? gfrq : dmfrq
-let ncupdateFrequency = (ncfrq == 0 || ncfrq == undefined) ? gfrq : ncfrq
 
 
-console.log(process.env)
 
 /*
 console.table([
@@ -52,12 +50,6 @@ setInterval(() => {
      devconf = require('./Schemes/deviceconfiguration.json')
      devConData = jsf.generate(devconf).collection;
 }, dcupdateFrequency);
-//netCollections
-setInterval(() => {
-     netcoll = require('./Schemes/networkcollection.json') 
-     netCollData = jsf.generate(netcoll).collection; 
-}, ncupdateFrequency);
-
 //device monitoring
 setInterval(() => {
      devmon = require('./Schemes/deviceconfiguration.json')
@@ -91,7 +83,6 @@ setInterval(() => {
 }, nrupdateFrequency);
 
 
-app.get(networkcollectionEnd ,(req,res) => res.send(netCollData))
 app.get(deviceconfigurationEnd ,(req,res) => res.send(devConData))
 app.get(devicemonitoringEnd ,(req,res) => res.send(devMonData))
 app.get(mapnodesEnd ,(req,res) => res.send(mapnodesData))
