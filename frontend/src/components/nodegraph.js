@@ -76,7 +76,7 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText))
+        self.processData(JSON.parse(xhttp.responseText)["collection"][0])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results

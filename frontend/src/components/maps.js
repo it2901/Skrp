@@ -56,10 +56,10 @@ export default class Maps extends Component {
     }
 
     async setInitalState () {
-        let stateToBe= await fetch(this.config.REACT_APP_MAP_AND_NODES).then(response => {
-          return response.json()
-        }).catch(err => console.error(err))
-        console.log(stateToBe)
+        let stateToBe= await fetch(this.config.REACT_APP_MAP_AND_NODES)
+        .then(response => response.json())
+        .then(data => data.collection[0])
+        .catch(err => console.error(err))
         let nodes = stateToBe["nodes"].map(node => {return node["id"]})
         let links = stateToBe["links"]
         let locs = stateToBe["Locations"].map(l => {

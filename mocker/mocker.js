@@ -55,7 +55,7 @@ console.table([
 //Device Config
 setInterval(() => {
      devconf = require('./Schemes/deviceconfiguration.json')
-     devConData = jsf.generate(devconf).collection;
+     devConData = jsf.generate(devconf);
 }, dcupdateFrequency);
 //device monitoring
 setInterval(() => {
@@ -66,27 +66,27 @@ setInterval(() => {
 //Map Nodes
 setInterval(() => {
      mapnodes = require('./Schemes/mapnodes.json')  
-     mapnodesData = jsf.generate(mapnodes).collection[0];
+     mapnodesData = jsf.generate(mapnodes);
 }, mupdateFrequency);
 //GeoLocation
 setInterval(() => {
      geolocations = require('./Schemes/geolocations.json')
-     geolocationsData = jsf.generate(geolocations).collection[0];
+     geolocationsData = jsf.generate(geolocations);
 }, glupdateFrequency);
 //Network Domain
 setInterval(() => {
      networkdomain = require('./Schemes/networkdomain.json')
-     networkdomainData = jsf.generate(networkdomain).collection[0];
+     networkdomainData = jsf.generate(networkdomain);
 }, ndupdateFrequency);
 //Network Graph
 setInterval(() => {
      networkgraph = require('./Schemes/networkgraph.json') 
-     networkgraphData = jsf.generate(networkgraph,cwd).collection[0];
+     networkgraphData = jsf.generate(networkgraph,cwd);
 }, ngupdateFrequency);
 //Network Routes
 setInterval(() => {
      networkroutes = require('./Schemes/networkroutes.json')
-     networkroutesData = jsf.generate(networkroutes).collection[0];   
+     networkroutesData = jsf.generate(networkroutes);   
 }, nrupdateFrequency);
 
 
