@@ -2237,7 +2237,9 @@
                           "NetworkGraph",
                           "NetworkRoutes",
                           "DeviceMonitoring",
-                          "DeviceConfiguration"
+                          "DeviceConfiguration",
+                          "MapGraphs"
+
 
                       ],
                       "properties": {
@@ -2258,6 +2260,10 @@
                         },
                         "DeviceConfiguration":{
                           "$ref":"#/definitions/DeviceConfiguration"
+                        },
+                        "MapGraphs":{
+                          "$ref":"#/definitions/MapGraphs"
+
                         }
                       }
                   }
