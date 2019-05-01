@@ -4,11 +4,6 @@ import _ from 'lodash'
 import Datetime from 'react-datetime'
 import 'moment/locale/nb'
 
-let lfrq = process.env.REACT_APP_LOG_UPDATE_FREQUENCY
-let gfrq = process.env.REACT_APP_GLOBAL_UPDATE_FREQUENCY
-let updateFrequency = (lfrq == 0 || lfrq == undefined) ? gfrq : lfrq
-console.log(updateFrequency)
-
 class Log extends Component {
   constructor (props) {
     super(props)

@@ -50,7 +50,6 @@ console.table([
      ["NetR",nrfrq,networkroutesEnd],])
 */
 
-
 //Device Config
 setInterval(() => {
      devconf = require('./Schemes/deviceconfiguration.json')
