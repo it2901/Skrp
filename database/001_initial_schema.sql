@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS config (
 
 CREATE TABLE IF NOT EXISTS public.adaption (
   adaption_id SERIAL PRIMARY KEY NOT NULL,
-  adaption_type TEXT NOT NULL UNIQUE,
+  adaption_type TEXT NOT NULL,
   adaption_description TEXT NOT NULL,
   config_id INTEGER NOT NULL REFERENCES config(config_id)
 );
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS public.system_log (
   -- for adaptions made in the system
   system_log_id SERIAL PRIMARY KEY NOT NULL,
   device_id INTEGER NOT NULL REFERENCES device(device_id),
-  adaption_type TEXT NOT NULL REFERENCES adaption(adaption_type),
+  adaption_id INTEGER REFERENCES adaption(adaption_id),
   description TEXT NOT NULL,
   created TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
