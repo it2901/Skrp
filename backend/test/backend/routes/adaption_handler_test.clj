@@ -22,19 +22,34 @@
             [ring.mock.request :as mock]))
 
 (def dummy-coll
-  {:type "Collector"
-   :device-id 300
+  {:type "NetworkCollection"
    :collection
-   [{:type "NetworkGraph"
-     :protocol "OSVL"}]})
+   [{:type "NetworkCollection"
+     :collection [{:type "NetworkGraph"
+                   :protocol "olsrv2"}
+                  {:type "NetworkGraph"
+                   :protocol "olsvr1"}]}
+    {:type "NetworkCollection"
+     :collection [{:type "GeoLocation"
+                   :Originator "192.178.1.100"}
+                  {:type "GeoLocation"
+                   :Originator "192.177.1.100"}]}]})
 
 (def dummy-db-req
-  [55
-   {:type "Collector"
-    :collection
-    [{:type "NetworkGraph"
-      :protocol "TCP"}]}
-   "sometimestamp"])
+  '(23901
+    {:type "NetworkCollection"
+     :collection
+     [{:type "NetworkCollection"
+       :collection [{:type "NetworkGraph"
+                     :protocol "olsrv2"}
+                    {:type "NetworkGraph"
+                     :protocol "olsvr1"}]}
+      {:type "NetworkCollection"
+       :collection [{:type "GeoLocation"
+                     :Originator "192.178.1.100"}
+                    {:type "GeoLocation"
+                     :Originator "192.177.1.100"}]}]}
+    "sometimestamp"))
 
 (defn mock-db-query
   "Mock the database query in the adaption request handler"
@@ -52,5 +67,5 @@
     (let [response (mock-db-query)
           body (:body response)]
       (is (= (:status response) 200))
-      (is (= (get-in body [:options :protocol]) (get-in dummy-coll [:collection 0 :protocol])))
-      (is (= 300 (:device-id body))))))
+      (is (= (get-in body [:options :protocol])
+             (get-in dummy-coll [:collection 0 :collection 0 :protocol]))))))
