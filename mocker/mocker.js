@@ -25,7 +25,7 @@ setInterval(() => {
      networkgraphEnd = jsf.generate(networkgraph,cwd);
      networkroutesEnd = jsf.generate(networkroutes);
      
-     main = [networkgraphEnd,geolocations]
+     main = [networkgraphEnd,geolocationsEnd]
 
 }, 5000);
 
