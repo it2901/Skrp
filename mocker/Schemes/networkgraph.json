@@ -1,17 +1,18 @@
 {
-  "$schema": "http://json-schema.org/schema#",
-  "$ref": "#/definitions/Graphs",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
   "definitions": {
     "Graphs": {
       "type": "object",
       "additionalProperties": true,
       "required": [
+        "type",
         "collection"
       ],
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["NetworkCollection"]
+          "enum": ["NetworkGraph"]
         },
         "collection": {
           "type": "array",
@@ -29,7 +30,10 @@
         "type",
         "protocol",
         "version",
+        "revision",
         "metric",
+        "router_id",
+        "topology_id",
         "nodes",
         "links"
       ],
@@ -74,7 +78,8 @@
             "type": "object",
             "additionalProperties": true,
             "required": [
-              "id"
+              "id",
+              "label"
             ],
             "properties": {
               "id": {
@@ -293,5 +298,32 @@
         }
       }
     }
+  },
+  "additionalProperties": true,
+  "required": [
+      "type",
+      "collection"
+  ],
+  "properties": {
+      "type": {
+          "type": "string",
+          "enum": ["NetworkCollection"]
+      },
+      "collection": {
+          "type": "array",
+          "title": "NetJSON Objects",
+          "maxItems":1,
+          "uniqueItems": true,
+          "additionalItems": true,
+          "items": {
+              "$ref" : "#/definitions/Graph",
+              "title": "NetJSON Object",
+              "additionalProperties": true
+          }
+      }
   }
 }
+
+
+  
+  
