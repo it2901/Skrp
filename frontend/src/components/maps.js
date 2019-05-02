@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup,  FeatureGroup, Circle, Polyline  } from 'react-leaflet'
-import { EditControl } from "react-leaflet-draw"
-import Control from 'react-leaflet-control';
-import { Button, Message } from 'semantic-ui-react'
+import { Map, TileLayer, Marker, Popup, FeatureGroup, Circle, Polyline } from 'react-leaflet'
+import { EditControl } from 'react-leaflet-draw'
+import Control from 'react-leaflet-control'
+import { Button } from 'semantic-ui-react'
 
-  
 export default class Maps extends Component {
     constructor() {
         super()
@@ -105,85 +104,81 @@ export default class Maps extends Component {
         const height = window.innerWidth >= 992 ? window.innerHeight : 400
         this.setState({ height: height })
       }
+  
 
-      componentDidMount(){
-        if (!this.state.liveUpdate){
-        this.setInitalState()
+  componentDidMount () {
+    if (!this.state.liveUpdate) {
+      this.setInitalState()
     }
-  } 
-    
-      componentWillMount() {
-        this.updateDimensions()
-        this.setInitalState()
-        
-      }
+  }
 
+  componentWillMount () {
+    this.updateDimensions()
+    this.setInitalState()
+  }
 
-      
+  render () {
+    let nodes = Object.keys(this.state.nodes).map(key => {
+      let pos = this.state.nodes[key]['pos']
+      let neighbours = this.state.nodes[key]['neighbours']
+      return (
 
-    render() {
-      let nodes = Object.keys(this.state.nodes).map(key => {
-        let pos = this.state.nodes[key]["pos"]
-        let neighbours = this.state.nodes[key]["neighbours"]
-        return (
+        <Marker key={pos} position={pos}>
+          <Popup>Name: {key}<br />Neighbours: {neighbours}<br /> Amount of neighbours: {neighbours.length}.</Popup>
+          <Circle name={key}center={pos} radius={200} />
+        </Marker>)
+    })
 
-          <Marker key={pos} position={pos}>
-                <Popup>Name: {key}<br />Neighbours: {neighbours}<br /> Amount of neighbours: {neighbours.length}.</Popup>
-                <Circle name={key}center={pos} radius={200} />
-            </Marker>)
-
-      })
-
-        let links = this.state.links.map(link => {
-            let src = link["source"]
-            let trg = link["target"]
-            let source = this.findLatLng(src)
-            let target = this.findLatLng(trg)
-            let cost = link["cost"]
-            let colors = ["green","lime","GreenYellow ","yellow","orange","OrangeRed ","red","Crimson","DarkRed ","black"]
-            let targeter = Math.round(cost/1000000)
-            let pos = [source,target]
-            return (
-                <Polyline key={cost}color={colors[targeter]} positions={pos}>
-                <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
-                </Polyline>
-            )
-        })
-        const position = [this.state.lat, this.state.lng]
-        return (
-            <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
-            <div>{this.state.liveUpdate} </div>
-            <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-              <FeatureGroup>
-    <EditControl
-      position='topright'
-      draw={{
-        rectangle: true
-      }}
-    />
-    {nodes}
-    {links}
-    <Control position="topleft" >
-    <Button
-            style={{
-              background: this.state.liveUpdate ? 'red' : 'green',
-              color: 'white'
-            }}
-            fluid
-            content='Toggle Live Update'
-            onClick={() => {
-              this.setState(prevState => ({
-                liveUpdate: !prevState.liveUpdate
-              }))
-              this.change()
+    let links = this.state.links.map(link => {
+      let src = link['source']
+      let trg = link['target']
+      let source = this.findLatLng(src)
+      let target = this.findLatLng(trg)
+      let cost = link['cost']
+      let colors = ['green', 'lime', 'GreenYellow ', 'yellow', 'orange', 'OrangeRed ', 'red', 'Crimson', 'DarkRed ', 'black']
+      let targeter = Math.round(cost / 1000000)
+      let pos = [source, target]
+      return (
+        <Polyline key={cost}color={colors[targeter]} positions={pos}>
+          <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
+        </Polyline>
+      )
+    })
+    const position = [this.state.lat, this.state.lng]
+    return (
+      <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+        <div>{this.state.liveUpdate} </div>
+        <TileLayer
+          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <FeatureGroup>
+          <EditControl
+            position='topright'
+            draw={{
+              rectangle: true
             }}
           />
-      </Control>
-  </FeatureGroup>
-            </Map>
-        )
-        }
-    }
+          {nodes}
+          {links}
+          <Control position="topleft" >
+            <Button
+              style={{
+                background: this.state.liveUpdate ? 'red' : 'green',
+                color: 'white'
+              }}
+              fluid
+              content={'Live Update: ' + (this.state.liveUpdate ? 'OFF' : 'ON') }
+              onClick={() => {
+                this.setState(prevState => ({
+                  liveUpdate: !prevState.liveUpdate
+                }))
+                this.change()
+              }}
+            />
+          </Control>
+        </FeatureGroup>
+      </Map>
+    )
+  }
+}
