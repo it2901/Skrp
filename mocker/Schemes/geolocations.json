@@ -234,11 +234,10 @@
               "uniqueItems": true,
               "additionalItems": true,
               "items": {
-                  "$ref" : "#/definitions/Locations",
+                  "$ref" : "#/definitions/Location",
                   "title": "NetJSON Object",
                   "additionalProperties": true
               }
           }
       }
     }
-    
