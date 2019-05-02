@@ -97,20 +97,21 @@ class Log extends Component {
           .map(o => {
             return { text: o, key: o, value: o }
           })
+        let logHeaders = Object.keys(d[0])
+          .filter(o => this.wantedHeaders.includes(o))
+          .map(o => {
+            return {
+              key: o,
+              text: o.split('_').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' '), // prettify? oof
+              value: o
+            }
+          })
         this.setState({
           data: d,
           deviceIds: deviceIds,
           // adaptionIds: adaptionIds, DEPR
           adaptionTypes: adaptionTypes,
-          logHeaders: Object.keys(d[0])
-            .filter(o => this.wantedHeaders.includes(o))
-            .map(o => {
-              return {
-                key: o,
-                text: o.split('_').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' '), // prettify? oof
-                value: o
-              }
-            })
+          logHeaders: logHeaders
         })
       })
   }
@@ -464,12 +465,11 @@ class Log extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body data-cy='children'>
-            {data.map(o => {
-              let e = Object.keys(o)
+            { data.map(o => {
               return (
                 <Table.Row key={o.created}>
-                  {e.map(i => {
-                    return <Table.Cell key={o.created + i}> {o[i]} </Table.Cell>
+                  {logHeaders.map(i => {
+                    return <Table.Cell key={o.created + i.key}> {o[i.key]} </Table.Cell>
                   })}
                 </Table.Row>
               )
