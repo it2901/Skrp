@@ -24,14 +24,25 @@ export default class Maps extends Component {
           "123.123.123.11" : {pos:[52.3,13.5], neighbours:[]},
           "123.123.123.12" : {pos:[52.2,13.4], neighbours:[]}
         }
-    }}
+    
+    }
+    this.config = {
+    }
+  }
 
+    async setConfig (){
+      const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
+      this.config = config
+      this.config.updateFrequency  = (config.REACT_APP_MAPS_UPDATE_FREQUENCY == 0 || config.REACT_APP_MAPS_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_MAPS_UPDATE_FREQUENCY
+      }
+      
     change () {
       let liveUpdater = this.state.liveUpdater
+      console.log(this.config.updateFrequency)
         if (this.state.liveUpdate){
             liveUpdater = setInterval(() => {
             this.setInitalState()
-          }, 5000);
+          }, this.config.updateFrequency);
          this.setState({
            liveUpdater:liveUpdater
          })
@@ -45,7 +56,7 @@ export default class Maps extends Component {
     }
 
     async setInitalState () {
-        let stateToBe= await fetch("http://localhost:3001/mapnod")
+        let stateToBe= await fetch(this.config.REACT_APP_MAP_AND_NODES)
         .then(response => response.json())
         .then(data => data.collection[0])
         .catch(err => console.error(err))
@@ -101,67 +112,77 @@ export default class Maps extends Component {
       }
 
     updateDimensions() {
-        const height = window.innerWidth >= 992 ? window.innerHeight : 400
+        const height = window.innerHeight
         this.setState({ height: height })
       }
   
 
-  componentDidMount () {
-    if (!this.state.liveUpdate) {
-      this.setInitalState()
-    }
-  }
 
-  componentWillMount () {
-    this.updateDimensions()
-    this.setInitalState()
-  }
+       componentWillMount() {
+        this.setConfig().then(res =>{
+          this.setInitalState()
+        })
+        this.updateDimensions()
+          
+        
+        
+      }
 
-  render () {
-    let nodes = Object.keys(this.state.nodes).map(key => {
-      let pos = this.state.nodes[key]['pos']
-      let neighbours = this.state.nodes[key]['neighbours']
-      return (
+      componentDidMount () {
+        if (!this.state.liveUpdate) {
+          this.setInitalState()
+        }
+      }
 
-        <Marker key={pos} position={pos}>
-          <Popup>Name: {key}<br />Neighbours: {neighbours}<br /> Amount of neighbours: {neighbours.length}.</Popup>
-          <Circle name={key}center={pos} radius={200} />
-        </Marker>)
-    })
 
-    let links = this.state.links.map(link => {
-      let src = link['source']
-      let trg = link['target']
-      let source = this.findLatLng(src)
-      let target = this.findLatLng(trg)
-      let cost = link['cost']
-      let colors = ['green', 'lime', 'GreenYellow ', 'yellow', 'orange', 'OrangeRed ', 'red', 'Crimson', 'DarkRed ', 'black']
-      let targeter = Math.round(cost / 1000000)
-      let pos = [source, target]
-      return (
-        <Polyline key={cost}color={colors[targeter]} positions={pos}>
-          <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
-        </Polyline>
-      )
-    })
-    const position = [this.state.lat, this.state.lng]
-    return (
-      <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
-        <div>{this.state.liveUpdate} </div>
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <FeatureGroup>
-          <EditControl
-            position='topright'
-            draw={{
-              rectangle: true
-            }}
-          />
+      
+
+    render() {
+      let nodes = Object.keys(this.state.nodes).map(key => {
+        let pos = this.state.nodes[key]["pos"]
+        let neighbours = this.state.nodes[key]["neighbours"]
+        return (
+
+          <Marker key={pos} position={pos}>
+                <Popup>Name: {key}<br />Neighbours: {neighbours}<br /> Amount of neighbours: {neighbours.length}.</Popup>
+                <Circle name={key}center={pos} radius={200} />
+            </Marker>)
+
+      })
+
+        let links = this.state.links.map(link => {
+            let src = link["source"]
+            let trg = link["target"]
+            let source = this.findLatLng(src)
+            let target = this.findLatLng(trg)
+            let cost = link["cost"]
+            let colors = ["green","lime","GreenYellow ","yellow","orange","OrangeRed ","red","Crimson","DarkRed ","black"]
+            let targeter = Math.round(cost/1000000)
+            let pos = [source,target]
+            return (
+                <Polyline key={cost}color={colors[targeter]} positions={pos}>
+                <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
+                </Polyline>
+            )
+        })
+        const position = [this.state.lat, this.state.lng]
+        return (
+            <Map zoomControl= {false} center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+            <div>{this.state.liveUpdate} </div>
+            <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+              <FeatureGroup>
+    <EditControl
+      position='topright'
+      draw={{
+        rectangle: true
+      }}
+    />
           {nodes}
           {links}
-          <Control position="topleft" >
+          <Control position="topright" >
             <Button
               style={{
                 background: this.state.liveUpdate ? 'red' : 'green',
