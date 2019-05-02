@@ -103,9 +103,11 @@ exports[`renders correctly 1`] = `
               className="menu-item"
             >
               <a
-                aria-current={null}
-                href="#/about"
+                aria-current="page"
+                className="active"
+                href="#/"
                 onClick={[Function]}
+                style={Object {}}
               >
                 About
               </a>

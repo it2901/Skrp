@@ -70,12 +70,12 @@ exports[`renders correctly 1`] = `
       onClick={[Function]}
       style={
         Object {
-          "background": "green",
+          "background": "red",
           "color": "white",
         }
       }
     >
-      Toggle Live Update
+      Live Update: OFF
     </button>
   </div>
   0

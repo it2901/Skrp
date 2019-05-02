@@ -105,9 +105,11 @@ exports[`renders correctly 1`] = `
                   className="menu-item"
                 >
                   <a
-                    aria-current={null}
-                    href="#/about"
+                    aria-current="page"
+                    className="active"
+                    href="#/"
                     onClick={[Function]}
+                    style={Object {}}
                   >
                     About
                   </a>
@@ -278,22 +280,102 @@ exports[`renders correctly 1`] = `
     <div
       className="SKRP"
     >
-      <div
-        style={
-          Object {
-            "width": "100%",
-          }
-        }
-      >
-        <img
-          alt="Logo"
-          src="test-file-stub"
+      <div>
+        <div
+          className="sc-bdVaJa dzRQEn"
           style={
             Object {
-              "width": "100%",
+              "border": "none",
             }
           }
-        />
+        >
+          <h1
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Main
+          </h1>
+          <br />
+          <span>
+            <p>
+              localmain
+            </p>
+          </span>
+        </div>
+        <div
+          className="sc-bdVaJa dzRQEn"
+        >
+          <h1
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Backend
+          </h1>
+          <br />
+          <span>
+            <p>
+              localbackend
+            </p>
+          </span>
+        </div>
+        <div
+          className="sc-bdVaJa dzRQEn"
+        >
+          <h1
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Mocker
+          </h1>
+          <br />
+          <span>
+            <p>
+              localmocker
+            </p>
+          </span>
+        </div>
+        <div
+          className="sc-bdVaJa dzRQEn"
+        >
+          <h1
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Frontend
+          </h1>
+          <br />
+          <span>
+            <p>
+              localfrontend
+            </p>
+          </span>
+        </div>
+        <div
+          className="sc-bdVaJa dzRQEn"
+          style={
+            Object {
+              "border": "none",
+              "textAlign": "center",
+            }
+          }
+        >
+          <i>
+             Used the 
+             version of the docs
+          </i>
+        </div>
       </div>
     </div>
   </div>
