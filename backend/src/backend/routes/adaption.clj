@@ -22,8 +22,8 @@
 (defn adaption-request-handler
   "HTTP GET handler for requesting network adaptions. This endpoint
   will log the data it recieves and respond with a suitable adaption.
-  The endpoint accepts a device-id param and a json body with a type
-  string and a collection array of NetJSON objects."
+  The endpoint accepts a json body with a type string, device-id number
+  and a collection array of NetJSON objects."
   [{netcoll :body :as req}]
   (let [get-proto (fn [nc]
                     (as-> nc nc
