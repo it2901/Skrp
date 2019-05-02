@@ -40,6 +40,13 @@ class Log extends Component {
       'date_to': 'formDateTo',
       'adaption_type': 'formAdaptionType'
     }
+    this.wantedHeaders = [
+      'created',
+      'adaption_type',
+      'description',
+      'system_log_id',
+      'device_id'
+    ]
   }
 
   handleSort = clickedColumn => () => {
@@ -66,15 +73,17 @@ class Log extends Component {
     this.fetch()
       .then((e) => {
         let d = JSON.parse(e.target.response)
+
         // eslint sucks, but this totally works :ooo
         d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
 
-        let adaptionIds = d
-          .map(o => o.adaption_id)
-          .filter((v, i, a) => a.indexOf(v) === i)
-          .map(o => {
-            return { text: o, key: o, value: o }
-          })
+        // let adaptionIds = d
+        //   .map(o => o.adaption_id)
+        //   .filter((v, i, a) => a.indexOf(v) === i)
+        //   .map(o => {
+        //     return { text: o, key: o, value: o }
+        //   })
+        // ^^^ DEPRECATED
 
         let deviceIds = d
           .map(o => o.adaption_id)
@@ -91,15 +100,17 @@ class Log extends Component {
         this.setState({
           data: d,
           deviceIds: deviceIds,
-          adaptionIds: adaptionIds,
+          // adaptionIds: adaptionIds, DEPR
           adaptionTypes: adaptionTypes,
-          logHeaders: Object.keys(d[0]).map(o => {
-            return {
-              key: o,
-              text: o.split('_').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' '), // prettify? oof
-              value: o
-            }
-          })
+          logHeaders: Object.keys(d[0])
+            .filter(o => this.wantedHeaders.includes(o))
+            .map(o => {
+              return {
+                key: o,
+                text: o.split('_').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' '), // prettify? oof
+                value: o
+              }
+            })
         })
       })
   }
@@ -325,13 +336,14 @@ class Log extends Component {
             value={formDevIds}
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
+          {/* deprecated
           <Form.Dropdown
             options={adaptionIds}
             placeholder="Adaption ids"
             name="formAdaptIds"
             value={formAdaptIds}
             onChange={(e, data) => this.onChange(data)}
-            fluid selection clearable multiple />
+            fluid selection clearable multiple /> */}
           <Form.Dropdown
             options={adaptionTypes}
             placeholder="Adaption types"
