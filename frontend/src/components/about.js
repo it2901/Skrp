@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import MDReactComponent from 'markdown-react-js'
 import styled from 'styled-components'
-import localmain from '../assets/docs/main.txt'
+import localmain from '../assets/docs/main.md'
 import localbackend from '../assets/docs/backend.md'
 import localfrontend from '../assets/docs/frontend.md'
 import localmocker from '../assets/docs/mocker.md'
