@@ -19,6 +19,7 @@
                                      get-device-from-id
                                      set-device-id
                                      get-adaption-id]]
+
             [backend.routes.util :refer [error-handler-rep
                                          run-db]]))
 
@@ -49,3 +50,4 @@
        :body (run-db (insert-syslog {:device_id device_id
                                      :adaption_id (get-adaption-id adaption_type)
                                      :description description}))})))
+
