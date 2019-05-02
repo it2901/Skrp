@@ -42,6 +42,7 @@ let dmupdateFrequency = (dmfrq == 0 || dmfrq == undefined) ? gfrq : dmfrq
 
 
 
+
 /*
 console.table([
      ["Map",mfrq,mapnodesEnd],
@@ -82,6 +83,7 @@ setInterval(() => {
 setInterval(() => {
      networkgraph = require('./Schemes/networkgraph.json') 
      networkgraphData = jsf.generate(networkgraph,cwd);
+     main = [networkgraphData,geolocationsData]
 }, ngupdateFrequency);
 //Network Routes
 setInterval(() => {
@@ -97,6 +99,7 @@ app.get(networkroutesEnd,(req,res) => res.send(networkroutesData))
 app.get(geolocationsEnd,(req,res) => res.send(geolocationsData))
 app.get(networkdomainEnd,(req,res) => res.send(networkdomainData))
 app.get(networkgraphEnd,(req,res) => res.send(networkgraphData))
+app.get("/main",(req,res) => res.send(main))
 app.listen(port, () => console.log(`Server running @${port}`))
 
 
