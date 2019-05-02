@@ -21,11 +21,11 @@
 (defn get-syslog
   "Returns entries from the system_log table"
   ([]
-   (j/query db "SELECT * FROM system_log"))
+   (j/query db "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id"))
   ([date]
-   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) = '" date "'")]))
+   (j/query db [(str "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id WHERE DATE(created) = '" date "'")]))
   ([from to]
-   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
+   (j/query db [(str "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id WHERE DATE(created) between '" from "' and '" to "'")])))
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
@@ -50,6 +50,23 @@
   "Queries the database for adaption with input as id"
   [adaption_type]
   (j/query db (str "SELECT * FROM adaption WHERE adaption_type='" adaption_type "'")))
+
+(defn get-network-collection
+  "Returns a network collection"
+  ([]
+   (j/query db "SELECT * FROM network_collection"))
+  ([latest]
+   (when (= latest :latest)
+     (j/query db
+              "SELECT * FROM network_collection
+       ORDER BY created
+       DESC LIMIT 1"))))
+
+(defn insert-network-collection
+  "Insert a network collection into the database"
+  [coll]
+  (j/insert! db :network_collection
+             {:collection coll}))
 
 ; The timestamp type must be extended in order to handle the timestamps from
 ; Postgres
