@@ -46,10 +46,11 @@
   (j/insert! db :device
              {:device_id device_id}))
 
-(defn get-adaption-from-type
-  "Queries the database for adaption with input as id"
+(defn get-adaption-id
+  "Queries the database for an adaption with the specified adaption_type, returns id of result"
   [adaption_type]
-  (j/query db (str "SELECT * FROM adaption WHERE adaption_type='" adaption_type "'")))
+  (let [adaptionID (j/query db [(str "SELECT adaption_id FROM adaption WHERE LOWER(adaption_type) = LOWER('" adaption_type "')")])]
+    (get (first adaptionID) :adaption_id)))
 
 (defn get-network-collection
   "Returns a network collection"
