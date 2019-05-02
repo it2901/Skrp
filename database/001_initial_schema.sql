@@ -26,6 +26,12 @@ CREATE TABLE IF NOT EXISTS public.adaption (
   config_id INTEGER NOT NULL REFERENCES config(config_id)
 );
 
+CREATE TABLE IF NOT EXISTS public.network_collection (
+  collection_id SERIAL PRIMARY KEY NOT NULL,
+  collection JSONB NOT NULL,
+  created TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS public.system_log (
   -- The system log exists solely provide traceability
   -- for adaptions made in the system

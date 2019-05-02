@@ -51,6 +51,23 @@
   [adaption_type]
   (j/query db (str "SELECT * FROM adaption WHERE adaption_type='" adaption_type "'")))
 
+(defn get-network-collection
+  "Returns a network collection"
+  ([]
+   (j/query db "SELECT * FROM network_collection"))
+  ([latest]
+   (when (= latest :latest)
+     (j/query db
+              "SELECT * FROM network_collection
+       ORDER BY created
+       DESC LIMIT 1"))))
+
+(defn insert-network-collection
+  "Insert a network collection into the database"
+  [coll]
+  (j/insert! db :network_collection
+             {:collection coll}))
+
 ; The timestamp type must be extended in order to handle the timestamps from
 ; Postgres
 (extend-type java.sql.Timestamp
