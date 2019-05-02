@@ -25,14 +25,18 @@
             [compojure.core :refer :all]
             [compojure.route :refer [not-found]]
             [ring.middleware.reload :refer [wrap-reload]]
-            [ring.middleware.json :refer [wrap-json-response]]))
+            [ring.middleware.json :refer [wrap-json-body
+                                          wrap-json-response]]))
 
 (defroutes app-routes
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
-  (GET "/adaption" request (wrap-json-response adaption-request-handler))
+  (POST "/lognetwork" request (wrap-json-response
+                               (wrap-json-body
+                                adaption-request-handler
+                                {:keywords? true :bigdecimals? true})))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
   (GET "/configure" request (wrap-json-response config-handler))
   (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
