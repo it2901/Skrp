@@ -1,7 +1,6 @@
 {
-    "id": "http://json-schema.org/schema#",
-      "description": "A list of geo-positions",
-      "$ref": "#/definitions/Locations",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
       "definitions": {
         "Locations": {
           "type": "object",
@@ -164,5 +163,29 @@
           }
         }
       } 
+    },
+      "additionalProperties": true,
+      "required": [
+          "type",
+          "collection"
+      ],
+      "properties": {
+          "type": {
+              "type": "string",
+              "enum": ["NetworkCollection"]
+          },
+          "collection": {
+              "type": "array",
+              "title": "NetJSON Objects",
+              "maxItems":1,
+              "uniqueItems": true,
+              "additionalItems": true,
+              "items": {
+                  "$ref" : "#/definitions/Locations",
+                  "title": "NetJSON Object",
+                  "additionalProperties": true
+              }
+          }
+      }
     }
-    }
+    

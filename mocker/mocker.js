@@ -17,14 +17,15 @@ setInterval(() => {
      networkdomain = require('./Schemes/networkdomain.json')  
      networkgraph = require('./Schemes/networkgraph.json')  
      networkroutes = require('./Schemes/networkroutes.json')
-     devmonEnd = jsf.generate(devmon);
+     devmonEnd = jsf.generate(devmon)
      devconfEnd = jsf.generate(devconf);
      mapnodesEnd = jsf.generate(mapnodes);
      geolocationsEnd = jsf.generate(geolocations);
      networkdomainEnd = jsf.generate(networkdomain);
      networkgraphEnd = jsf.generate(networkgraph,cwd);
      networkroutesEnd = jsf.generate(networkroutes);
-     main = [devmonEnd,devconfEnd,mapnodesEnd,geolocationsEnd,networkdomainEnd,networkgraphEnd,networkroutesEnd]
+     
+     main = [networkgraphEnd,geolocations]
 
 }, 5000);
 
