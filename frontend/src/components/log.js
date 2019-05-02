@@ -124,6 +124,19 @@ class Log extends Component {
         })
       })
   }
+  defaultFetch (query) {
+    query = query || ''
+    this.fetch(query)
+      .then(e => {
+        let d = JSON.parse(e.target.response)
+        // eslint sucks, but this totally works :ooo
+        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        this.setState({ data: d })
+      }).catch(e => {
+        // most likely 404
+        this.setState({ data: [] })
+      })
+  }
   fetch (query) {
     // not using fetch api cause cypress sucks..
     query = query || ''
@@ -191,13 +204,7 @@ class Log extends Component {
     this.queryString = queryString
 
     // and then fetch
-    this.fetch(queryString)
-      .then(e => {
-        let d = JSON.parse(e.target.response)
-        // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
-        this.setState({ data: d })
-      })
+    this.defaultFetch(queryString)
   }
   toggleDateRange () {
     this.setState({ dateRange: !this.state.dateRange })
@@ -260,16 +267,11 @@ class Log extends Component {
       formDateTo: '',
       formDesc: '',
       formDevIds: [],
+      formAdaptionType: '',
       canFilter: true
     })
     // also fetch new ok
-    this.fetch()
-      .then(e => {
-        let d = JSON.parse(e.target.response)
-        // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
-        this.setState({ data: d })
-      })
+    this.defaultFetch()
   }
   generateDateField (fields) {
     return <Form.Field
@@ -297,13 +299,7 @@ class Log extends Component {
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
       liveUpdater = setInterval(() => {
-        this.fetch(this.queryString)
-          .then(e => {
-            let d = JSON.parse(e.target.response)
-            // eslint sucks, but this totally works :ooo
-            d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
-            this.setState({ data: d })
-          })
+        this.defaultFetch(this.queryString)
       }, 5000)
       this.setState({
         liveUpdater: liveUpdater
