@@ -5,6 +5,7 @@ import localmain from '../assets/docs/main.txt'
 import localbackend from '../assets/docs/backend.md'
 import localfrontend from '../assets/docs/frontend.md'
 import localmocker from '../assets/docs/mocker.md'
+import fetch from 'isomorphic-fetch'
 
 const Div = styled.div`
 position: relative;
