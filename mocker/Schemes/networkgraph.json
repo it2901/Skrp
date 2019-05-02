@@ -78,8 +78,7 @@
             "type": "object",
             "additionalProperties": true,
             "required": [
-              "id",
-              "label"
+              "id"
             ],
             "properties": {
               "id": {
