@@ -115,6 +115,7 @@ export default class Maps extends Component {
         const height = window.innerHeight
         this.setState({ height: height })
       }
+  
 
 
        componentWillMount() {
