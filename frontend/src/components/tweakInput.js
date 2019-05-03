@@ -24,16 +24,20 @@ class TweakInput extends Component {
   async setInitalState (){
   const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json()}).catch(err => console.error(err))
   let parameters = stateToBe[0]["config"]
+  let device_id = stateToBe[0]["device_id"]
+  //this is not allowed, plz fix me.
+  // This might trigger alot of state updates
   Object.entries(parameters).map(p=>(
     this.setState({
-        [p[0]]:p[1]
+        [p[0]]:p[1],
+        "device_id": device_id
     })
   )
   )}
     
   sendToConfigure(){
     let state = this.state
-    let statement = "?device_id=1&"
+    let statement = `?device_id=${this.state.device_id}&`
     Object.entries(state).map(x=>statement+=x[0]+"="+x[1]+"&")
     statement = statement.substring(0, statement.length-1)
     fetch("http://localhost:8090/configure"+statement)

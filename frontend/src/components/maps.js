@@ -38,7 +38,6 @@ export default class Maps extends Component {
       
     change () {
       let liveUpdater = this.state.liveUpdater
-      console.log(this.config.updateFrequency)
         if (this.state.liveUpdate){
             liveUpdater = setInterval(() => {
             this.setInitalState()
@@ -63,14 +62,16 @@ export default class Maps extends Component {
         let nodes = stateToBe["nodes"].map(node => {return node["id"]})
         let links = stateToBe["links"]
         let locs = stateToBe["Locations"].map(l => {
+          let date = l["Location"]["Time"]
+          let time = `${date["Year4Digit"]}-${date["MonthNumeric"]}-${date["Day"]}T${date["HourTime"]}:${date["MinuteTime"]}:${date["SecondTime"]}`
           let pos = l["Location"]["Position"]
           let lng = pos["Longitude"] 
           let lat = pos["Latitude"]
-          return [lat,lng]
+          return [[lat,lng],time]
         })
         let x = {}
         for (let i = 0; i < 51; i++) {
-          x[nodes[i]] = {pos:locs[i],neighbours:[]}
+          x[nodes[i]] = {pos:locs[i][0],neighbours:[],time:locs[i][1]}
         }
         this.setState({
             nodes:x
@@ -140,11 +141,24 @@ export default class Maps extends Component {
     render() {
       let nodes = Object.keys(this.state.nodes).map(key => {
         let pos = this.state.nodes[key]["pos"]
-        let neighbours = this.state.nodes[key]["neighbours"]
+        let time = this.state.nodes[key]["time"]
+        let neighbours = this.state.nodes[key]["neighbours"].map(node => {
+          return (
+            <div>
+             <br/>{node}
+            </div>  )
+        })
+
         return (
 
           <Marker key={pos} position={pos}>
-                <Popup>Name: {key}<br />Neighbours: {neighbours}<br /> Amount of neighbours: {neighbours.length}.</Popup>
+                <Popup>Name: <b>{key}</b>
+                <br/> 
+                <br />Neighbours: {neighbours}
+                <br /> Amount of neighbours: {neighbours.length}
+                <br/> 
+                <br/> Time: {time}
+                .</Popup>
                 <Circle name={key}center={pos} radius={200} />
             </Marker>)
 
