@@ -77,10 +77,6 @@
   [netcollgraph]
   (update netcollgraph :collection (partial mapv update-links)))
 
-(defn helper
-  [nc]
-  (clojure.pprint/pprint nc))
-
 (defn- update-netcol
   "Updates the root NetworkCollection"
   [{coll :collection :as root-netcoll}]
