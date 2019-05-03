@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { Graph } from 'react-d3-graph'
 import { Button, Message } from 'semantic-ui-react'
 
+
 class NodeGraph extends Component {
   constructor (props) {
     super(props)
     this.props = props
+    this.config = {}
     this.state = {
       liveUpdate: true,
       liveUpdater: 0,
@@ -39,15 +41,23 @@ class NodeGraph extends Component {
     }
   }
   componentDidMount () {
-    this.fetch()
+    this.setConfig().then(res => {
+      this.fetch()
+    }
+    )
   }
-
+  async setConfig (){
+    const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
+    this.config = config
+    this.config.updateFrequency  = (config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == 0 || config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY
+    }
+  
   change () {
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
       liveUpdater = setInterval(() => {
         this.fetch()
-      }, 5000)
+      }, this.config.updateFrequency)
       this.setState({
         liveUpdater: liveUpdater
       })
@@ -60,12 +70,13 @@ class NodeGraph extends Component {
   }
 
   fetch () {
+    console.log(this.config)
     let xhttp = new XMLHttpRequest({ mozSystem: true })
     let self = this
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText))
+        self.processData(JSON.parse(xhttp.responseText)["collection"][0])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
@@ -77,7 +88,7 @@ class NodeGraph extends Component {
         } })
       }
     }
-    xhttp.open('GET', 'http://localhost:3001/netgph', true)
+    xhttp.open('GET', this.config.REACT_APP_NETWORK_GRAPH, true)
     xhttp.send()
   }
   mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
@@ -138,11 +149,11 @@ class NodeGraph extends Component {
           }
           <Button
             style={{
-              background: this.state.liveUpdate ? 'green' : 'red',
+              background: this.state.liveUpdate ? 'red' : 'green',
               color: 'white'
             }}
             fluid
-            content='Toggle Live Update'
+            content={'Live Update: ' + (this.state.liveUpdate ? 'OFF' : 'ON') }
             onClick={() => {
               this.setState(prevState => ({
                 liveUpdate: !prevState.liveUpdate

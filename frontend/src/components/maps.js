@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup,  FeatureGroup, Circle, Polyline  } from 'react-leaflet'
-import { EditControl } from "react-leaflet-draw"
-import Control from 'react-leaflet-control';
-import { Button, Message } from 'semantic-ui-react'
+import { Map, TileLayer, Marker, Popup, FeatureGroup, Circle, Polyline } from 'react-leaflet'
+import { EditControl } from 'react-leaflet-draw'
+import Control from 'react-leaflet-control'
+import { Button } from 'semantic-ui-react'
 
-  
 export default class Maps extends Component {
     constructor() {
         super()
@@ -25,14 +24,25 @@ export default class Maps extends Component {
           "123.123.123.11" : {pos:[52.3,13.5], neighbours:[]},
           "123.123.123.12" : {pos:[52.2,13.4], neighbours:[]}
         }
-    }}
+    
+    }
+    this.config = {
+    }
+  }
 
+    async setConfig (){
+      const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
+      this.config = config
+      this.config.updateFrequency  = (config.REACT_APP_MAPS_UPDATE_FREQUENCY == 0 || config.REACT_APP_MAPS_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_MAPS_UPDATE_FREQUENCY
+      }
+      
     change () {
       let liveUpdater = this.state.liveUpdater
+      console.log(this.config.updateFrequency)
         if (this.state.liveUpdate){
             liveUpdater = setInterval(() => {
             this.setInitalState()
-          }, 5000);
+          }, this.config.updateFrequency);
          this.setState({
            liveUpdater:liveUpdater
          })
@@ -46,9 +56,10 @@ export default class Maps extends Component {
     }
 
     async setInitalState () {
-        let stateToBe= await fetch("http://localhost:3001/mapnod").then(response => {
-          return response.json()
-        }).catch(err => console.error(err))
+        let stateToBe= await fetch(this.config.REACT_APP_MAP_AND_NODES)
+        .then(response => response.json())
+        .then(data => data.collection[0])
+        .catch(err => console.error(err))
         let nodes = stateToBe["nodes"].map(node => {return node["id"]})
         let links = stateToBe["links"]
         let locs = stateToBe["Locations"].map(l => {
@@ -101,19 +112,26 @@ export default class Maps extends Component {
       }
 
     updateDimensions() {
-        const height = window.innerWidth >= 992 ? window.innerHeight : 400
+        const height = window.innerHeight
         this.setState({ height: height })
       }
+  
 
-      componentDidMount(){
-        if (!this.state.liveUpdate){
-        this.setInitalState()
-    }
-  } 
-    
-      componentWillMount() {
+
+       componentWillMount() {
+        this.setConfig().then(res =>{
+          this.setInitalState()
+        })
         this.updateDimensions()
+          
         
+        
+      }
+
+      componentDidMount () {
+        if (!this.state.liveUpdate) {
+          this.setInitalState()
+        }
       }
 
 
@@ -149,7 +167,7 @@ export default class Maps extends Component {
         })
         const position = [this.state.lat, this.state.lng]
         return (
-            <Map center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+            <Map zoomControl= {false} center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
             <div>{this.state.liveUpdate} </div>
             <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -162,26 +180,26 @@ export default class Maps extends Component {
         rectangle: true
       }}
     />
-    {nodes}
-    {links}
-    <Control position="topleft" >
-    <Button
-            style={{
-              background: this.state.liveUpdate ? 'green' : 'red',
-              color: 'white'
-            }}
-            fluid
-            content='Toggle Live Update'
-            onClick={() => {
-              this.setState(prevState => ({
-                liveUpdate: !prevState.liveUpdate
-              }))
-              this.change()
-            }}
-          />
-      </Control>
-  </FeatureGroup>
-            </Map>
-        )
-        }
-    }
+          {nodes}
+          {links}
+          <Control position="topright" >
+            <Button
+              style={{
+                background: this.state.liveUpdate ? 'red' : 'green',
+                color: 'white'
+              }}
+              fluid
+              content={'Live Update: ' + (this.state.liveUpdate ? 'OFF' : 'ON') }
+              onClick={() => {
+                this.setState(prevState => ({
+                  liveUpdate: !prevState.liveUpdate
+                }))
+                this.change()
+              }}
+            />
+          </Control>
+        </FeatureGroup>
+      </Map>
+    )
+  }
+}

@@ -19,13 +19,13 @@
             [clojure.java.jdbc :as j]))
 
 (defn get-syslog
-  "Retrieves entries in the system log table"
+  "Returns entries from the system_log table"
   ([]
-   (j/query db "SELECT * FROM system_log"))
+   (j/query db "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id"))
   ([date]
-   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) = '" date "'")]))
+   (j/query db [(str "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id WHERE DATE(created) = '" date "'")]))
   ([from to]
-   (j/query db [(str "SELECT * FROM system_log WHERE DATE(created) between '" from "' and '" to "'")])))
+   (j/query db [(str "SELECT * FROM system_log INNER JOIN adaption ON system_log.adaption_id=adaption.adaption_id WHERE DATE(created) between '" from "' and '" to "'")])))
 
 (defn insert-syslog
   "Takes a map of values for the system log and inserts them into the database"
@@ -41,16 +41,36 @@
   (j/get-by-id db :device device_id :device_id))
 
 (defn set-device-id
-  "Registers a device in the database"
+  "Inserts a device into database"
   [device_id]
   (j/insert! db :device
              {:device_id device_id}))
 
-(defn get-adaption-from-id
-  "Queries the database for adaption with input as id"
-  [adaption_id]
-  (j/get-by-id db :adaption adaption_id :adaption_id))
+(defn get-adaption-id
+  "Queries the database for an adaption with the specified adaption_type, returns id of result"
+  [adaption_type]
+  (let [adaptionID (j/query db [(str "SELECT adaption_id FROM adaption WHERE LOWER(adaption_type) = LOWER('" adaption_type "')")])]
+    (get (first adaptionID) :adaption_id)))
 
+(defn get-network-collection
+  "Returns a network collection"
+  ([]
+   (j/query db "SELECT * FROM network_collection"))
+  ([latest]
+   (when (= latest :latest)
+     (j/query db
+              "SELECT * FROM network_collection
+       ORDER BY created
+       DESC LIMIT 1"))))
+
+(defn insert-network-collection
+  "Insert a network collection into the database"
+  [coll]
+  (j/insert! db :network_collection
+             {:collection coll}))
+
+; The timestamp type must be extended in order to handle the timestamps from
+; Postgres
 (extend-type java.sql.Timestamp
   json/JSONWriter
   (-write [date out]

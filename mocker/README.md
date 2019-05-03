@@ -1,8 +1,8 @@
-#Usage
+## Usage
 
 This is a mocker that exposes fake NETJSON-data. 
 
-The API-ends are exposed at the following addresses
+The API-ends are exposed at the following addresses by default
 
 - Geolocations: `http://localhost:3001/geoloc`
 - NetworkDomain: `http://localhost:3001/netdom`
@@ -17,9 +17,37 @@ When the installation is done type `nodemon mocker.js`
 At this point your server is running and the API-ends are up.
 
 
-#How i made it
+## How i made it
 
-The mocker is a generic Node and Express server, IT serves mocked NETJSON using json-schema-faker. I have taken the schemas given to us by FFI and made it so lots of the fields are required, so that the mocker always gives us that data. I have omitted adding some of the data that i thought unnecessary.
+The mocker is a generic Node and Express server, It serves mocked NETJSON using json-schema-faker. I have taken the schemas given to us by FFI and made it so lots of the fields are required, so that the mocker always gives us that data. I have omitted adding some of the data that i thought unnecessary.
 
 
 
+## Configuration 
+The default for this mocker is, and any of these values can be changed in the config.JSON object. 
+```
+{
+    "GLOBAL_UPDATE_FREQUENCY" : 4500,
+    "MAP_AND_NODES_UPDATE_FREQUENCY" : 5000,
+    "GEOGRAPHIC_LOCATION_UPDATE_FREQUENCY" : 1000,
+    "NETWORK_DOMAIN_UPDATE_FREQUENCY" : 2000,
+    "NETWORK_GRAPH_UPDATE_FREQUENCY" : 3000,
+    "NETWORK_ROUTES_UPDATE_FREQUENCY" : 4000,
+    "DEVICE_CONFIGURATION_UPDATE_FREQUENCY": 10000,
+    "DEVICE_MONITORING_UPDATE_FREQUENCY": 10000,
+    "NETWORK_COLLECTION_UPDATE_FREQUENCY":5000,
+
+    "PORT" : 3001,
+    "MAP_AND_NODES_END_POINT" : "/mapnod",
+    "GEOGRAPHIC_LOCATION_END_POINT" : "/geoloc",
+    "NETWORK_DOMAIN_END_POINT" : "/netdom",
+    "NETWORK_GRAPH_END_POINT" : "/netgph",
+    "NETWORK_ROUTES_END_POINT" : "/netrou",
+    "DEVICE_CONFIGURATION_END_POINT":"/devcon",
+    "DEVICE_MONITORING_END_POINT" : "/devmon",
+}
+```
+
+The `GLOBAL_UPDATE_FREQUENCY` is used for the API endpoints that have undefined or 0 as their value. 
+
+You can change the API endpoints by chaning the PORT that the API is exposed on, and the paths which provide the different JSON objects. 

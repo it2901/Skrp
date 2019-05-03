@@ -11,15 +11,15 @@ describe('log test', () => {
     cy.route('http://localhost:8090/filtersyslog', [
       {
         'system_log_id': 1,
-        'adaption_id': 1,
+        'adaption_type': 'test',
         'device_id': 1,
         'description': 'test',
         'created': '2019-04-03T22:23:04Z'
       },
       {
-        'system_log_id': 1,
-        'adaption_id': 1,
-        'device_id': 1,
+        'system_log_id': 2,
+        'adaption_type': 'meme',
+        'device_id': 2,
         'description': 'compress',
         'created': '2019-05-03T22:23:04Z'
       }
@@ -34,11 +34,11 @@ describe('log test', () => {
     // check table length
     cy.get('[data-cy=children]').children().should('have.length', 2)
   })
-  it('fetches correct for desc and device id', () => {
-    cy.route('http://localhost:8090/filtersyslog?description=test&device_id=1', [
+  it('fetches correct for desc, adaption type and device id', () => {
+    cy.route('http://localhost:8090/filtersyslog?description=test&device_id=1&adaption_type=meme', [
       {
         'system_log_id': 1,
-        'adaption_id': 1,
+        'adaption_type': 'meme',
         'device_id': 1,
         'description': 'test',
         'created': '2019-04-03T22:23:04Z'
@@ -47,6 +47,10 @@ describe('log test', () => {
     cy.get('input[name=formDesc]').type('test')
     cy.get('div[name=formDevIds]').click()
     cy.get('div[name=formDevIds]').children('div').children().first().click()
+    cy.get('div[name=formDevIds]').blur()
+    //adaption type ouff
+    cy.get('div[name=formAdaptionType]').click()
+    cy.get('div[name=formAdaptionType]').children('div').children().first().next().click()
     cy.contains('Filter').click()
     // check table
     cy.get('[data-cy=children]').children().should('have.length', 1)
@@ -55,7 +59,7 @@ describe('log test', () => {
     // route to check for WRONG id
     cy.route('http://localhost:8090/filtersyslog?description=test&device_id=2', [])
     // first clear input
-    cy.get('i.dropdown.icon.clear').click()
+    cy.get('i.dropdown.icon.clear').click({multiple:true})
     // open list
     cy.get('div[name=formDevIds]').click()
     // add another in array
@@ -70,17 +74,17 @@ describe('log test', () => {
     cy.route('http://localhost:8090/filtersyslog?date_from=2019-03-01&date_to=2019-05-02', [
       {
         'system_log_id': 1,
-        'adaption_id': 1,
+        'adaption_type': 'test',
         'device_id': 1,
         'description': 'test',
         'created': '2019-04-03T22:23:04Z'
       },
       {
-        'system_log_id': 1,
-        'adaption_id': 1,
-        'device_id': 1,
+        'system_log_id': 2,
+        'adaption_type': 'meme',
+        'device_id': 2,
         'description': 'compress',
-        'created': '2019-05-01T22:23:04Z'
+        'created': '2019-05-03T22:23:04Z'
       }
     ])
     

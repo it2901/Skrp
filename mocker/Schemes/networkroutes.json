@@ -1,111 +1,137 @@
 {
-    "$schema": "http://json-schema.org/schema#",
-    "$ref": "#/definitions/Routes",
-    "definitions": {
-      "Routes": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": [
-          "collection"  
-        ],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["NetworkCollection"]
-          },
-          "collection": {
-            "type": "array",
-            "maxItems": 1,
-            "items": {
-              "$ref": "#/definitions/Route"
-            }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "definitions": {
+    "Routes": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "collection",
+        "type" 
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["NetworkRoutes"]
+        },
+        "collection": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/definitions/Route"
           }
         }
-      },
-      "Route": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": [
-          "type",
-          "protocol",
-          "version",
-          "revision",
-          "metric",
-          "router_id",
-          "routes"
-        ],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["NetworkRoutes"]
-          },
-          "protocol": {
-            "type": "string",
-            "pattern": "^[a-z]{4}$[0-9]"
-          },
-          "version": {
-            "type": "string",
-            "pattern": "0[.][0-9][.][0-9]"
-          },
-          "metric": {
-            "type": "string",
-            "pattern": "^[a-z]{2}$_^[a-z]{3}$_metric"
-          },
-          "revision": {
-            "type": "string",
-            "maxLength": 12,
-            "pattern": "v[0-9][.,][0-9][.,][0-9][_-][0-9][-_][0-9][a-z0-9]+"
-          },
-          "router_id": {
-            "type": "string",
-            "format": "ipv4"
-          },
-          "topology_id": {
-            "type": "string"
-          },
-          "routes": {
-            "type": "array",
-            "title": "Routes",
-            "minItems":4,
-            "items": {
-              "type": "object",
-              "title": "Route",
-              "additionalProperties": true,
-              "required": [
-                "destination",
-                "next",
-                "cost",
-                "device"
-              ],
-              "properties": {
-                "destination": {
-                  "type": "string",
-                  "format": "ipv4"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "ipv4"
-                },
-                "device": {
-                  "type": "string",
-                  "pattern": "eth[0-9]"
-                },
-                "cost": {
-                  "type": "integer",
-                  "minimum": 999999
-                },
-                "source": {
-                  "type": "string"
-                },
-                "cost_txt": {
-                  "type": "string"
-                }
+      }
+    },
+    "Route": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "type",
+        "protocol",
+        "version",
+        "revision",
+        "metric",
+        "router_id",
+        "routes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["NetworkRoutes"]
+        },
+        "protocol": {
+          "type": "string",
+          "pattern": "^[a-z]{4}$[0-9]"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "0[.][0-9][.][0-9]"
+        },
+        "metric": {
+          "type": "string",
+          "pattern": "^[a-z]{2}$_^[a-z]{3}$_metric"
+        },
+        "revision": {
+          "type": "string",
+          "maxLength": 12,
+          "pattern": "v[0-9][.,][0-9][.,][0-9][_-][0-9][-_][0-9][a-z0-9]+"
+        },
+        "router_id": {
+          "type": "string",
+          "format": "ipv4"
+        },
+        "topology_id": {
+          "type": "string"
+        },
+        "routes": {
+          "type": "array",
+          "title": "Routes",
+          "minItems":4,
+          "items": {
+            "type": "object",
+            "title": "Route",
+            "additionalProperties": true,
+            "required": [
+              "destination",
+              "next",
+              "cost",
+              "device"
+            ],
+            "properties": {
+              "destination": {
+                "type": "string",
+                "format": "ipv4"
+              },
+              "next": {
+                "type": "string",
+                "format": "ipv4"
+              },
+              "device": {
+                "type": "string",
+                "pattern": "eth[0-9]"
+              },
+              "cost": {
+                "type": "integer",
+                "minimum": 999999
+              },
+              "source": {
+                "type": "string"
+              },
+              "cost_txt": {
+                "type": "string"
               }
             }
           }
         }
       }
     }
+  },
+  "additionalProperties": true,
+  "required": [
+      "type",
+      "collection"
+  ],
+  "properties": {
+      "type": {
+          "type": "string",
+          "enum": ["NetworkCollection"]
+      },
+      "collection": {
+          "type": "array",
+          "title": "NetJSON Objects",
+          "maxItems":1,
+          "uniqueItems": true,
+          "additionalItems": true,
+          "items": {
+              "$ref" : "#/definitions/Routes",
+              "title": "NetJSON Object",
+              "additionalProperties": true
+          }
+      }
   }
+}
+
+
   
   
