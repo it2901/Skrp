@@ -72,7 +72,7 @@ class About extends Component {
       <div>
 
         <Div style ={{ border: 'none' }}>
-          <h1 style={{ textAlign: 'center' }}>Main</h1>
+          <h1 style={{ textAlign: 'center' }}>SKRP</h1>
           <br></br>
           <MDReactComponent text={this.state.main}/>
         </Div>
