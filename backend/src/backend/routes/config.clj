@@ -35,5 +35,8 @@
   Action: Inserts configuration in database if it fits the schema."
   [{params :query-params :as req}]
   (cond (empty? params) (run-db (config-check (read-config)))
-        (contains? params "device_id") (run-db (write-config (get params "device_id") (dissoc params "device_id")))
+        (contains? params "device_id") (let [res (run-db (write-config (get params "device_id") (dissoc params "device_id")))]
+                                         {:status 200
+                                          :header {"Content-Type" "application/json"}
+                                          :body (first res)})
         :else (error-handler-rep 503 "You must supply 'device_id' as a parameter in order to write a configuration.")))
