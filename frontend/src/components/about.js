@@ -13,8 +13,7 @@ left:12.5%;
 border-color:black;
 border-top:2px solid;
 width: 75%;
-margin: 20px;
-padding:20px;
+padding:40px;
 `
 
 class About extends Component {
