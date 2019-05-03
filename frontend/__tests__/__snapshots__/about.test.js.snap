@@ -1,13 +1,101 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<span>
-  <p>
-    Some text 
-    <strong>
-      with emphasis
-    </strong>
-    .
-  </p>
-</span>
+<div>
+  <div
+    className="sc-bdVaJa dzRQEn"
+    style={
+      Object {
+        "border": "none",
+      }
+    }
+  >
+    <h1
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+    >
+      Main
+    </h1>
+    <br />
+    <span>
+      <p>
+        localmain
+      </p>
+    </span>
+  </div>
+  <div
+    className="sc-bdVaJa dzRQEn"
+  >
+    <h1
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+    >
+      Backend
+    </h1>
+    <br />
+    <span>
+      <p>
+        localbackend
+      </p>
+    </span>
+  </div>
+  <div
+    className="sc-bdVaJa dzRQEn"
+  >
+    <h1
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+    >
+      Mocker
+    </h1>
+    <br />
+    <span>
+      <p>
+        localmocker
+      </p>
+    </span>
+  </div>
+  <div
+    className="sc-bdVaJa dzRQEn"
+  >
+    <h1
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+    >
+      Frontend
+    </h1>
+    <br />
+    <span>
+      <p>
+        localfrontend
+      </p>
+    </span>
+  </div>
+  <div
+    className="sc-bdVaJa dzRQEn"
+    style={
+      Object {
+        "border": "none",
+        "textAlign": "center",
+      }
+    }
+  >
+    <i>
+       Used the 
+       version of the docs
+    </i>
+  </div>
+</div>
 `;
