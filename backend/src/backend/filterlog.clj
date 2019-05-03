@@ -20,53 +20,53 @@
 
 (defn adaption-filter
   [adaption_type queryStr]
-  (if-not (= nil adaption_type)
+  (if-not adaption_type
+    queryStr
     (let [basicQueryString "SELECT system_log.*, adaption.adaption_type, adaption.adaption_id
-  FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
+    FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
       (if-not (= queryStr basicQueryString)
         (str queryStr " AND LOWER(adaption.adaption_type = LOWER('" adaption_type "')")
-        (str queryStr " WHERE LOWER(adaption.adaption_type) = LOWER('" adaption_type "')")))
-    queryStr))
+        (str queryStr " WHERE LOWER(adaption.adaption_type) = LOWER('" adaption_type "')")))))
 
 (defn device-filter
   [device_id queryStr]
-  (if-not (= nil device_id)
+  (if-not device_id
+    queryStr
     (let [basicQueryString "SELECT system_log.*, adaption.adaption_type, adaption.adaption_id
-  FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
+    FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
       (if-not (= queryStr basicQueryString)
         (str queryStr " AND device_id IN (" device_id ")")
-        (str queryStr " WHERE device_id IN (" device_id ")")))
-    queryStr))
+        (str queryStr " WHERE device_id IN (" device_id ")")))))
 
 (defn description-filter
   [description queryStr]
-  (if-not (= nil description)
+  (if-not description
+    queryStr
     (let [basicQueryString "SELECT system_log.*, adaption.adaption_type, adaption.adaption_id
-  FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
+    FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
       (if-not (= queryStr basicQueryString)
         (str queryStr " AND LOWER(description) ~ LOWER('" description "')")
-        (str queryStr " WHERE LOWER(description) ~ LOWER('" description "')")))
-    queryStr))
+        (str queryStr " WHERE LOWER(description) ~ LOWER('" description "')")))))
 
 (defn date-filter
   [date queryStr]
-  (if-not (= nil date)
+  (if-not date
+    queryStr
     (let [basicQueryString "SELECT system_log.*, adaption.adaption_type, adaption.adaption_id
-  FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
+    FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
       (if-not (= queryStr basicQueryString)
         (str queryStr " AND DATE(created) = '" date "'")
-        (str queryStr " WHERE DATE(created) = '" date "'")))
-    queryStr))
+        (str queryStr " WHERE DATE(created) = '" date "'")))))
 
 (defn date-from-to-filter
   [date_from date_to queryStr]
-  (if-not (or (= nil date_from) (= nil date_to))
+  (if-not (and date_from date_to)
+    queryStr
     (let [basicQueryString "SELECT system_log.*, adaption.adaption_type, adaption.adaption_id
-  FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
+    FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
       (if-not (= queryStr basicQueryString)
         (str queryStr " AND DATE(created) between '" date_from "' and '" date_to "'")
-        (str queryStr " WHERE DATE(created) between '" date_from "' and '" date_to "'")))
-    queryStr))
+        (str queryStr " WHERE DATE(created) between '" date_from "' and '" date_to "'")))))
 
 (defn get-filtered-syslog
   "Returns filtered data from the database table 'system_log' based on filter input.
