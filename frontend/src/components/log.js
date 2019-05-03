@@ -31,7 +31,7 @@ class Log extends Component {
     }
     // used for live polling
     this.queryString = ''
-
+    // a map from api keys to form names
     this.queryParams = {
       'date': 'formDate',
       'description': 'formDesc',
@@ -41,6 +41,14 @@ class Log extends Component {
       'date_to': 'formDateTo',
       'adaption_type': 'formAdaptionType'
     }
+    // used to filter out what headers to use in table
+    this.wantedHeaders = [
+      'created',
+      'adaption_type',
+      'description',
+      'system_log_id',
+      'device_id'
+    ]
   }
 
   async setConfig (){
@@ -75,18 +83,20 @@ class Log extends Component {
     this.fetch()
       .then((e) => {
         let d = JSON.parse(e.target.response)
+
         // eslint sucks, but this totally works :ooo
         d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
 
-        let adaptionIds = d
-          .map(o => o.adaption_id)
-          .filter((v, i, a) => a.indexOf(v) === i)
-          .map(o => {
-            return { text: o, key: o, value: o }
-          })
+        // let adaptionIds = d
+        //   .map(o => o.adaption_id)
+        //   .filter((v, i, a) => a.indexOf(v) === i)
+        //   .map(o => {
+        //     return { text: o, key: o, value: o }
+        //   })
+        // ^^^ DEPRECATED
 
         let deviceIds = d
-          .map(o => o.adaption_id)
+          .map(o => o.device_id)
           .filter((v, i, a) => a.indexOf(v) === i)
           .map(o => {
             return { text: o, key: o, value: o }
@@ -97,19 +107,35 @@ class Log extends Component {
           .map(o => {
             return { text: o, key: o, value: o }
           })
-        this.setState({
-          data: d,
-          deviceIds: deviceIds,
-          adaptionIds: adaptionIds,
-          adaptionTypes: adaptionTypes,
-          logHeaders: Object.keys(d[0]).map(o => {
+        let logHeaders = Object.keys(d[0])
+          .filter(o => this.wantedHeaders.includes(o))
+          .map(o => {
             return {
               key: o,
               text: o.split('_').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join(' '), // prettify? oof
               value: o
             }
           })
+        this.setState({
+          data: d,
+          deviceIds: deviceIds,
+          // adaptionIds: adaptionIds, DEPR
+          adaptionTypes: adaptionTypes,
+          logHeaders: logHeaders
         })
+      })
+  }
+  defaultFetch (query) {
+    query = query || ''
+    this.fetch(query)
+      .then(e => {
+        let d = JSON.parse(e.target.response)
+        // eslint sucks, but this totally works :ooo
+        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        this.setState({ data: d })
+      }).catch(e => {
+        // most likely 404
+        this.setState({ data: [] })
       })
   }
   fetch (query) {
@@ -179,13 +205,7 @@ class Log extends Component {
     this.queryString = queryString
 
     // and then fetch
-    this.fetch(queryString)
-      .then(e => {
-        let d = JSON.parse(e.target.response)
-        // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
-        this.setState({ data: d })
-      })
+    this.defaultFetch(queryString)
   }
   toggleDateRange () {
     this.setState({ dateRange: !this.state.dateRange })
@@ -248,16 +268,11 @@ class Log extends Component {
       formDateTo: '',
       formDesc: '',
       formDevIds: [],
+      formAdaptionType: '',
       canFilter: true
     })
     // also fetch new ok
-    this.fetch()
-      .then(e => {
-        let d = JSON.parse(e.target.response)
-        // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
-        this.setState({ data: d })
-      })
+    this.defaultFetch()
   }
   generateDateField (fields) {
     return <Form.Field
@@ -285,13 +300,7 @@ class Log extends Component {
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
       liveUpdater = setInterval(() => {
-        this.fetch(this.queryString)
-          .then(e => {
-            let d = JSON.parse(e.target.response)
-            // eslint sucks, but this totally works :ooo
-            d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
-            this.setState({ data: d })
-          })
+        this.defaultFetch(this.queryString)
       }, 5000)
       this.setState({
         liveUpdater: liveUpdater
@@ -334,20 +343,21 @@ class Log extends Component {
             value={formDevIds}
             onChange={(e, data) => this.onChange(data)}
             fluid selection clearable multiple />
+          {/* deprecated
           <Form.Dropdown
             options={adaptionIds}
             placeholder="Adaption ids"
             name="formAdaptIds"
             value={formAdaptIds}
             onChange={(e, data) => this.onChange(data)}
-            fluid selection clearable multiple />
+            fluid selection clearable multiple /> */}
           <Form.Dropdown
             options={adaptionTypes}
             placeholder="Adaption types"
             name="formAdaptionType"
             value={formAdaptionType}
             onChange={(e, data) => this.onChange(data)}
-            fluid selection />
+            fluid selection clearable />
           <Form.Field>
             <span style={{ textAlign: 'center' }}>Date
               <Popup
@@ -461,14 +471,12 @@ class Log extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body data-cy='children'>
-            {data.map(o => {
+            { data.map(o => {
               return (
-                <Table.Row key={o['created']}>
-                  <Table.Cell>{o['system_log_id']}</Table.Cell>
-                  <Table.Cell>{o['device_id']}</Table.Cell>
-                  <Table.Cell>{o['adaption_id']}</Table.Cell>
-                  <Table.Cell>{o['description']}</Table.Cell>
-                  <Table.Cell>{o['created']}</Table.Cell>
+                <Table.Row key={o.created}>
+                  {logHeaders.map(i => {
+                    return <Table.Cell key={o.created + i.key}> {o[i.key]} </Table.Cell>
+                  })}
                 </Table.Row>
               )
             })}
