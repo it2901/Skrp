@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Graph } from 'react-d3-graph'
 import { Button, Message } from 'semantic-ui-react'
 
-
 class NodeGraph extends Component {
   constructor (props) {
     super(props)
@@ -46,12 +45,12 @@ class NodeGraph extends Component {
     }
     )
   }
-  async setConfig (){
+  async setConfig () {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
-    this.config.updateFrequency  = (config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == 0 || config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY
-    }
-  
+    this.config.updateFrequency = (config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == 0 || config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY
+  }
+
   change () {
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
@@ -76,7 +75,7 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText)["collection"][0])
+        self.processData(JSON.parse(xhttp.responseText)['collection'][0])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
@@ -164,7 +163,7 @@ class NodeGraph extends Component {
 
         </div>
 
-        { this.state.data.nodes.length &&
+        { !!this.state.data.nodes.length &&
         <Graph
           style={{ border: '1px solid black' }}
           id="networkgraph"
