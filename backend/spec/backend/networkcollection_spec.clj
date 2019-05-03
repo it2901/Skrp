@@ -17,7 +17,7 @@
   (:require [clojure.spec.alpha :as spec]))
 
 (spec/def ::networkcollection (spec/keys :req-un [::type ::collection]))
-(spec/def ::type #(and string? (= "NetworkCollection" %)))
+(spec/def ::type #(= "NetworkCollection" %))
 (spec/def ::collection (spec/coll-of ::NetJsonObject :kind vector?))
 (spec/def ::NetJsonObject
   (spec/or :networkgraph :backend.networkgraph-spec/networkgraph

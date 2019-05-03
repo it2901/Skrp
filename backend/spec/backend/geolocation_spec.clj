@@ -18,7 +18,7 @@
 
 (spec/def ::geolocation (spec/keys :req-un [::type ::Originator ::Position ::Time]
                                    :opt-un [::Movement]))
-(spec/def ::type "GeoLocation")
+(spec/def ::type #(= "GeoLocation" %))
 (spec/def ::Originator string?)
 (spec/def ::Position (spec/keys :req-un [::Latitude ::Longitude]
                                 :opt-un [::AboveSeaLevel]))
