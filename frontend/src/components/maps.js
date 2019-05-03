@@ -33,7 +33,7 @@ export default class Maps extends Component {
   async setConfig () {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
-    this.config.updateFrequency = (config.REACT_APP_MAPS_UPDATE_FREQUENCY == 0 || config.REACT_APP_MAPS_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_MAPS_UPDATE_FREQUENCY
+    this.config.updateFrequency = (config.MAPS_UPDATE_FREQUENCY == 0 || config.MAPS_UPDATE_FREQUENCY == undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.MAPS_UPDATE_FREQUENCY
   }
 
   change () {
@@ -54,7 +54,7 @@ export default class Maps extends Component {
   }
 
   async setInitalState () {
-    let stateToBe = await fetch(this.config.REACT_APP_MAP_AND_NODES)
+    let stateToBe = await fetch(this.config.MAP_AND_NODES)
       .then(response => response.json())
       .then(data => data.collection[0])
       .catch(err => console.error(err))
@@ -156,11 +156,15 @@ export default class Maps extends Component {
       let source = this.findLatLng(src)
       let target = this.findLatLng(trg)
       let cost = link['cost']
-      let colors = ['green', 'lime', 'GreenYellow ', 'yellow', 'orange', 'OrangeRed ', 'red', 'Crimson', 'DarkRed ', 'black']
-      let targeter = Math.round(cost / 1000000)
+      const mapValue = (v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
+      let linkMin = this.config['MIN_THERSHOLD']
+      let linkMax = this.config['MAX_THERSHOLD']
+      let color = `hsl(${mapValue(cost, linkMin, linkMax, 120, 0)},100%,66%)`
+      let targeter = Math.round(cost * 6 / this.config.MAX_THERSHOLD)
+      console.log(targeter)
       let pos = [source, target]
       return (
-        <Polyline key={cost}color={colors[targeter]} positions={pos}>
+        <Polyline key={cost}color={color} positions={pos}>
           <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
         </Polyline>
       )

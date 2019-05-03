@@ -1,9 +1,11 @@
 {
-    "REACT_APP_GLOBAL_UPDATE_FREQUENCY" : 5000,
-    "REACT_APP_MAPS_UPDATE_FREQUENCY" : 0,
-    "REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY" : 0,
-    "REACT_APP_LOG_UPDATE_FREQUENCY" : 0,
+    "GLOBAL_UPDATE_FREQUENCY" : 5000,
+    "MAPS_UPDATE_FREQUENCY" : 0,
+    "NODE_GRAPH_UPDATE_FREQUENCY" : 0,
+    "LOG_UPDATE_FREQUENCY" : 0,
     "DATA_SOURCE" : "http://localhost:3001",
-    "REACT_APP_NETWORK_GRAPH" : "http://localhost:3001/netgph",
-    "REACT_APP_MAP_AND_NODES" : "http://localhost:3001/mapnod"
+    "NETWORK_GRAPH" : "http://localhost:3001/netgph",
+    "MAP_AND_NODES" : "http://localhost:3001/mapnod",
+    "MIN_THERSHOLD" : 0,
+    "MAX_THERSHOLD" : 10000000
 }
