@@ -12,6 +12,7 @@ flex-wrap: wrap;
 class TweakInput extends Component {
   constructor (props) {
     super(props)
+    this.device_id = {}
     this.state = {
     }
     this.props = props
@@ -27,17 +28,17 @@ class TweakInput extends Component {
   let device_id = stateToBe[0]["device_id"]
   //this is not allowed, plz fix me.
   // This might trigger alot of state updates
+  this.device_id = device_id
   Object.entries(parameters).map(p=>(
     this.setState({
         [p[0]]:p[1],
-        "device_id": device_id
     })
   )
   )}
     
   sendToConfigure(){
     let state = this.state
-    let statement = `?device_id=${this.state.device_id}&`
+    let statement = `?device_id=${this.device_id}&`
     Object.entries(state).map(x=>statement+=x[0]+"="+x[1]+"&")
     statement = statement.substring(0, statement.length-1)
     fetch("http://localhost:8090/configure"+statement)
