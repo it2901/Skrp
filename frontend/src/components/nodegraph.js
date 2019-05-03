@@ -11,16 +11,8 @@ class NodeGraph extends Component {
       liveUpdate: true,
       liveUpdater: 0,
       nodeSelected: false,
-      data: {
-        nodes: [],
-        links: []
-      },
-      info: {
-        type: 'type',
-        protocol: 'protocol',
-        metric: 'metric',
-        version: 'version'
-      },
+      data: [],
+      info: [],
       config: {
         directed: false,
         height: window.innerHeight,
@@ -29,6 +21,7 @@ class NodeGraph extends Component {
         highlightOpacity: 0.2,
         node: {
           color: '#d3d3d3',
+          fontColor: 'white',
           fontSize: 10,
           highlightColor: 'red',
           highlightFontSize: 14,
@@ -75,7 +68,7 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText)['collection'][0])
+        self.processData(JSON.parse(xhttp.responseText)['collection'])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
@@ -92,29 +85,35 @@ class NodeGraph extends Component {
   }
   mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
   processData (data) {
-    // ensures no dupes
-    let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
-    // map min and max value of nodes to HSL color spectrum
-    let linkMin = data.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
-    let linkMax = data.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
-    let links = data.links
-      .map(e => Object.assign(
-        { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
-        , e))
-    let info = {
-      type: data.type,
-      protocol: data.protocol,
-      version: data.version,
-      metric: data.metric
-    }
-    this.setState({
-      data: {
+    let d = []
+    let i = []
+    data.forEach(graph => {
+      // ensures no dupes
+      let nodes = graph.nodes.filter((v, i, a) => a.indexOf(v) === i)
+      // map min and max value of nodes to HSL color spectrum
+      let linkMin = graph.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
+      let linkMax = graph.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
+      let links = graph.links
+        .map(e => Object.assign(
+          { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
+          , e))
+      delete graph.nodes
+      delete graph.links
+      // will map on render I guess
+      let info = graph
+
+      d.push({
         nodes: nodes,
         links: links
-        // links: []
-      },
-      info: info
+      })
+      i.push(info)
     })
+    this.setState({
+      data: d,
+      info: i
+    })
+    console.log(this.state.data)
+    console.log(this.state.info)
   }
   getLinks (nodeId) {
     // not making a dict cause mocker has duplicate values xx
@@ -132,14 +131,15 @@ class NodeGraph extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', top: '3%', right: '2%', display: 'flex', flexDirection: 'column' }}>
-          <Message style={{ display: 'flex', flexDirection: 'column' }}>
-            <Message.Header><strong>{this.state.info.type}</strong></Message.Header>
-            <span><strong>protocol:</strong> {this.state.info.protocol}</span>
-            <span><strong>version:</strong> {this.state.info.version}</span>
-            <span><strong>metric:</strong> {this.state.info.metric}</span>
-            <span><strong>nodes:</strong> {this.state.data.nodes.length}</span>
-            <span><strong>links:</strong> {this.state.data.links.length}</span>
-          </Message>
+          {!!this.state.info && this.state.info.map(g => {
+            return (
+              <Message style={{ display: 'flex', flexDirection: 'column' }}>
+                {Object.keys(g).map(i => {
+                  return <span><strong>{i}</strong>: {g[i]}</span>
+                })}
+              </Message>
+            )
+          })}
           {this.state.nodeSelected &&
           <Message style={{ display: 'flex', flexDirection: 'column' }}>
             <span><strong>id:</strong> {this.state.nodeSelected}</span>
@@ -163,15 +163,19 @@ class NodeGraph extends Component {
 
         </div>
 
-        { !!this.state.data.nodes.length &&
-        <Graph
-          style={{ border: '1px solid black' }}
-          id="networkgraph"
-          data={this.state.data}
-          onClickNode={onClickNode}
-          config={this.state.config}
-          // config={this.s}
-        />}
+        { !!this.state.data &&
+        this.state.data.map(v => {
+          return (
+            <Graph
+              style={{ border: '1px solid black' }}
+              id="networkgraph"
+              data={v}
+              onClickNode={onClickNode}
+              config={this.state.config}
+              // config={this.s}
+            />
+          )
+        }) }
       </div>
     )
   }
