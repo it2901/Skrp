@@ -16,7 +16,8 @@
 (ns backend.routes.network
   "Functions for handling the /network endpoint"
   (:require [backend.logging :refer [get-network-collection]]
-            [backend.routes.util :refer [error-handler-rep]]))
+            [backend.routes.util :refer [error-handler-rep]]
+            [clojure.spec.alpha :refer [conform]]))
 
 ;; 1: compare all GeoLocations with NetworkGraphs and remove shit nodes
 ;; 2: remove all links that don't have two nodes for all NetworkGraphs
@@ -83,11 +84,13 @@
   (let [[{data :collection}] (get-network-collection :latest)
         res (try (update-netcol (clojure.walk/keywordize-keys data))
                  (catch Exception e
-                   (str "caught exception: " (.getMessage e))))]
-    (if-not (empty? data)
-      (if (map? res)
-        {:status 200
-         :headers {"Content Type" "application/json"}
-         :body res}
-        (error-handler-rep 500 res))
-      (error-handler-rep 404 "NetworkCollection table is empty"))))
+                   (str "caught exception: " (.getMessage e))))
+        verified (conform :backend.networkcollection-spec/networkcollection res)]
+    (cond
+      (empty? data) (error-handler-rep 404 "NetworkCollection table is empty")
+      (not (map? res)) (error-handler-rep 500 res)
+      (= :clojure.spec.alpha/invalid
+         verified) (error-handler-rep 500 "Could not clean data")
+      :else {:status 200
+             :headers {"Content Type" "application/json"}
+             :body res})))
