@@ -3,7 +3,7 @@ import Parameters from './parameter'
 import styled from 'styled-components'
 
 const Form = styled.form`
-top -border: 50%;
+padding: 80px
 display:flex;
 flex-direction:row;
 flex-wrap: wrap;
