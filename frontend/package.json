@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "d3": "^5.9.2",
+    "dayjs": "^1.8.13",
     "isomorphic-fetch": "^2.2.1",
     "leaflet": "^1.4.0",
     "leaflet-draw": "^1.0.4",
@@ -59,8 +60,15 @@
     "start-server-and-test": "^1.7.11"
   },
   "jest": {
-    "moduleFileExtensions": ["js","jsx","json","png","md","html"],
-    "transform":{
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "png",
+      "md",
+      "html"
+    ],
+    "transform": {
       "^.+\\.(js||jsx)?$": "babel-jest"
     },
     "moduleNameMapper": {
