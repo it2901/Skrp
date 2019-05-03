@@ -128,8 +128,6 @@ class NodeGraph extends Component {
             <span>Other info:</span>
             {
               this.state.data.nodes.filter(i => i.id === this.state.nodeSelected).map((v) => {
-                console.log(v)
-
                 return Object.keys(v).filter(i => i !== 'id').map(i => {
                   return <span><strong>{i}: </strong>{v[i]}</span>
                 })
