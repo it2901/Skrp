@@ -37,6 +37,7 @@ class About extends Component {
 
         }
       }).catch(err => {
+        console.error(err)
         this.setOfflineState()
       })
   }
