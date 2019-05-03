@@ -11,8 +11,8 @@ class NodeGraph extends Component {
       liveUpdate: true,
       liveUpdater: 0,
       nodeSelected: false,
-      data: [],
-      info: [],
+      data: {},
+      info: {},
       config: {
         directed: false,
         height: window.innerHeight,
@@ -20,8 +20,7 @@ class NodeGraph extends Component {
         nodeHighlightBehavior: true,
         highlightOpacity: 0.2,
         node: {
-          color: '#d3d3d3',
-          fontColor: 'white',
+          color: '#888',
           fontSize: 10,
           highlightColor: 'red',
           highlightFontSize: 14,
@@ -41,7 +40,7 @@ class NodeGraph extends Component {
   async setConfig () {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
-    this.config.updateFrequency = (config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == 0 || config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY
+    this.config.updateFrequency = (config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY === 0 || config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY === undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_NODE_GRAPH_UPDATE_FREQUENCY
   }
 
   change () {
@@ -68,16 +67,13 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText)['collection'])
+
+        self.processData(JSON.parse(xhttp.responseText)['collection'][0])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
 
-        self.setState({ data: {
-          nodes: [],
-          links: []
-          // links: []
-        } })
+        self.setState({ data: {} })
       }
     }
     xhttp.open('GET', this.config.REACT_APP_NETWORK_GRAPH, true)
@@ -85,39 +81,28 @@ class NodeGraph extends Component {
   }
   mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
   processData (data) {
-    let d = []
-    let i = []
-    data.forEach(graph => {
-      // ensures no dupes
-      let nodes = graph.nodes.filter((v, i, a) => a.indexOf(v) === i)
-      // map min and max value of nodes to HSL color spectrum
-      let linkMin = graph.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
-      let linkMax = graph.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
-      let links = graph.links
-        .map(e => Object.assign(
-          { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
-          , e))
-      delete graph.nodes
-      delete graph.links
-      // will map on render I guess
-      let info = graph
+    // ensures no dupes
+    let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
+    // map min and max value of nodes to HSL color spectrum
+    let linkMin = this.config['MIN_TRESHOLD'] || data.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
+    let linkMax = this.config['MAX_TRESHOLD'] || data.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
+    let links = data.links
+      .map(e => Object.assign(
+        { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
+        , e))
+    delete data.nodes
+    delete data.links
+    console.log(data)
+    console.log(nodes)
 
-      d.push({
-        nodes: nodes,
-        links: links
-      })
-      i.push(info)
-    })
     this.setState({
-      data: d,
-      info: i
+      data: { nodes: nodes, links: links },
+      info: data
     })
-    console.log(this.state.data)
-    console.log(this.state.info)
   }
   getLinks (nodeId) {
     // not making a dict cause mocker has duplicate values xx
-    return this.state.data.links.filter(e => e.source == nodeId || e.target == nodeId).length
+    return this.state.data.links.filter(e => e.source === nodeId || e.target === nodeId).length
   }
   render () {
     const onClickNode = (nodeId) => {
@@ -131,15 +116,13 @@ class NodeGraph extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', top: '3%', right: '2%', display: 'flex', flexDirection: 'column' }}>
-          {!!this.state.info && this.state.info.map(g => {
-            return (
+          {!!this.state.info &&
               <Message style={{ display: 'flex', flexDirection: 'column' }}>
-                {Object.keys(g).map(i => {
-                  return <span><strong>{i}</strong>: {g[i]}</span>
+                {Object.keys(this.state.info).map(i => {
+                  return <span><strong>{i}</strong>: {this.state.info[i]}</span>
                 })}
               </Message>
-            )
-          })}
+          }
           {this.state.nodeSelected &&
           <Message style={{ display: 'flex', flexDirection: 'column' }}>
             <span><strong>id:</strong> {this.state.nodeSelected}</span>
@@ -163,19 +146,15 @@ class NodeGraph extends Component {
 
         </div>
 
-        { !!this.state.data &&
-        this.state.data.map(v => {
-          return (
+        { !!this.state.data.nodes &&
             <Graph
               style={{ border: '1px solid black' }}
               id="networkgraph"
-              data={v}
+              data={this.state.data}
               onClickNode={onClickNode}
               config={this.state.config}
-              // config={this.s}
             />
-          )
-        }) }
+        }
       </div>
     )
   }
