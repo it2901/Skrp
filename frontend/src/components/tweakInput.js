@@ -44,7 +44,7 @@ class TweakInput extends Component {
     let id = 2
     let description = `parameter ${name} has been changed to ${value}`
     console.log(description)
-    let statement = `http://localhost:8090/logadaption?adaption_id=${id}&device_id=${id}&description=${description}`
+    let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch (statement,{method:"POST"})
   }
   valdiator (value) {
