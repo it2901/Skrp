@@ -92,8 +92,6 @@ class NodeGraph extends Component {
         , e))
     delete data.nodes
     delete data.links
-    console.log(data)
-    console.log(nodes)
 
     this.setState({
       data: { nodes: nodes, links: links },
@@ -127,6 +125,17 @@ class NodeGraph extends Component {
           <Message style={{ display: 'flex', flexDirection: 'column' }}>
             <span><strong>id:</strong> {this.state.nodeSelected}</span>
             <span><strong>links:</strong> {this.getLinks(this.state.nodeSelected)}</span>
+            <span>Other info:</span>
+            {
+              this.state.data.nodes.filter(i => i.id === this.state.nodeSelected).map((v) => {
+                console.log(v)
+
+                return Object.keys(v).filter(i => i !== 'id').map(i => {
+                  return <span><strong>{i}: </strong>{v[i]}</span>
+                })
+              })
+            }
+
           </Message>
           }
           <Button
