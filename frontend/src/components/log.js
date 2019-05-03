@@ -31,7 +31,7 @@ class Log extends Component {
     }
     // used for live polling
     this.queryString = ''
-
+    // a map from api keys to form names
     this.queryParams = {
       'date': 'formDate',
       'description': 'formDesc',
@@ -41,6 +41,7 @@ class Log extends Component {
       'date_to': 'formDateTo',
       'adaption_type': 'formAdaptionType'
     }
+    // used to filter out what headers to use in table
     this.wantedHeaders = [
       'created',
       'adaption_type',
@@ -95,7 +96,7 @@ class Log extends Component {
         // ^^^ DEPRECATED
 
         let deviceIds = d
-          .map(o => o.adaption_id)
+          .map(o => o.device_id)
           .filter((v, i, a) => a.indexOf(v) === i)
           .map(o => {
             return { text: o, key: o, value: o }
