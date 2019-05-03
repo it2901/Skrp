@@ -12,7 +12,7 @@ describe("First test lol", ()=>{
         it("visits About ", ()=>{
         cy.contains('About').click()
         //url change
-        cy.url().should('include','/about')
+        cy.url().should('include','/')
         //url change
 
         })})
