@@ -15,6 +15,9 @@ import {
 import './components/styles/navbar.css'
 import './components/styles/hashrouter.css'
 import './components/styles/react-datetime.css'
+require('dotenv').config()
+
+
 
 class App extends Component {
   render () {
