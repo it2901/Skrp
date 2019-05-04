@@ -31,6 +31,9 @@ class NodeGraph extends Component {
           highlightStrokeWidth: 1.5,
           renderLabel: true,
           labelProperty: 'label'
+        },
+        link: {
+          strokeWidth: 3
         }
       }
     }
@@ -113,12 +116,8 @@ class NodeGraph extends Component {
     const onClickLink = (source, target) => {
       let d = this.state.data.links
         .filter(i => i.source === source && i.target === target)[0]
-      if (Object.entries(d.properties).length === 0) {
-        console.log(d)
-
+      if (d.properties && Object.entries(d.properties).length === 0) {
         delete d.properties
-      } else {
-        console.log(d.properties)
       }
       this.setState({ linkSelected: d })
     }
