@@ -15,6 +15,7 @@
 
 (ns backend.routes.core
   (:require [backend.routes.adaption :refer [adaption-request-handler]]
+            [backend.routes.network :refer [network-handler]]
             [backend.routes.syslog :refer [syslog-handler]]
             [backend.routes.logadaption :refer [adaption-handler]]
             [backend.routes.config :refer [config-handler]]
@@ -32,6 +33,7 @@
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
+  (GET "/network" [] (wrap-json-response network-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
   (POST "/lognetwork" request (wrap-json-response
                                (wrap-json-body

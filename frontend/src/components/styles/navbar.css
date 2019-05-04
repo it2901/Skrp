@@ -61,10 +61,10 @@
   background: rgba(0, 0, 0, 0.3);
 }
 /* dark theme?*/
-/* svg{
-  background-color: #0a0e14;
-background-size: 20px 20px, 20px 20px;
-background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
-} */
+/* svg{ */
+  /* background-color: #0a0e14; */
+/* background-size: 20px 20px, 20px 20px; */
+/* background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px; */
+/* background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px); */
+/* } */

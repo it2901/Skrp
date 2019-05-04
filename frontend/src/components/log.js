@@ -85,7 +85,7 @@ class Log extends Component {
         let d = JSON.parse(e.target.response)
 
         // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        d.forEach(x => x.created = x.created.replace(/T|Z/g, ' '))
 
         // let adaptionIds = d
         //   .map(o => o.adaption_id)
