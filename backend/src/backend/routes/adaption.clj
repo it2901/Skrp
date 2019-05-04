@@ -66,5 +66,4 @@
         :config (select-keys config [:keep-alive-period
                                      :max-retries
                                      :waiting-time])}))
-
     (error-handler-rep 400 "Bad Request")))

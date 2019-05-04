@@ -11,16 +11,8 @@ class NodeGraph extends Component {
       liveUpdate: true,
       liveUpdater: 0,
       nodeSelected: false,
-      data: {
-        nodes: [],
-        links: []
-      },
-      info: {
-        type: 'type',
-        protocol: 'protocol',
-        metric: 'metric',
-        version: 'version'
-      },
+      data: {},
+      info: {},
       config: {
         directed: false,
         height: window.innerHeight,
@@ -28,7 +20,7 @@ class NodeGraph extends Component {
         nodeHighlightBehavior: true,
         highlightOpacity: 0.2,
         node: {
-          color: '#d3d3d3',
+          color: '#888',
           fontSize: 10,
           highlightColor: 'red',
           highlightFontSize: 14,
@@ -48,6 +40,7 @@ class NodeGraph extends Component {
   async setConfig () {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
+
     this.config.updateFrequency = (config.NODE_GRAPH_UPDATE_FREQUENCY == 0 || config.NODE_GRAPH_UPDATE_FREQUENCY == undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.NODE_GRAPH_UPDATE_FREQUENCY
   }
 
@@ -80,11 +73,7 @@ class NodeGraph extends Component {
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
 
-        self.setState({ data: {
-          nodes: [],
-          links: []
-          // links: []
-        } })
+        self.setState({ data: {} })
       }
     }
     xhttp.open('GET', this.config.NETWORK_GRAPH, true)
@@ -101,24 +90,17 @@ class NodeGraph extends Component {
       .map(e => Object.assign(
         { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
         , e))
-    let info = {
-      type: data.type,
-      protocol: data.protocol,
-      version: data.version,
-      metric: data.metric
-    }
+    delete data.nodes
+    delete data.links
+
     this.setState({
-      data: {
-        nodes: nodes,
-        links: links
-        // links: []
-      },
-      info: info
+      data: { nodes: nodes, links: links },
+      info: data
     })
   }
   getLinks (nodeId) {
     // not making a dict cause mocker has duplicate values xx
-    return this.state.data.links.filter(e => e.source == nodeId || e.target == nodeId).length
+    return this.state.data.links.filter(e => e.source === nodeId || e.target === nodeId).length
   }
   render () {
     const onClickNode = (nodeId) => {
@@ -132,18 +114,26 @@ class NodeGraph extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', top: '3%', right: '2%', display: 'flex', flexDirection: 'column' }}>
-          <Message style={{ display: 'flex', flexDirection: 'column' }}>
-            <Message.Header><strong>{this.state.info.type}</strong></Message.Header>
-            <span><strong>protocol:</strong> {this.state.info.protocol}</span>
-            <span><strong>version:</strong> {this.state.info.version}</span>
-            <span><strong>metric:</strong> {this.state.info.metric}</span>
-            <span><strong>nodes:</strong> {this.state.data.nodes.length}</span>
-            <span><strong>links:</strong> {this.state.data.links.length}</span>
-          </Message>
+          {!!this.state.info &&
+              <Message style={{ display: 'flex', flexDirection: 'column' }}>
+                {Object.keys(this.state.info).map(i => {
+                  return <span><strong>{i}</strong>: {this.state.info[i]}</span>
+                })}
+              </Message>
+          }
           {this.state.nodeSelected &&
           <Message style={{ display: 'flex', flexDirection: 'column' }}>
             <span><strong>id:</strong> {this.state.nodeSelected}</span>
             <span><strong>links:</strong> {this.getLinks(this.state.nodeSelected)}</span>
+            <span>Other info:</span>
+            {
+              this.state.data.nodes.filter(i => i.id === this.state.nodeSelected).map((v) => {
+                return Object.keys(v).filter(i => i !== 'id').map(i => {
+                  return <span><strong>{i}: </strong>{v[i]}</span>
+                })
+              })
+            }
+
           </Message>
           }
           <Button
@@ -163,15 +153,15 @@ class NodeGraph extends Component {
 
         </div>
 
-        { this.state.data.nodes.length &&
-        <Graph
-          style={{ border: '1px solid black' }}
-          id="networkgraph"
-          data={this.state.data}
-          onClickNode={onClickNode}
-          config={this.state.config}
-          // config={this.s}
-        />}
+        { !!this.state.data.nodes &&
+            <Graph
+              style={{ border: '1px solid black' }}
+              id="networkgraph"
+              data={this.state.data}
+              onClickNode={onClickNode}
+              config={this.state.config}
+            />
+        }
       </div>
     )
   }

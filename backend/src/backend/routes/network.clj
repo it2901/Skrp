@@ -25,10 +25,8 @@
             [backend.routes.util :refer [error-handler-rep]]
             [clojure.spec.alpha :refer [conform explain]]))
 
-
 ;; 1: compare all GeoLocations with NetworkGraphs and remove shit nodes
 ;; 2: remove all links that don't have two nodes for all NetworkGraphs
-
 
 (defn- coll-filter
   "Filters nested NetworkCollections based on their type"
