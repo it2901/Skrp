@@ -11,13 +11,15 @@ class NodeGraph extends Component {
       liveUpdate: true,
       liveUpdater: 0,
       nodeSelected: false,
-      data: {},
-      info: {},
+      linkSelected: false,
+      data: false,
+      info: false,
       config: {
         directed: false,
         height: window.innerHeight,
         width: window.innerWidth,
         nodeHighlightBehavior: true,
+        linkHighlightBehavior: true,
         highlightOpacity: 0.2,
         node: {
           color: '#888',
@@ -26,7 +28,9 @@ class NodeGraph extends Component {
           highlightFontSize: 14,
           highlightFontWeight: 'bold',
           highlightStrokeColor: 'red',
-          highlightStrokeWidth: 1.5
+          highlightStrokeWidth: 1.5,
+          renderLabel: true,
+          labelProperty: 'label'
         }
       }
     }
@@ -68,7 +72,7 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText).collection[this.config.NODE_GRAPH_PATH][0])
+        self.processData(JSON.parse(xhttp.responseText).collection[self.config.NODE_GRAPH_PATH].collection[0])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
@@ -106,6 +110,18 @@ class NodeGraph extends Component {
     const onClickNode = (nodeId) => {
       this.setState({ nodeSelected: nodeId })
     }
+    const onClickLink = (source, target) => {
+      let d = this.state.data.links
+        .filter(i => i.source === source && i.target === target)[0]
+      if (Object.entries(d.properties).length === 0) {
+        console.log(d)
+
+        delete d.properties
+      } else {
+        console.log(d.properties)
+      }
+      this.setState({ linkSelected: d })
+    }
     // return (
     // <div style={{ height: '100vh', position: 'absolute', width: '100vw', left: 0, right: 0 }}>
     /* <iframe src="http://localhost:3000/graph/visualizer.html" title="Nodegraph" height="100%" width="100%"></iframe> */
@@ -114,26 +130,40 @@ class NodeGraph extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', top: '3%', right: '2%', display: 'flex', flexDirection: 'column' }}>
+          <Message
+            warning
+            style={{ width: '200px' }}
+            content='Link color represents the link cost between the min
+          and max tresholds set in the config.
+          Where green is low and red is high.'/>
           {!!this.state.info &&
               <Message style={{ display: 'flex', flexDirection: 'column' }}>
                 {Object.keys(this.state.info).map(i => {
-                  return <span><strong>{i}</strong>: {this.state.info[i]}</span>
+                  return <span key={i}><strong>{i}</strong>: {this.state.info[i]}</span>
                 })}
               </Message>
           }
           {this.state.nodeSelected &&
-          <Message style={{ display: 'flex', flexDirection: 'column' }}>
+          <Message style={{ display: 'flex', flexDirection: 'column' }} onDismiss={() => this.setState({ nodeSelected: false })}>
             <span><strong>id:</strong> {this.state.nodeSelected}</span>
             <span><strong>links:</strong> {this.getLinks(this.state.nodeSelected)}</span>
             <span>Other info:</span>
             {
               this.state.data.nodes.filter(i => i.id === this.state.nodeSelected).map((v) => {
                 return Object.keys(v).filter(i => i !== 'id').map(i => {
-                  return <span><strong>{i}: </strong>{v[i]}</span>
+                  return <span key={i}><strong>{i}: </strong>{v[i]}</span>
                 })
               })
             }
 
+          </Message>
+          }
+          {this.state.linkSelected &&
+          <Message style={{ display: 'flex', flexDirection: 'column' }} onDismiss={() => this.setState({ linkSelected: false })}>
+            {Object.keys(this.state.linkSelected)
+              .map((i) => {
+                return <span key={i}><strong>{i}: </strong>{this.state.linkSelected[i]}</span>
+              })}
           </Message>
           }
           <Button
@@ -153,12 +183,13 @@ class NodeGraph extends Component {
 
         </div>
 
-        { !!this.state.data.nodes &&
+        { !!this.state.data &&
             <Graph
               style={{ border: '1px solid black' }}
               id="networkgraph"
               data={this.state.data}
               onClickNode={onClickNode}
+              onClickLink={onClickLink}
               config={this.state.config}
             />
         }
