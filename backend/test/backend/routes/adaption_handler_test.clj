@@ -65,9 +65,9 @@
   "Mock the database query in the adaption request handler"
   []
   (with-redefs
-    [backend.logging/get-network-collection (constantly dummy-db-req)
-     backend.logging/insert-network-collection (constantly nil)
-     backend.logging/get-configuration (constantly dummy-config)]
+   [backend.logging/get-network-collection (constantly dummy-db-req)
+    backend.logging/insert-network-collection (constantly nil)
+    backend.logging/get-configuration (constantly dummy-config)]
     (as-> (mock/request :post "/lognetwork") m
       (mock/json-body m dummy-coll) ;;wrap json body
       ((wrap-params app-routes) m)
