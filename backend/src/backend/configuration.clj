@@ -17,7 +17,6 @@
   "Functions for handling the configuration endpoint."
   (:require [backend.database :refer [db]]
             [clojure.algo.generic.functor :refer [fmap]]
-            [postgre-types.json :refer [add-jsonb-type]]
             [clojure.java.jdbc :as j]))
 
 (defn write-config
@@ -27,9 +26,6 @@
   [id params]
   ;(println params))
   (j/insert! db "config" {"device_id" (read-string id), "config" (fmap read-string params)}))
-
-;; Add support for Postgres JSONB
-(add-jsonb-type clojure.data.json/write-str clojure.data.json/read-str)
 
 (defn read-config
   "Reads the latest configuration from the database"
