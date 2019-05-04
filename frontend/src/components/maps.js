@@ -56,8 +56,9 @@ export default class Maps extends Component {
   async setInitalState () {
     let stateToBe = await fetch(this.config.MAP_AND_NODES)
       .then(response => response.json())
-      .then(data => data.collection[this.config.MAP_PATH].collection[0])
+      .then(data => data.collection[this.config.MAP_PATH].collection)
       .catch(err => console.error(err))
+      // endre shit her!
     let nodes = stateToBe['nodes'].map(node => { return node['id'] })
     let links = stateToBe['links']
     let locs = stateToBe['Locations'].map(l => {
