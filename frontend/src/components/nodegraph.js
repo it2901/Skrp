@@ -68,7 +68,7 @@ class NodeGraph extends Component {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
-        self.processData(JSON.parse(xhttp.responseText)['collection'][0])
+        self.processData(JSON.parse(xhttp.responseText).collection[this.config.NODE_GRAPH_PATH][0])
         // self.setState({ data: JSON.parse(xhttp.responseText) })
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
@@ -76,7 +76,7 @@ class NodeGraph extends Component {
         self.setState({ data: {} })
       }
     }
-    xhttp.open('GET', this.config.NETWORK_GRAPH, true)
+    xhttp.open('GET', this.config.NODE_GRAPH, true)
     xhttp.send()
   }
   mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
