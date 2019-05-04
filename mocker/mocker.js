@@ -1,6 +1,5 @@
 const express = require('express');
 const jsf =  require('json-schema-faker');
-const fetch = require('node-fetch')
 const app = express()
 const fs = require('fs')
 const cwd = `${__dirname}/Schemes`;

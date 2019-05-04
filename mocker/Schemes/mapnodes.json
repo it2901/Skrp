@@ -153,7 +153,10 @@
                 "properties": {
                   "Year4Digit": {
                     "type": "integer",
-                    "description": "Year when the position was defined"
+                    "description": "Year when the position was defined",
+                    "minimum": 1970,
+                    "maximum": 2100
+
                   },
                   "MonthNumeric": {
                     "type": "integer",
@@ -165,7 +168,7 @@
                     "type": "integer",
                     "description": "Day of month when the position was defined",
                     "minimum": 1,
-                    "maximum": 31
+                    "maximum": 28
                   },
                   "HourTime": {
                     "type": "integer",
@@ -183,7 +186,7 @@
                     "type": "integer",
                     "description": "Second of the minute when the position was defined, can include leap seconds",
                     "minimum": 0,
-                    "maximum": 61
+                    "maximum": 59
                   }
                 }
               },
