@@ -16,7 +16,14 @@
 (ns backend.routes.network
   "Functions for handling the /network endpoint"
   (:require [backend.logging :refer [get-network-collection]]
-            [backend.routes.util :refer [error-handler-rep]]))
+            [backend.deviceconfiguration-spec]
+            [backend.devicemonitoring-spec]
+            [backend.geolocation-spec]
+            [backend.networkcollection-spec]
+            [backend.networkgraph-spec]
+            [backend.networkroutes-spec]
+            [backend.routes.util :refer [error-handler-rep]]
+            [clojure.spec.alpha :refer [conform explain]]))
 
 ;; 1: compare all GeoLocations with NetworkGraphs and remove shit nodes
 ;; 2: remove all links that don't have two nodes for all NetworkGraphs
@@ -29,7 +36,7 @@
 (defn- filter-nodes
   "Filters the nodes based on ip addresses in geolocations"
   [origin-ips nodes]
-  (filter (fn [node] (some #(= (:id node) %) origin-ips)) nodes))
+  (filterv (fn [node] (some #(= (:id node) %) origin-ips)) nodes))
 
 (defn- update-nodes
   "Updates the key node in the NetworkGraph map"
@@ -39,7 +46,7 @@
 (defn- filter-links
   "Filters the links based on the node ips"
   [links nodes]
-  (filter
+  (filterv
    (fn [link]
      (and (some #(= (:source link) (:id %)) nodes)
           (some #(= (:target link) (:id %)) nodes)))
@@ -61,20 +68,20 @@
         ;;care with this capital O in keyword
         origin-ips (map :Originator geocoll)]
     (update graphnetcoll :collection
-            (partial map (partial update-nodes origin-ips)))))
+            (partial mapv (partial update-nodes origin-ips)))))
 
 (defn- remove-links
   "Removes all links that don't have bothcorresponding nodes"
   [netcollgraph]
-  (update netcollgraph :collection (partial map update-links)))
+  (update netcollgraph :collection (partial mapv update-links)))
 
 (defn- update-netcol
   "Updates the root NetworkCollection"
   [{coll :collection :as root-netcoll}]
   (-> root-netcoll
-      (update :collection #(remove-links (remove-nodes %)))
+      (update :collection #(vector (remove-links (remove-nodes %))))
       ;; Quick and dirty, should make removal functions non lossy
-      (assoc-in [:collection 1] (first (filter (coll-filter "GeoLocation") coll)))))
+      (assoc-in [:collection 1] (first (filterv (coll-filter "GeoLocation") coll)))))
 
 (defn network-handler
   "Handles HTTP GET requests to the api and returns the
@@ -83,11 +90,13 @@
   (let [[{data :collection}] (get-network-collection :latest)
         res (try (update-netcol (clojure.walk/keywordize-keys data))
                  (catch Exception e
-                   (str "caught exception: " (.getMessage e))))]
-    (if-not (empty? data)
-      (if (map? res)
-        {:status 200
-         :headers {"Content Type" "application/json"}
-         :body res}
-        (error-handler-rep 500 res))
-      (error-handler-rep 404 "NetworkCollection table is empty"))))
+                   (str "caught exception: " (.getMessage e))))
+        verified (conform :backend.networkcollection-spec/networkcollection res)]
+    (cond
+      (empty? data) (error-handler-rep 404 "NetworkCollection table is empty")
+      (not (map? res)) (error-handler-rep 500 res)
+      (= :clojure.spec.alpha/invalid
+         verified) (error-handler-rep 500 "Could not clean data")
+      :else {:status 200
+             :headers {"Content Type" "application/json"}
+             :body res})))

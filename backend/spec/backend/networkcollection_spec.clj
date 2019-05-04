@@ -17,14 +17,12 @@
   (:require [clojure.spec.alpha :as spec]))
 
 (spec/def ::networkcollection (spec/keys :req-un [::type ::collection]))
-(spec/def ::type #(and string? (= "NetworkCollection" %)))
+(spec/def ::type #(= "NetworkCollection" %))
 (spec/def ::collection (spec/coll-of ::NetJsonObject :kind vector?))
-(def objects #{:backend.networkgraph-spec/networkgraph
-               :backend.deviceconfiguration-spec/deviceconfiguration
-               :backend.devicemonitoring-spec/devicemonitoring
-               :backend.networkroutes-spec/networkroutes})
 (spec/def ::NetJsonObject
   (spec/or :networkgraph :backend.networkgraph-spec/networkgraph
            :deviceconfiguration :backend.deviceconfiguration-spec/deviceconfiguration
            :devicemonitoring :backend.devicemonitoring-spec/devicemonitoring
-           :networkroutes :backend.networkroutes-spec/networkroutes))
+           :networkroutes :backend.networkroutes-spec/networkroutes
+           :geolocation :backend.geolocation-spec/geolocation
+           :networkcollection ::networkcollection))
