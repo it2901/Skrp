@@ -282,7 +282,7 @@ exports[`renders correctly 1`] = `
     >
       <div>
         <div
-          className="sc-bdVaJa dzRQEn"
+          className="sc-bdVaJa kjxJpE"
           style={
             Object {
               "border": "none",
@@ -296,7 +296,7 @@ exports[`renders correctly 1`] = `
               }
             }
           >
-            Main
+            SKRP
           </h1>
           <br />
           <span>
@@ -306,7 +306,7 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <div
-          className="sc-bdVaJa dzRQEn"
+          className="sc-bdVaJa kjxJpE"
         >
           <h1
             style={
@@ -325,7 +325,7 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <div
-          className="sc-bdVaJa dzRQEn"
+          className="sc-bdVaJa kjxJpE"
         >
           <h1
             style={
@@ -344,7 +344,7 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <div
-          className="sc-bdVaJa dzRQEn"
+          className="sc-bdVaJa kjxJpE"
         >
           <h1
             style={
@@ -363,7 +363,7 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <div
-          className="sc-bdVaJa dzRQEn"
+          className="sc-bdVaJa kjxJpE"
           style={
             Object {
               "border": "none",
