@@ -4,9 +4,9 @@
     "NODE_GRAPH_UPDATE_FREQUENCY" : 0,
     "LOG_UPDATE_FREQUENCY" : 0,
     "DATA_SOURCE" : "http://localhost:3001",
-    "NETWORK_GRAPH" : "http://localhost:8090/network",
+    "NODE_GRAPH" : "http://localhost:8090/network",
     "MAP_AND_NODES" : "http://localhost:8090/network",
-    "NETWORK_GRAPH_PATH":0,
+    "NODE_GRAPH_PATH":0,
     "MAP_PATH":1,
     "MIN_THERSHOLD" : 0,
     "MAX_THERSHOLD" : 10000000
