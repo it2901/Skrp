@@ -31,9 +31,10 @@
   [req-str]
   (with-redefs
    [config-check (constantly mock-data)
-    read-config mock-config]
+    read-config mock-config
+    backend.routes.util/run-db (constantly mock-data)]
     (as-> req-str s
-      (mock/request :get s)
+      (mock/request :post s)
       ((wrap-params app-routes) s)
       (update s :body read-str))))
 
@@ -50,4 +51,4 @@
       (is (= (keys (:body e1)) (keys (:body t1))))
       (is (= (backend.routes.config/config-check []) {:status 404, :headers {"Content-Type" "application/json"}, :body {"Error" "No query results found"}}))
       (is (= (backend.routes.config/config-check "test") {:status 200, :headers {"Content-Type" "application/json"}, :body "test"}))
-      (is (= (keys (:body e2)) (keys (:body t2)))))))
+      (is (= (keys (:body e2)) '("test"))))))

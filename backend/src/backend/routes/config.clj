@@ -32,15 +32,19 @@
 
 (defn config-handler
   "Handle configuration parameters.
-  Input: GET request with all configuration parameters
-  Action: Inserts configuration in database if it fits the schema."
-  [{params :query-params :as req}]
-  (cond (empty? params) (run-db (config-check (read-config)))
-        (contains? params "device_id") (let [res (run-db (write-config (get params "device_id") (dissoc params "device_id")))]
-                                         {:status 200
-                                          :header {"Content-Type" "application/json"}
-                                          :body (first res)})
-        :else (error-handler-rep 503 "You must supply 'device_id' as a parameter in order to write a configuration.")))
+  Input: POST request with all configuration parameters in a json body
+  Action: Inserts configuration in database if it fits the schema"
+  [{body :body :as req}]
+  (cond (empty? body) (run-db (config-check (first (read-config))))
+        (contains? body "device_id")
+        (let [res (run-db (write-config (get body "device_id")
+                                        (dissoc body "device_id")))]
+          {:status 200
+           :header {"Content-Type" "application/json"}
+           :body (first res)})
+        :else (error-handler-rep
+               503
+               "You must supply a 'device_id' parameter to write a configuration")))
 
 (defn server-config-handler
   "HTTP GET handler for exposing the server configuration file"
