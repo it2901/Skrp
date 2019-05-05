@@ -58,7 +58,7 @@ export default class Maps extends Component {
     let locs = geoLocations.map(l => {
       let id = l['Originator']
       let date = l['Time']
-      let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']}T${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
+      let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']} ${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
       let pos = l['Position']
       let lng = pos['Longitude']
       let lat = pos['Latitude']
@@ -133,19 +133,24 @@ export default class Maps extends Component {
       let time = this.state.nodes[key]['time']
       let neighbours = [...this.state.nodes[key]['neighbours']].map(node => {
         return (
-          <div>
-            <br/>{node}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {node}
           </div>)
+      })
+      let posShow = pos.map(p => {
+        return (<div style={{ display: 'flex', flexDirection: 'column' }}>
+          {p}
+        </div>)
       })
       return (
 
         <Marker key={pos} position={pos}>
-          <Popup>Name: <b>{key}</b>
-            <br/>
-            <br />Neighbours: {neighbours}
-            <br /> Amount of neighbours: {neighbours.length}
-            <br/>
-            <br/> Time: {time}
+          <Popup style={{ display: 'flex', flexDirection: 'column' }}>
+            <div><b>IP: </b>{key}</div>
+            <div><b>Amount of neighbours: </b>{neighbours.length}</div>
+            <div><b>Neighbours: </b>{neighbours}</div>
+            <div><b>Location: </b>{posShow}</div>
+            <div><b>Time: </b>{time}</div>
           </Popup>
           <Circle name={key}center={pos} radius={200} />
         </Marker>)
