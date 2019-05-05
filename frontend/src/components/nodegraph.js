@@ -102,7 +102,7 @@ class NodeGraph extends Component {
     xhttp.open('GET', this.config.NODE_GRAPH, true)
     xhttp.send()
   }
-  mapValue=(v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
+  mapValue=(v, s1, e1, s2, e2) => Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
   processData (data) {
     // ensures no dupes
     let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)

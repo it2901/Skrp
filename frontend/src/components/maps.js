@@ -177,7 +177,7 @@ export default class Maps extends Component {
       let source = this.findLatLng(src)
       let target = this.findLatLng(trg)
       let cost = link['cost']
-      const mapValue = (v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
+      const mapValue = (v, s1, e1, s2, e2) => Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
       let linkMin = this.config['MIN_THERSHOLD']
       let linkMax = this.config['MAX_THERSHOLD']
       let color = `hsl(${mapValue(cost, linkMin, linkMax, 120, 0)},100%,66%)`
