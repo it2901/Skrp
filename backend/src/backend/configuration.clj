@@ -24,8 +24,7 @@
   The key corresponds to the column name and the value will be inserted in this column.
   The keys used must match with the database schema of the config table."
   [id params]
-  ;(println params))
-  (j/insert! db "config" {"device_id" (read-string id), "config" (fmap read-string params)}))
+  (j/insert! db "config" {"device_id" id, "config" params}))
 
 (defn read-config
   "Reads the latest configuration from the database"
