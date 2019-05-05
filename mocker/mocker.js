@@ -1,6 +1,5 @@
 const express = require('express');
 const jsf =  require('json-schema-faker');
-const fetch = require('node-fetch')
 const app = express()
 const fs = require('fs')
 const cwd = `${__dirname}/Schemes`;
@@ -49,7 +48,7 @@ console.table([
      ["NetG",ngfrq,networkgraphEnd],
      ["NetR",nrfrq,networkroutesEnd],])
 */
-
+/*
 //Device Config
 setInterval(() => {
      devconf = require('./Schemes/deviceconfiguration.json')
@@ -60,7 +59,7 @@ setInterval(() => {
      devmon = require('./Schemes/deviceconfiguration.json')
      devMonData = jsf.generate(devmon); 
 }, dmupdateFrequency);
-
+*/
 //Map Nodes
 setInterval(() => {
      mapnodes = require('./Schemes/mapnodes.json')  
@@ -88,9 +87,10 @@ setInterval(() => {
      networkroutesData = jsf.generate(networkroutes);   
 }, nrupdateFrequency);
 
-
+/*
 app.get(deviceconfigurationEnd ,(req,res) => res.send(devConData))
 app.get(devicemonitoringEnd ,(req,res) => res.send(devMonData))
+*/
 app.get(mapnodesEnd ,(req,res) => res.send(mapnodesData))
 app.get(networkroutesEnd,(req,res) => res.send(networkroutesData))
 app.get(geolocationsEnd,(req,res) => res.send(geolocationsData))

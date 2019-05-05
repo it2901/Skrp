@@ -15,9 +15,11 @@
 
 (ns backend.routes.core
   (:require [backend.routes.adaption :refer [adaption-request-handler]]
+            [backend.routes.network :refer [network-handler raw-network-handler]]
             [backend.routes.syslog :refer [syslog-handler]]
             [backend.routes.logadaption :refer [adaption-handler]]
-            [backend.routes.config :refer [config-handler]]
+            [backend.routes.config :refer [config-handler
+                                           server-config-handler]]
             [backend.routes.util :refer [index-handler
                                          dummy-data-handler
                                          error-handler-rep]]
@@ -32,6 +34,8 @@
   "Defines all the routes and their respective route handlers"
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
+  (GET "/network" [] (wrap-json-response network-handler))
+  (GET "/rawnetwork" [] (wrap-json-response network-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
   (POST "/lognetwork" request (wrap-json-response
                                (wrap-json-body
@@ -39,6 +43,7 @@
                                 {:keywords? true :bigdecimals? true})))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
   (GET "/configure" request (wrap-json-response config-handler))
+  (GET "/serverconfig" [] (wrap-json-response server-config-handler))
   (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
   (not-found (wrap-json-response
               (constantly (error-handler-rep 404 "Could not find route")))))

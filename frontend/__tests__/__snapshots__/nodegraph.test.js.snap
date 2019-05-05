@@ -21,50 +21,7 @@ exports[`renders correctly 1`] = `
           "flexDirection": "column",
         }
       }
-    >
-      <div
-        className="header"
-      >
-        <strong>
-          type
-        </strong>
-      </div>
-      <span>
-        <strong>
-          protocol:
-        </strong>
-         
-        protocol
-      </span>
-      <span>
-        <strong>
-          version:
-        </strong>
-         
-        version
-      </span>
-      <span>
-        <strong>
-          metric:
-        </strong>
-         
-        metric
-      </span>
-      <span>
-        <strong>
-          nodes:
-        </strong>
-         
-        0
-      </span>
-      <span>
-        <strong>
-          links:
-        </strong>
-         
-        0
-      </span>
-    </div>
+    />
     <button
       className="ui fluid button"
       onClick={[Function]}
@@ -78,6 +35,5 @@ exports[`renders correctly 1`] = `
       Live Update: OFF
     </button>
   </div>
-  0
 </div>
 `;

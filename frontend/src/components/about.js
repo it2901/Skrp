@@ -13,8 +13,7 @@ left:12.5%;
 border-color:black;
 border-top:2px solid;
 width: 75%;
-margin: 20px;
-padding:20px;
+padding:40px;
 `
 
 class About extends Component {
@@ -37,6 +36,7 @@ class About extends Component {
 
         }
       }).catch(err => {
+        console.error(err)
         this.setOfflineState()
       })
   }
@@ -73,7 +73,7 @@ class About extends Component {
       <div>
 
         <Div style ={{ border: 'none' }}>
-          <h1 style={{ textAlign: 'center' }}>Main</h1>
+          <h1 style={{ textAlign: 'center' }}>SKRP</h1>
           <br></br>
           <MDReactComponent text={this.state.main}/>
         </Div>

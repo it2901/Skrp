@@ -1,5 +1,5 @@
 /target/*
-!/target/doc
+/target/doc
 /classes
 /checkouts
 /.idea

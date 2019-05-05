@@ -8,7 +8,7 @@ class Log extends Component {
   constructor (props) {
     super(props)
     this.props = props
-    this.config ={}
+    this.config = {}
     this.state = {
       data: [],
       column: null,
@@ -51,11 +51,11 @@ class Log extends Component {
     ]
   }
 
-  async setConfig (){
+  async setConfig () {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
-    this.config.updateFrequency  = (config.REACT_APP_LOG_UPDATE_FREQUENCY == 0 || config.REACT_APP_LOG_UPDATE_FREQUENCY == undefined) ? config.REACT_APP_GLOBAL_UPDATE_FREQUENCY : config.REACT_APP_LOG_UPDATE_FREQUENCY
-    }
+    this.config.updateFrequency = (config.LOG_UPDATE_FREQUENCY == 0 || config.LOG_UPDATE_FREQUENCY == undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.LOG_UPDATE_FREQUENCY
+  }
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state
 
@@ -85,7 +85,7 @@ class Log extends Component {
         let d = JSON.parse(e.target.response)
 
         // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        d.forEach(x => x.created = x.created.replace(/T|Z/g, ' '))
 
         // let adaptionIds = d
         //   .map(o => o.adaption_id)
