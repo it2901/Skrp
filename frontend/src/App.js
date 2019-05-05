@@ -39,7 +39,7 @@ class App extends Component {
       <div>
         {/* The Helmet gives a uniform color to the whole page. */}
         <Helmet>
-          <style>{'body { background-color:white ; }'}</style>
+          <style>{'body { background-color:#b8b7ad ; }'}</style>
         </Helmet>
         {/* This is the acctual components and navbar */}
 
