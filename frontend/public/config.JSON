@@ -8,6 +8,6 @@
     "MAP_AND_NODES" : "http://localhost:8090/network",
     "NODE_GRAPH_PATH":0,
     "MAP_PATH":1,
-    "MIN_THERSHOLD" : 0,
-    "MAX_THERSHOLD" : 10000000
+    "MIN_THRESHOLD" : null,
+    "MAX_THRESHOLD" : null
 }

@@ -64,7 +64,7 @@ class NodeGraph extends Component {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
 
-    this.config.updateFrequency = (config.NODE_GRAPH_UPDATE_FREQUENCY == 0 || config.NODE_GRAPH_UPDATE_FREQUENCY == undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.NODE_GRAPH_UPDATE_FREQUENCY
+    this.config.updateFrequency = (config.NODE_GRAPH_UPDATE_FREQUENCY === 0 || config.NODE_GRAPH_UPDATE_FREQUENCY === undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.NODE_GRAPH_UPDATE_FREQUENCY
   }
 
   change () {
@@ -85,7 +85,6 @@ class NodeGraph extends Component {
   }
 
   fetch () {
-    console.log(this.config)
     let xhttp = new XMLHttpRequest({ mozSystem: true })
     let self = this
     xhttp.onreadystatechange = function () {
@@ -102,13 +101,18 @@ class NodeGraph extends Component {
     xhttp.open('GET', this.config.NODE_GRAPH, true)
     xhttp.send()
   }
-  mapValue=(v, s1, e1, s2, e2) => Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
+  mapValue=(v, s1, e1, s2, e2) => {
+    e1 = this.ensureBigger(s1, e1)
+    return Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
+  }
+  ensureBigger=(a, b) => (a < b) ? 0 : a + 1
   processData (data) {
     // ensures no dupes
     let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
     // map min and max value of nodes to HSL color spectrum
-    let linkMin = this.config['MIN_THERSHOLD']
-    let linkMax = this.config['MAX_THERSHOLD']
+    let linkMin = this.config['MIN_THRESHOLD'] || data.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
+    let linkMax = this.config['MAX_THRESHOLD'] || data.links.reduce((a, b) => a.cost < b.cost ? b : a).cost
+
     let links = data.links
       .map(e => Object.assign(
         { color: `hsl(${this.mapValue(e.cost, linkMin, linkMax, 120, 0)},100%,66%)` }
