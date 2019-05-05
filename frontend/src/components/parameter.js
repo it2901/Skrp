@@ -23,6 +23,7 @@ const Div = styled.div`
   border-radius: 25px;
   display:flex;
   flex-direction:column;
+  font-size:125%;
 `
 class Parameters extends Component {
   constructor (props) {
@@ -36,7 +37,7 @@ class Parameters extends Component {
   render () {
     return (
       <Div>
-        <Popup trigger={<Label pointing="below" htmlFor={this.props.name}> {this.props.name} </Label>} content='Add users to your feed' />
+        <Popup trigger={<Label pointing="below" htmlFor={this.props.name}> {this.props.name} </Label>} content='Description...' />
         <Input name={this.props.name} key={this.props.name} placeholder={this.props.parameter} onKeyPress={this.props.changeParameterValue} />
       </Div>
     )
