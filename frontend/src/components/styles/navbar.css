@@ -67,9 +67,10 @@ along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 }
 
 /* Wrapper for item list */
-.bm-item-list, .bm-item-list:visited, .bm-item-list:focus, a:visited {
+.bm-item-list, .bm-item-list:visited, .bm-item-list:focus, .menu-item:visited {
   color: #b8b7ad;
 }
+
 
 /* Styling of overlay */
 .bm-overlay {
