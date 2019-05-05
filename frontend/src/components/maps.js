@@ -11,19 +11,11 @@ export default class Maps extends Component {
       updaters: [],
       liveUpdate: true,
       liveUpdater: 0,
-      heigth: '1080px',
       lat: 52.5,
       lng: 13.3,
-      zoom: 12,
-      links: [{
-        cost: 123,
-        target: '123.123.123.11',
-        source: '123.123.123.12'
-      }],
-      nodes: {
-        '123.123.123.11': { pos: [52.3, 13.5], neighbours: [] },
-        '123.123.123.12': { pos: [52.2, 13.4], neighbours: [] }
-      }
+      zoom: 4,
+      links: false,
+      nodes: false
 
     }
     this.config = {
@@ -56,29 +48,40 @@ export default class Maps extends Component {
   async setInitalState () {
     let stateToBe = await fetch(this.config.MAP_AND_NODES)
       .then(response => response.json())
-      .then(data => data.collection[this.config.MAP_PATH].collection)
       .catch(err => console.error(err))
-      // endre shit her!
-    let nodes = stateToBe['nodes'].map(node => { return node['id'] })
-    let links = stateToBe['links']
-    let locs = stateToBe['Locations'].map(l => {
-      let date = l['Location']['Time']
+    stateToBe = stateToBe['collection']
+    // gives the first network graph in the collection of networkGraphs
+    let networkGraph = stateToBe.filter(x => x['collection'][0]['type'] === 'NetworkGraph')[0]['collection'][0]
+    let geoLocations = stateToBe.filter(x => x['collection'][0]['type'] === 'GeoLocation')[0]['collection']
+    let nodes = networkGraph['nodes'].map(node => { return node['id'] })
+    let links = networkGraph['links']
+    let locs = geoLocations.map(l => {
+      let id = l['Originator']
+      let date = l['Time']
       let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']}T${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
-      let pos = l['Location']['Position']
+      let pos = l['Position']
       let lng = pos['Longitude']
       let lat = pos['Latitude']
-      return [[lat, lng], time]
+      return [ [lat, lng], time, id ]
     })
     let x = {}
-    for (let i = 0; i < 51; i++) {
-      x[nodes[i]] = { pos: locs[i][0], neighbours: [], time: locs[i][1] }
+    for (let i = 0; i < nodes.length; i++) {
+      let id = nodes[i]
+      // This makes the assumption that there will only be one node with the location of an originator.
+      let matchingLoc = locs.filter(location => location.includes(id))[0]
+      let pos = matchingLoc[0]
+      let time = matchingLoc[1]
+      x[nodes[i]] = { pos: pos, neighbours: new Set([]), time: time }
     }
+
     this.setState({
       nodes: x
     })
+
     this.setState({
       links: links.map(link => {
         return {
+          cost_text: link['cost_text'],
           cost: link['cost'],
           source: link['source'],
           target: link['target']
@@ -95,8 +98,8 @@ export default class Maps extends Component {
     links.forEach(link => {
       let src = link['source']
       let trg = link['target']
-      nodes[src]['neighbours'].push(trg)
-      nodes[trg]['neighbours'].push(src)
+      nodes[src]['neighbours'].add(trg)
+      nodes[trg]['neighbours'].add(src)
     })
     newState.nodes = nodes
     this.setState(newState)
@@ -127,16 +130,16 @@ export default class Maps extends Component {
   }
 
   render () {
+    if (this.state.nodes === false && this.state.links === false) return <div></div>
     let nodes = Object.keys(this.state.nodes).map(key => {
       let pos = this.state.nodes[key]['pos']
       let time = this.state.nodes[key]['time']
-      let neighbours = this.state.nodes[key]['neighbours'].map(node => {
+      let neighbours = [...this.state.nodes[key]['neighbours']].map(node => {
         return (
           <div>
             <br/>{node}
           </div>)
       })
-
       return (
 
         <Marker key={pos} position={pos}>
@@ -150,7 +153,6 @@ export default class Maps extends Component {
           <Circle name={key}center={pos} radius={200} />
         </Marker>)
     })
-
     let links = this.state.links.map(link => {
       let src = link['source']
       let trg = link['target']
@@ -161,9 +163,8 @@ export default class Maps extends Component {
       let linkMin = this.config['MIN_THERSHOLD']
       let linkMax = this.config['MAX_THERSHOLD']
       let color = `hsl(${mapValue(cost, linkMin, linkMax, 120, 0)},100%,66%)`
-      let targeter = Math.round(cost * 6 / this.config.MAX_THERSHOLD)
-      console.log(targeter)
       let pos = [source, target]
+      console.table([cost, color, pos, src, trg])
       return (
         <Polyline key={cost}color={color} positions={pos}>
           <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
