@@ -14,8 +14,8 @@ export default class Maps extends Component {
       lat: 52.5,
       lng: 13.3,
       zoom: 4,
-      links: false,
-      nodes: false
+      links: [],
+      nodes: {}
 
     }
     this.config = {
@@ -75,10 +75,7 @@ export default class Maps extends Component {
     }
 
     this.setState({
-      nodes: x
-    })
-
-    this.setState({
+      nodes: x,
       links: links.map(link => {
         return {
           cost_text: link['cost_text'],
@@ -92,7 +89,7 @@ export default class Maps extends Component {
   }
 
   addNeighbours () {
-    const newState = this.state
+    // const newState = this.state
     let links = this.state.links
     let nodes = this.state.nodes
     links.forEach(link => {
@@ -101,8 +98,8 @@ export default class Maps extends Component {
       nodes[src]['neighbours'].add(trg)
       nodes[trg]['neighbours'].add(src)
     })
-    newState.nodes = nodes
-    this.setState(newState)
+    // newState.nodes = nodes
+    this.setState({ nodes: nodes })
   }
 
   findLatLng (id) {
@@ -130,7 +127,7 @@ export default class Maps extends Component {
   }
 
   render () {
-    if (this.state.nodes === false && this.state.links === false) return <div></div>
+    // if (this.state.nodes === false && this.state.links === false) return <div></div>
     let nodes = Object.keys(this.state.nodes).map(key => {
       let pos = this.state.nodes[key]['pos']
       let time = this.state.nodes[key]['time']
@@ -149,7 +146,7 @@ export default class Maps extends Component {
             <br /> Amount of neighbours: {neighbours.length}
             <br/>
             <br/> Time: {time}
-                .</Popup>
+          </Popup>
           <Circle name={key}center={pos} radius={200} />
         </Marker>)
     })
@@ -164,9 +161,8 @@ export default class Maps extends Component {
       let linkMax = this.config['MAX_THERSHOLD']
       let color = `hsl(${mapValue(cost, linkMin, linkMax, 120, 0)},100%,66%)`
       let pos = [source, target]
-      console.table([cost, color, pos, src, trg])
       return (
-        <Polyline key={cost}color={color} positions={pos}>
+        <Polyline key={pos} color={color} positions={pos}>
           <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
         </Polyline>
       )
@@ -177,7 +173,7 @@ export default class Maps extends Component {
         <div>{this.state.liveUpdate} </div>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
         <FeatureGroup>
           <EditControl
