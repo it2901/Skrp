@@ -1,4 +1,4 @@
-# Setup project
+# Setup project &middot; ![CircleCI](https://circleci.com/gh/it2901/Skrp.svg?style=shield&circle-token=:circle-token) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 `git clone https://github.com/it2901/Skrp.git`
 
 # Git guidelines
