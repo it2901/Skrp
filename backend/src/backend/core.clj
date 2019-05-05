@@ -42,7 +42,6 @@
     (when (get-in opt [:options :help])
       (usage (:summary opt)))
     (let [temp-cfg (read-config (get-in opt [:options :config]))]
-
       ;; Add support for Postgres JSONB
       (add-jsonb-type clojure.data.json/write-str clojure.data.json/read-str)
       (intern 'backend.database 'cfg temp-cfg)
