@@ -1,4 +1,19 @@
+/*
+This file is part of SKRP.
 
+SKRP is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SKRP is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with SKRP. If not, see <https://www.gnu.org/licenses/>.
+*/
 #page-wrap {
   text-align: center;
   /* Prevent sidebar from showing a scrollbar on page */
@@ -9,7 +24,7 @@
   display: inline-block;
   /* Our sidebar item styling */
   text-decoration: none;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   color: #d1d1d1;
   transition: color 0.2s;
 }
@@ -52,13 +67,26 @@
 }
 
 /* Wrapper for item list */
-.bm-item-list, .bm-item-list:visited, .bm-item-list:focus, a:visited {
+.bm-item-list, .bm-item-list:visited, .bm-item-list:focus, .menu-item:visited {
   color: #b8b7ad;
 }
+
 
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+.menu-item:hover{
+  background: #b8b7ad;
+  color: #373a47;
+}
+.menu-item.active{
+  background: #b8b7ad;
+  color: #373a47;
+}
+.menu-item{
+  font-size:125%;
+  padding: 6px 8px;
 }
 /* dark theme?*/
 /* svg{ */

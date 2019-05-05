@@ -14,14 +14,21 @@ exports[`renders correctly 1`] = `
     }
   >
     <div
-      className="ui message"
+      className="ui warning message"
       style={
         Object {
-          "display": "flex",
-          "flexDirection": "column",
+          "width": "200px",
         }
       }
-    />
+    >
+      <div
+        className="content"
+      >
+        <p>
+          Link color represents the link cost between the min and max tresholds set in the config. Where green is low and red is high.
+        </p>
+      </div>
+    </div>
     <button
       className="ui fluid button"
       onClick={[Function]}
