@@ -63,69 +63,94 @@ exports[`renders correctly 1`] = `
           >
             <div>
               <h1>
-                SKRP
+                SKRP 
+                <a
+                  href="https://github.com/it2901/Skrp"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    aria-hidden="true"
+                    className="github icon"
+                    onClick={[Function]}
+                  />
+                </a>
               </h1>
-              <ul
-                className="header"
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "column",
+                  }
+                }
               >
-                <li
+                <a
+                  aria-current={null}
                   className="menu-item"
+                  href="#/maps"
+                  onClick={[Function]}
                 >
-                  <a
-                    aria-current={null}
-                    href="#/tweakinput"
+                  <i
+                    aria-hidden="true"
+                    className="map marker alternate icon"
                     onClick={[Function]}
-                  >
-                    Adjust parameters
-                  </a>
-                </li>
-                <li
+                  />
+                  Map
+                </a>
+                <a
+                  aria-current={null}
                   className="menu-item"
+                  href="#/nodegraph"
+                  onClick={[Function]}
                 >
-                  <a
-                    aria-current={null}
-                    href="#/nodegraph"
+                  <i
+                    aria-hidden="true"
+                    className="sitemap icon"
                     onClick={[Function]}
-                  >
-                    Network graph
-                  </a>
-                </li>
-                <li
+                  />
+                  Network graph
+                </a>
+                <a
+                  aria-current={null}
                   className="menu-item"
+                  href="#/log"
+                  onClick={[Function]}
                 >
-                  <a
-                    aria-current={null}
-                    href="#/log"
+                  <i
+                    aria-hidden="true"
+                    className="book icon"
                     onClick={[Function]}
-                  >
-                    Adaption log
-                  </a>
-                </li>
-                <li
+                  />
+                  Adaption log
+                </a>
+                <a
+                  aria-current={null}
                   className="menu-item"
+                  href="#/tweakinput"
+                  onClick={[Function]}
                 >
-                  <a
-                    aria-current="page"
-                    className="active"
-                    href="#/"
+                  <i
+                    aria-hidden="true"
+                    className="settings icon"
                     onClick={[Function]}
-                    style={Object {}}
-                  >
-                    About
-                  </a>
-                </li>
-                <li
-                  className="menu-item"
+                  />
+                  Adjust parameters
+                </a>
+                <a
+                  aria-current="page"
+                  className="menu-item active"
+                  href="#/"
+                  onClick={[Function]}
+                  style={Object {}}
                 >
-                  <a
-                    aria-current={null}
-                    href="#/maps"
+                  <i
+                    aria-hidden="true"
+                    className="info icon"
                     onClick={[Function]}
-                  >
-                    Map
-                  </a>
-                </li>
-              </ul>
+                  />
+                  About
+                </a>
+              </div>
             </div>
           </nav>
         </div>
