@@ -30,9 +30,9 @@
   "Mocking config handler so it doesn't query the database"
   [req-str]
   (with-redefs
-    [config-check (constantly mock-data)
-     read-config mock-config
-     backend.routes.util/run-db (constantly mock-data)]
+   [config-check (constantly mock-data)
+    read-config mock-config
+    backend.routes.util/run-db (constantly mock-data)]
     (as-> req-str s
       (mock/request :post s)
       ((wrap-params app-routes) s)
