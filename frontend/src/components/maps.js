@@ -1,3 +1,19 @@
+/*
+This file is part of SKRP.
+
+SKRP is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SKRP is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with SKRP. If not, see <https://www.gnu.org/licenses/>.
+*/
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup, FeatureGroup, Circle, Polyline } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
@@ -11,19 +27,11 @@ export default class Maps extends Component {
       updaters: [],
       liveUpdate: true,
       liveUpdater: 0,
-      heigth: '1080px',
       lat: 52.5,
       lng: 13.3,
-      zoom: 12,
-      links: [{
-        cost: 123,
-        target: '123.123.123.11',
-        source: '123.123.123.12'
-      }],
-      nodes: {
-        '123.123.123.11': { pos: [52.3, 13.5], neighbours: [] },
-        '123.123.123.12': { pos: [52.2, 13.4], neighbours: [] }
-      }
+      zoom: 4,
+      links: [],
+      nodes: {}
 
     }
     this.config = {
@@ -52,35 +60,52 @@ export default class Maps extends Component {
       })
     }
   }
+  mapValue=(v, s1, e1, s2, e2) => {
+    e1 = this.ensureBigger(s1, e1)
+    return Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
+  }
+  ensureBigger=(a, b) => (a < b) ? 0 : a + 1
 
   async setInitalState () {
     let stateToBe = await fetch(this.config.MAP_AND_NODES)
       .then(response => response.json())
-      .then(data => data.collection[0])
       .catch(err => console.error(err))
-    let nodes = stateToBe['nodes'].map(node => { return node['id'] })
-    let links = stateToBe['links']
-    let locs = stateToBe['Locations'].map(l => {
-      let date = l['Location']['Time']
-      let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']}T${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
-      let pos = l['Location']['Position']
+    stateToBe = stateToBe['collection']
+    // gives the first network graph in the collection of networkGraphs
+    let networkGraph = stateToBe.filter(x => x['collection'][0]['type'] === 'NetworkGraph')[0]['collection'][0]
+    let geoLocations = stateToBe.filter(x => x['collection'][0]['type'] === 'GeoLocation')[0]['collection']
+    let nodes = networkGraph['nodes'].map(node => { return node['id'] })
+    let links = networkGraph['links']
+    let linkMin = this.config['MIN_THRESHOLD'] || links.reduce((a, b) => a.cost > b.cost ? b : a).cost
+    let linkMax = this.config['MAX_THRESHOLD'] || links.reduce((a, b) => a.cost < b.cost ? b : a).cost
+    let locs = geoLocations.map(l => {
+      let id = l['Originator']
+      let date = l['Time']
+      let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']} ${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
+      let pos = l['Position']
       let lng = pos['Longitude']
       let lat = pos['Latitude']
-      return [[lat, lng], time]
+      return [ [lat, lng], time, id ]
     })
     let x = {}
-    for (let i = 0; i < 51; i++) {
-      x[nodes[i]] = { pos: locs[i][0], neighbours: [], time: locs[i][1] }
+    for (let i = 0; i < nodes.length; i++) {
+      let id = nodes[i]
+      // This makes the assumption that there will only be one node with the location of an originator.
+      let matchingLoc = locs.filter(location => location.includes(id))[0]
+      let pos = matchingLoc[0]
+      let time = matchingLoc[1]
+      x[nodes[i]] = { pos: pos, neighbours: new Set([]), time: time }
     }
+
     this.setState({
-      nodes: x
-    })
-    this.setState({
+      nodes: x,
       links: links.map(link => {
         return {
+          cost_text: link['cost_text'],
           cost: link['cost'],
           source: link['source'],
-          target: link['target']
+          target: link['target'],
+          color: `hsl(${this.mapValue(link.cost, linkMin, linkMax, 120, 0)},100%,66%)`
         }
       })
     })
@@ -88,17 +113,17 @@ export default class Maps extends Component {
   }
 
   addNeighbours () {
-    const newState = this.state
+    // const newState = this.state
     let links = this.state.links
     let nodes = this.state.nodes
     links.forEach(link => {
       let src = link['source']
       let trg = link['target']
-      nodes[src]['neighbours'].push(trg)
-      nodes[trg]['neighbours'].push(src)
+      nodes[src]['neighbours'].add(trg)
+      nodes[trg]['neighbours'].add(src)
     })
-    newState.nodes = nodes
-    this.setState(newState)
+    // newState.nodes = nodes
+    this.setState({ nodes: nodes })
   }
 
   findLatLng (id) {
@@ -124,47 +149,44 @@ export default class Maps extends Component {
       this.setInitalState()
     }
   }
-
   render () {
+    // if (this.state.nodes === false && this.state.links === false) return <div></div>
     let nodes = Object.keys(this.state.nodes).map(key => {
       let pos = this.state.nodes[key]['pos']
       let time = this.state.nodes[key]['time']
-      let neighbours = this.state.nodes[key]['neighbours'].map(node => {
+      let neighbours = [...this.state.nodes[key]['neighbours']].map(node => {
         return (
-          <div>
-            <br/>{node}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {node}
           </div>)
       })
-
+      let posShow = pos.map(p => {
+        return (<div style={{ display: 'flex', flexDirection: 'column' }}>
+          {p}
+        </div>)
+      })
       return (
 
         <Marker key={pos} position={pos}>
-          <Popup>Name: <b>{key}</b>
-            <br/>
-            <br />Neighbours: {neighbours}
-            <br /> Amount of neighbours: {neighbours.length}
-            <br/>
-            <br/> Time: {time}
-                .</Popup>
+          <Popup style={{ display: 'flex', flexDirection: 'column' }}>
+            <div><b>IP: </b>{key}</div>
+            <div><b>Amount of neighbours: </b>{neighbours.length}</div>
+            <div><b>Neighbours: </b>{neighbours}</div>
+            <div><b>Location: </b>{posShow}</div>
+            <div><b>Datetime: </b>{time}</div>
+          </Popup>
           <Circle name={key}center={pos} radius={200} />
         </Marker>)
     })
-
     let links = this.state.links.map(link => {
       let src = link['source']
       let trg = link['target']
       let source = this.findLatLng(src)
       let target = this.findLatLng(trg)
       let cost = link['cost']
-      const mapValue = (v, s1, e1, s2, e2) => (v - s1) / (e1 - s1) * (e2 - s2) + s2
-      let linkMin = this.config['MIN_THERSHOLD']
-      let linkMax = this.config['MAX_THERSHOLD']
-      let color = `hsl(${mapValue(cost, linkMin, linkMax, 120, 0)},100%,66%)`
-      let targeter = Math.round(cost * 6 / this.config.MAX_THERSHOLD)
-      console.log(targeter)
       let pos = [source, target]
       return (
-        <Polyline key={cost}color={color} positions={pos}>
+        <Polyline key={pos} color={link.color} positions={pos}>
           <Popup>{cost}<br />Source : {src} Target: {trg}</Popup>
         </Polyline>
       )
@@ -175,7 +197,7 @@ export default class Maps extends Component {
         <div>{this.state.liveUpdate} </div>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
         <FeatureGroup>
           <EditControl
