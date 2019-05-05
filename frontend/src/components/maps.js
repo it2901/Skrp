@@ -150,7 +150,7 @@ export default class Maps extends Component {
             <div><b>Amount of neighbours: </b>{neighbours.length}</div>
             <div><b>Neighbours: </b>{neighbours}</div>
             <div><b>Location: </b>{posShow}</div>
-            <div><b>Time: </b>{time}</div>
+            <div><b>Datetime: </b>{time}</div>
           </Popup>
           <Circle name={key}center={pos} radius={200} />
         </Marker>)
