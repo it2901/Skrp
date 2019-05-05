@@ -14,7 +14,8 @@
 ;;;; along with SKRP. If not, see <https://www.gnu.org/licenses/>.
 
 (ns backend.routes.config
-  (:require [backend.configuration :refer [write-config, read-config]]
+  (:require [aero.core :as ac]
+            [backend.configuration :refer [write-config, read-config]]
             [backend.routes.util :refer [error-handler-rep, run-db]]))
 
 (defn config-check
@@ -40,3 +41,14 @@
                                           :header {"Content-Type" "application/json"}
                                           :body (first res)})
         :else (error-handler-rep 503 "You must supply 'device_id' as a parameter in order to write a configuration.")))
+
+(defn server-config-handler
+  "HTTP GET handler for exposing the server configuration file"
+  [req]
+  (let [cfg (ac/read-config "config.edn")]
+    (if-not cfg
+      (error-handler-rep 500 "Cannot retrieve server configuration file")
+      {:status 200
+       :content-type {"Content-Type" "application-json"}
+       :body cfg})))
+

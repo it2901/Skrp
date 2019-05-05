@@ -100,3 +100,15 @@
       :else {:status 200
              :headers {"Content Type" "application/json"}
              :body res})))
+
+(defn raw-network-handler
+  "Handles HTTP GET requests to the api and returns the
+  raw NetWorkCollection json objects"
+  [req]
+  (let [[{data :collection}] (get-network-collection :latest)]
+    (if (empty? data)
+      (error-handler-rep 500 "Could not get data from NetworkCollection table")
+      {:status 200
+       :headers {"Content Type" "application/json"}
+       :body data})))
+
