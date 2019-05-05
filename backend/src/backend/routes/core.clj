@@ -42,7 +42,8 @@
                                 adaption-request-handler
                                 {:keywords? true :bigdecimals? true})))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
-  (GET "/configure" request (wrap-json-response config-handler))
+  (POST "/configure" request (wrap-json-response
+                              (wrap-json-body config-handler)))
   (GET "/serverconfig" [] (wrap-json-response server-config-handler))
   (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
   (not-found (wrap-json-response

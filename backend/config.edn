@@ -1,12 +1,18 @@
 {
  :database
- { :user  #or [#env PGUSER "postgres"]
-   :name  #or [#env PGDATABASE "netjson_dev"]
-   :pass  #or [#env PGPASSWD "password"]
-   :host  #or [#env PGHOST "localhost"]
- }
+ {
+  :user  #or [#env PGUSER "postgres"]
+  :name  #or [#env PGDATABASE "netjson_dev"]
+  :pass  #or [#env PGPASSWD "password"]
+  :host  #or [#env PGHOST "localhost"]
+  }
  :webserver
  { 
-   :port 8090
+  :port 8090
+  }
+ :datasource
+ {
+  :host "localhost"
+  :port 3001
+  }
  }
-}
