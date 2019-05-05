@@ -48,11 +48,11 @@ class App extends Component {
           <HashRouter>
             <div className="SKRP">
               <Switch>
-                <Route path="/tweakinput" component={tweakInput} />
-                <Route path="/nodegraph" component={NodeGraph} />
-                <Route path="/" exact component={About} />
-                <Route path="/log" component={Log} />
                 <Route path="/maps" component={Maps} />
+                <Route path="/nodegraph" component={NodeGraph} />
+                <Route path="/tweakinput" component={tweakInput} />
+                <Route path="/log" component={Log} />
+                <Route path="/" exact component={About} />
                 <Route component={errorcomponent} />
               </Switch>
             </div>

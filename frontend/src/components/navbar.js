@@ -19,7 +19,7 @@ import {
   NavLink,
   HashRouter
 } from 'react-router-dom'
-
+import { Icon } from 'semantic-ui-react'
 import { slide as Menu } from 'react-burger-menu'
 
 export default props => {
@@ -28,14 +28,15 @@ export default props => {
     <Menu outerContainerId="outerContainer">
       <HashRouter>
         <div>
-          <h1>SKRP</h1>
-          <ul className="header">
-            <li className="menu-item" ><NavLink to="/tweakinput">Adjust parameters</NavLink></li>
-            <li className="menu-item" ><NavLink to="/nodegraph">Network graph</NavLink></li>
-            <li className="menu-item"><NavLink to="/log">Adaption log</NavLink></li>
-            <li className="menu-item"><NavLink to="/">About</NavLink></li>
-            <li className="menu-item"><NavLink to="/maps">Map</NavLink></li>
-          </ul>
+          <h1>SKRP <a href='https://github.com/it2901/Skrp' target="_blank" rel="noopener noreferrer"><Icon name='github'/></a></h1>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <NavLink className="menu-item" to="/maps"><Icon name='map marker alternate'/>Map</NavLink>
+            <NavLink className="menu-item" to="/nodegraph"><Icon name='sitemap'/>Network graph</NavLink>
+            <NavLink className="menu-item" to="/log"><Icon name='book'/>Adaption log</NavLink>
+            <NavLink className="menu-item" to="/tweakinput"><Icon name='settings'/>Adjust parameters</NavLink>
+            <NavLink className="menu-item" exact to="/"><Icon name='info'/>About</NavLink>
+          </div>
+
         </div>
       </HashRouter>
     </Menu>
