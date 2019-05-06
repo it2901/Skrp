@@ -1,8 +1,7 @@
 # Connecting to OKSE
 
-Start okse with the start script (not) provided. Script is 
-supposed to do `java -jar -Xms256m -Xmx512m okse.jar`. This is currently run on
-the VM as `okse.service`.
+Start okse with `java -jar -Xms256m -Xmx512m okse.jar`. This is currently run
+on the VM as `okse.service`.
 
 Log in to OKSE with user, pass = admin, password.
 
