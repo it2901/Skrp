@@ -46,7 +46,7 @@
     (run-db (config-check (first (write-config (get body "device_id")
                                                (dissoc body "device_id")))))
     (error-handler-rep 503
-     "You must supply a 'device_id' parameter to write a configuration")))
+                       "You must supply a 'device_id' parameter to write a configuration")))
 
 (defn server-config-handler
   "HTTP GET handler for exposing the server configuration file"
