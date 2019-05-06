@@ -1,7 +1,8 @@
 # Connecting to OKSE
 
 Start okse with `java -jar -Xms256m -Xmx512m okse.jar`. This is currently run
-on the VM as `okse.service`.
+on the VM as `okse.service`. In other words, if you are using the VM, you will
+not need to run okse manually.
 
 Log in to OKSE with user, pass = admin, password.
 
@@ -27,3 +28,13 @@ The easiest way to set up dependencies is with pip and a virtual environment.
 `python3 -m venv venv`
 `source venv/bin/activate`
 `pip install -r requirements.txt`
+
+To start the client during development you should have the backend, and mocker
+running. In order for the client to pull data from the two sources, you will need
+to provide the `BACKEND_HOST` and `NETJSON_HOST` environment variables. An optional
+enviromnent variable `INTERVAL` can also be set. Interval is given in seconds, and
+defines how often the client will poll the data sources.
+
+For instance, you can run the client with:
+
+`BACKEND_HOST=localhost:8090 NETJSON_HOST=localhost:3001 INTERVAL=30.0 python client.py`
