@@ -40,7 +40,7 @@
   "Handle configuration parameters.
   Input: POST request with all configuration parameters in a json body
   Action: Inserts configuration in database if it fits the schema and
-  the same data you posted"
+  the same data you posted with a config_id and a timestamp"
   [{body :body :as req}]
   (cond (empty? body) (run-db (config-check (first (read-config))))
         (contains? body "device_id")
