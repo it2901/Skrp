@@ -22,10 +22,15 @@ if not BACKEND_HOST:
 
 logger.info('Using {} as BACKEND_HOST'.format(BACKEND_HOST))
 
-NETJSON_HOST = os.environ.get('NETJSON_HOST')
-if not NETJSON_HOST:
-    logger.error('NETJSON_HOST not set, exiting')
-    sys.exit(1)
+def get_datasource():
+    """
+    Fetches the the netjson datasource host
+    """
+    r = requests.get('http://{}/serverconfig'.format(BACKEND_HOST)).json()
+    datasource_host = '{}:{}'.format(r['datasource']['host'], r['datasource']['port'])
+    return datasource_host
+
+NETJSON_HOST = get_datasource()
 
 logger.info('Using {} as NETJSON_HOST'.format(NETJSON_HOST))
 
@@ -70,6 +75,7 @@ def send_config(config={}):
                 'config': config
             })).json()
         f.close()
+
 
 
 def fetch_graph_and_make_adaption():
