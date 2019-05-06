@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Parameters from './parameter'
 import styled from 'styled-components'
+import curl from 'curl'
 
 const Form = styled.form`
 padding: 80px
@@ -43,13 +44,13 @@ class TweakInput extends Component {
   sendToConfigure () {
     let body = this.state.parameters
     body['device_id'] = this.device_id
+    console.log(JSON.stringify(body))
     fetch('http://localhost:8090/configure', {
-      'method': 'POST',
-      'mode': 'no-cors',
-      'headers': {
-        'Content-Type': 'application/json'
-      },
-      'body': JSON.stringify(body)
+      method: 'POST',
+      headers: [
+        ['Content-Type', 'application/json']
+      ],
+      body: JSON.stringify(body)
     })
   }
 
@@ -59,13 +60,10 @@ class TweakInput extends Component {
     let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
-  valdiator (value) {
-    return value.match(/^(0(\.\d+)?|[0-9]+)$/)
-  }
 
   onChangeParameterValue (name, event) {
     let value = event.target.value
-    if (event.key === 'Enter' && this.valdiator(value)) {
+    if (event.key === 'Enter') {
       let parameters = this.state.parameters
       parameters[name] = value
       this.setState({
