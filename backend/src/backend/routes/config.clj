@@ -22,29 +22,37 @@
   "Returns correct HTTP response according to configuration result"
   {:arglist '([query-result])}
   [result]
-  ;; TODO: Find a way to handle db connection error
-  (let [[status body] (if (= [] result)
+  (let [[status body] (if (empty? result)
                         [404 {"Error" "No query results found"}]
                         [200 result])]
     {:status status
      :headers {"Content-Type" "application/json"}
      :body body}))
 
-(defn config-handler
+(defn get-config-handler
+  "Retrieve latest config entry in the table
+  Input: GET request with no params
+  Action: Retrieves the latest config entry in the table"
+  [req]
+  (run-db (config-check (first (read-config)))))
+
+(defn post-config-handler
   "Handle configuration parameters.
   Input: POST request with all configuration parameters in a json body
-  Action: Inserts configuration in database if it fits the schema"
+  Action: Inserts configuration in database if it fits the schema and
+  the same data you posted with a config_id and a timestamp"
   [{body :body :as req}]
-  (cond (empty? body) (run-db (config-check (first (read-config))))
-        (contains? body "device_id")
-        (let [res (run-db (write-config (get body "device_id")
-                                        (dissoc body "device_id")))]
-          {:status 200
-           :header {"Content-Type" "application/json"}
-           :body (first res)})
-        :else (error-handler-rep
-               503
-               "You must supply a 'device_id' parameter to write a configuration")))
+  (if (contains? body "device_id")
+    (let [res (run-db (first (write-config (get body "device_id")
+                                           (dissoc body "device_id"))))]
+      (if-not (= 503 (:status res))
+        {:status 200
+         :header {"Content-Type" "application/json"}
+         :body res}
+        res))
+    (error-handler-rep
+     503
+     "You must supply a 'device_id' parameter to write a configuration")))
 
 (defn server-config-handler
   "HTTP GET handler for exposing the server configuration file"

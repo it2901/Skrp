@@ -98,7 +98,7 @@ class NodeGraph extends Component {
         self.setState({ data: {} })
       }
     }
-    xhttp.open('GET', this.config.NODE_GRAPH, true)
+    xhttp.open('GET', 'http://localhost:8090/rawnetwork', true)
     xhttp.send()
   }
   mapValue=(v, s1, e1, s2, e2) => {
