@@ -138,7 +138,7 @@ def update_config_from_parameters():
 send_config()
 
 while True:
-    #update_config_from_parameters()
+    update_config_from_parameters()
     fetch_graph_and_make_adaption()
     logger.info('Done, sleeping {} seconds'.format(str(INTERVAL)))
     time.sleep(INTERVAL)
