@@ -72,7 +72,7 @@ export default class Maps extends Component {
       .catch(err => console.error(err))
     stateToBe = stateToBe['collection']
     // gives the first network graph in the collection of networkGraphs
-    let networkGraph = stateToBe.filter(x => x['collection'][0]['type'] === 'NetworkGraph')[0]['collection'][0]
+    let networkGraph = stateToBe.filter(x => x['collection'][0]['type'] === 'NetworkGraph')[0]['collection'][this.config['MAP_PATH']]
     let geoLocations = stateToBe.filter(x => x['collection'][0]['type'] === 'GeoLocation')[0]['collection']
     let nodes = networkGraph['nodes'].map(node => { return node['id'] })
     let links = networkGraph['links']
@@ -81,7 +81,7 @@ export default class Maps extends Component {
     let locs = geoLocations.map(l => {
       let id = l['Originator']
       let date = l['Time']
-      let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']} ${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
+      let time = `${date['Year4Digit']}-${date['MonthNumeric']}-${date['Day']}T${date['HourTime']}:${date['MinuteTime']}:${date['SecondTime']}`
       let pos = l['Position']
       let lng = pos['Longitude']
       let lat = pos['Latitude']

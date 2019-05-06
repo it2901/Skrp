@@ -4,7 +4,7 @@
     "NODE_GRAPH_UPDATE_FREQUENCY" : 0,
     "LOG_UPDATE_FREQUENCY" : 0,
     "NODE_GRAPH_PATH":0,
-    "MAP_PATH":1,
+    "MAP_PATH":0,
     "MIN_THRESHOLD" : null,
     "MAX_THRESHOLD" : null
 }
