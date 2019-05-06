@@ -120,6 +120,7 @@ class Log extends Component {
         let adaptionTypes = d
           .map(o => o.adaption_type)
           .filter((v, i, a) => a.indexOf(v) === i)
+          .sort()
           .map(o => {
             return { text: o, key: o, value: o }
           })

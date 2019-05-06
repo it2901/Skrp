@@ -74,6 +74,7 @@ COPY public.adaption (adaption_id, adaption_type, adaption_description, config_i
 26	willFlag	update value	7
 27	willMessage	update value	7
 28	willTopic	update value	7
+29	minMqttsLength	update value	7
 \.
 
 
@@ -118,7 +119,7 @@ SELECT pg_catalog.setval('public.adaption_adaption_id_seq', 1, false);
 -- Name: config_config_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.config_config_id_seq', 29, true);
+SELECT pg_catalog.setval('public.config_config_id_seq', 30, true);
 
 
 --
