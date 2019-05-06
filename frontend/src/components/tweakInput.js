@@ -1,19 +1,3 @@
-/*
-This file is part of SKRP.
-
-SKRP is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SKRP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with SKRP. If not, see <https://www.gnu.org/licenses/>.
-*/
 import React, { Component } from 'react'
 import Parameters from './parameter'
 import styled from 'styled-components'
@@ -32,6 +16,7 @@ class TweakInput extends Component {
     this.state = {
       parameters: {}
     }
+
     this.props = props
   }
 
@@ -42,13 +27,15 @@ class TweakInput extends Component {
   async setInitalState () {
     const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json() }).catch(err => console.error(err))
     let parameters = stateToBe['config']
-    let deviceId = stateToBe['device_id']
-    this.device_id = deviceId
-    let parametersObject = {}
-
-    Object.entries(parameters).forEach(p => (parametersObject[p[0]] = p[1]))
+    this.device_id = stateToBe['device_id']
+    // this is not allowed, plz fix me.
+    // This might trigger alot of state updates
+    let parameter = {}
+    Object.entries(parameters).map(p => (
+      parameter[p[0]] = p[1])
+    )
     this.setState({
-      parameters: parametersObject
+      parameters: parameter
     })
   }
 
@@ -67,9 +54,9 @@ class TweakInput extends Component {
   }
 
   sendToAdaptation (name, value) {
-    let id = this.device_id
+    let id = 2
     let description = `parameter ${name} has been changed to ${value}`
-    let statement = `http://localhost:8090/logadaption?adaption_type=${'compress'}&device_id=${id}&description=${description}`
+    let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
   valdiator (value) {
