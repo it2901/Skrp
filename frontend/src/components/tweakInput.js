@@ -31,12 +31,9 @@ class TweakInput extends Component {
     this.device_id = stateToBe['device_id']
     // this is not allowed, plz fix me.
     // This might trigger alot of state updates
-    let parameter = {}
-    Object.entries(parameters).map(p => (
-      parameter[p[0]] = p[1])
-    )
+    let p2 = { ...parameters }
     this.setState({
-      parameters: parameter
+      parameters: p2
     })
   }
 
