@@ -42,13 +42,11 @@
   Action: Inserts configuration in database if it fits the schema and
   the same data you posted with a config_id and a timestamp"
   [{body :body :as req}]
-  (cond (empty? body) (run-db (config-check (first (read-config))))
-        (contains? body "device_id")
-        (run-db (config-check (first (write-config (get body "device_id")
-                                                   (dissoc body "device_id")))))
-        :else (error-handler-rep
-               503
-               "You must supply a 'device_id' parameter to write a configuration")))
+  (if (contains? body "device_id")
+    (run-db (config-check (first (write-config (get body "device_id")
+                                               (dissoc body "device_id")))))
+    (error-handler-rep 503
+     "You must supply a 'device_id' parameter to write a configuration")))
 
 (defn server-config-handler
   "HTTP GET handler for exposing the server configuration file"
