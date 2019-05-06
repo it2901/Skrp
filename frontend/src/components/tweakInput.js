@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Parameters from './parameter'
 import styled from 'styled-components'
-import curl from 'curl'
 
 const Form = styled.form`
 padding: 80px
