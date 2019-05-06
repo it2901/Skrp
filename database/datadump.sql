@@ -47,10 +47,11 @@ COPY public.config (config_id, device_id, config, created) FROM stdin;
 
 COPY public.adaption (adaption_id, adaption_type, adaption_description, config_id) FROM stdin;
 1	compress	Make the things smaller	1
-2	switch prot	change protocol	2
-3	param1	update value	3
-4	param2	update value	4
-5	param3	update value	5
+2	param_update	Human updated parameters	1
+3	switch prot	change protocol	2
+4	param1	update value	3
+5	param2	update value	4
+6	param3	update value	5
 \.
 
 
