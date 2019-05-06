@@ -44,13 +44,9 @@ else:
 current_device = 1 # Hard coded for now, as we dont operate with more devices yet
 
 def get_newest_config():
-    fresh_config = requests.post(
+    fresh_config = requests.get(
                    'http://{}/configure'.format(BACKEND_HOST), 
                    headers={'Content-Type': 'application/json'}).json()['config']
-
-    if next(iter(fresh_config)) == 'config': # API is not consistent
-        fresh_config = fresh_config['config']
-
     return fresh_config
 
 
@@ -64,16 +60,14 @@ def send_config(config={}):
         current_config = Properties()
         current_config.load(f, 'ascii')
 
+        config['device_id'] = current_device
         for key in current_config:
             config[key] = current_config[key][0]
 
         r = requests.post(
             'http://{}/configure'.format(BACKEND_HOST), 
             headers={'Content-Type': 'application/json'},
-            data = json.dumps({
-                'device_id': current_device,
-                'config': config
-            })).json()
+            data = json.dumps(config)).json()
         f.close()
 
 
