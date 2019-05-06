@@ -40,9 +40,8 @@ class TweakInput extends Component {
 
   async setInitalState () {
     const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json() }).catch(err => console.error(err))
-    let config = stateToBe.body['config']
-    let parameters = config['config']
-    let deviceId = config['device_id']
+    let parameters = stateToBe['config']
+    let deviceId = stateToBe['device_id']
     // this is not allowed, plz fix me.
     // This might trigger alot of state updates
     this.device_id = deviceId
