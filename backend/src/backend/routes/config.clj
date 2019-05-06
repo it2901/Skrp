@@ -22,8 +22,7 @@
   "Returns correct HTTP response according to configuration result"
   {:arglist '([query-result])}
   [result]
-  ;; TODO: Find a way to handle db connection error
-  (let [[status body] (if (= [] result)
+  (let [[status body] (if (empty? result)
                         [404 {"Error" "No query results found"}]
                         [200 result])]
     {:status status
@@ -40,15 +39,13 @@
 (defn post-config-handler
   "Handle configuration parameters.
   Input: POST request with all configuration parameters in a json body
-  Action: Inserts configuration in database if it fits the schema"
+  Action: Inserts configuration in database if it fits the schema and
+  the same data you posted"
   [{body :body :as req}]
   (cond (empty? body) (run-db (config-check (first (read-config))))
         (contains? body "device_id")
-        (let [res (run-db (write-config (get body "device_id")
-                                        (dissoc body "device_id")))]
-          {:status 200
-           :header {"Content-Type" "application/json"}
-           :body (first res)})
+        (run-db (config-check (first (write-config (get body "device_id")
+                                                   (dissoc body "device_id")))))
         :else (error-handler-rep
                503
                "You must supply a 'device_id' parameter to write a configuration")))
