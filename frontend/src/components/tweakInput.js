@@ -30,6 +30,7 @@ class TweakInput extends Component {
     super(props)
     this.device_id = {}
     this.state = {
+      parameters: {}
     }
     this.props = props
   }
@@ -42,30 +43,33 @@ class TweakInput extends Component {
     const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json() }).catch(err => console.error(err))
     let parameters = stateToBe['config']
     let deviceId = stateToBe['device_id']
-    // this is not allowed, plz fix me.
-    // This might trigger alot of state updates
     this.device_id = deviceId
-    Object.entries(parameters).map(p => (
-      this.setState({
-        [p[0]]: p[1]
-      })
-    )
-    )
+    let parametersObject = {}
+
+    Object.entries(parameters).forEach(p => (parametersObject[p[0]] = p[1]))
+    this.setState({
+      parameters: parametersObject
+    })
   }
 
+  // new Send to Configuration Endpoint
   sendToConfigure () {
-    let state = this.state
-    let statement = `?device_id=${this.device_id}&`
-    Object.entries(state).forEach(x => statement += x[0] + '=' + x[1] + '&')
-    statement = statement.substring(0, statement.length - 1)
-    fetch('http://localhost:8090/configure' + statement)
+    let body = this.state.parameters
+    body['device_id'] = this.device_id
+    fetch('http://localhost:8090/configure', {
+      'method': 'POST',
+      'mode': 'no-cors',
+      'headers': {
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify(body)
+    })
   }
 
   sendToAdaptation (name, value) {
-    let id = 2
+    let id = this.device_id
     let description = `parameter ${name} has been changed to ${value}`
-    console.log(description)
-    let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
+    let statement = `http://localhost:8090/logadaption?adaption_type=${'compress'}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
   valdiator (value) {
@@ -75,8 +79,10 @@ class TweakInput extends Component {
   onChangeParameterValue (name, event) {
     let value = event.target.value
     if (event.key === 'Enter' && this.valdiator(value)) {
+      let parameters = this.state.parameters
+      parameters[name] = value
       this.setState({
-        [name]: value
+        parameters: parameters
       })
       setTimeout(() => {
         this.sendToConfigure()
@@ -86,7 +92,7 @@ class TweakInput extends Component {
   }
 
   render () {
-    let state = Object.entries(this.state)
+    let state = Object.entries(this.state.parameters)
     let parameters = state.map(s => {
       return <Parameters data-cy="submit" key={s[0]} changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
     })
