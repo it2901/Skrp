@@ -5,6 +5,7 @@ import localmain from '../assets/docs/main.md'
 import localbackend from '../assets/docs/backend.md'
 import localfrontend from '../assets/docs/frontend.md'
 import localmocker from '../assets/docs/mocker.md'
+import localclient from '../assets/docs/client.md'
 import fetch from 'isomorphic-fetch'
 
 const Div = styled.div`
@@ -23,7 +24,8 @@ class About extends Component {
       main: 'localmain',
       backend: 'localbackend',
       mocker: 'localmocker',
-      frontend: 'localfrontend'
+      frontend: 'localfrontend',
+      client: 'localclient'
     }
   }
 
@@ -47,7 +49,9 @@ class About extends Component {
     const backend = await fetch(localbackend).then(data => { return data.text() })
     const frontend = await fetch(localfrontend).then(data => { return data.text() })
     const mocker = await fetch(localmocker).then(data => { return data.text() })
+    const client = await fetch(localclient).then(data => { return data.text() })
     this.setState({
+      client: client,
       main: main,
       backend: backend,
       frontend: frontend,
@@ -61,7 +65,9 @@ class About extends Component {
     const backend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/backend/README.md').then(data => { return data.text() })
     const frontend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/frontend/README.md').then(data => { return data.text() })
     const mocker = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/mocker/README.md').then(data => { return data.text() })
+    const client = await fetch('https://raw.githubusercontent.com/it2901/Skrp/cc17892cff587b9ad2060a867d0453fa3afd5e8a/client/README.md').then(data => { return data.text() })
     this.setState({
+      client: client,
       main: main,
       backend: backend,
       frontend: frontend,
@@ -71,11 +77,15 @@ class About extends Component {
   render () {
     return (
       <div>
-
         <Div style ={{ border: 'none' }}>
           <h1 style={{ textAlign: 'center' }}>SKRP</h1>
           <br></br>
           <MDReactComponent text={this.state.main}/>
+        </Div>
+        <Div>
+          <h1 style={{ textAlign: 'center' }}>Frontend</h1>
+          <br></br>
+          <MDReactComponent text={this.state.frontend}/>
         </Div>
         <Div>
           <h1 style={{ textAlign: 'center' }}>Backend</h1>
@@ -83,14 +93,14 @@ class About extends Component {
           <MDReactComponent text={this.state.backend}/>
         </Div>
         <Div>
+          <h1 style={{ textAlign: 'center' }}>Client</h1>
+          <br></br>
+          <MDReactComponent text={this.state.client}/>
+        </Div>
+        <Div>
           <h1 style={{ textAlign: 'center' }}>Mocker</h1>
           <br></br>
           <MDReactComponent text={this.state.mocker}/>
-        </Div>
-        <Div>
-          <h1 style={{ textAlign: 'center' }}>Frontend</h1>
-          <br></br>
-          <MDReactComponent text={this.state.frontend}/>
         </Div>
         <Div style ={{ border: 'none',
           textAlign: 'center' }}>
