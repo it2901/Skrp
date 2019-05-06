@@ -67,7 +67,7 @@ export default class Maps extends Component {
   ensureBigger=(a, b) => (a < b) ? 0 : a + 1
 
   async setInitalState () {
-    let stateToBe = await fetch(this.config.MAP_AND_NODES)
+    let stateToBe = await fetch('http://localhost:8090/network')
       .then(response => response.json())
       .catch(err => console.error(err))
     stateToBe = stateToBe['collection']

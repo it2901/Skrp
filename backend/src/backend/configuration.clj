@@ -29,4 +29,4 @@
 (defn read-config
   "Reads the latest configuration from the database"
   []
-  (j/query db "SELECT * FROM config ORDER BY config_id DESC LIMIT 1;"))
+  (j/query db "SELECT * FROM config ORDER BY created DESC LIMIT 1;"))

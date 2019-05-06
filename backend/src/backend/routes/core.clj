@@ -18,7 +18,8 @@
             [backend.routes.network :refer [network-handler raw-network-handler]]
             [backend.routes.syslog :refer [syslog-handler]]
             [backend.routes.logadaption :refer [adaption-handler]]
-            [backend.routes.config :refer [config-handler
+            [backend.routes.config :refer [get-config-handler
+                                           post-config-handler
                                            server-config-handler]]
             [backend.routes.util :refer [index-handler
                                          dummy-data-handler
@@ -43,7 +44,8 @@
                                 {:keywords? true :bigdecimals? true})))
   (POST "/logadaption" request (wrap-json-response adaption-handler))
   (POST "/configure" request (wrap-json-response
-                              (wrap-json-body config-handler)))
+                              (wrap-json-body post-config-handler)))
+  (GET "/configure" [] (wrap-json-response get-config-handler))
   (GET "/serverconfig" [] (wrap-json-response server-config-handler))
   (GET "/filtersyslog" request (wrap-json-response filtered-syslog-handler))
   (not-found (wrap-json-response

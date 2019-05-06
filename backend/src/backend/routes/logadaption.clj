@@ -31,7 +31,7 @@
 
 (defn adaption-handler
   "Inserts an adaption into the database.
-      If the device_id is not yet registered in the db, a registration will be made"
+  If the device_id is not yet registered in the db, a registration will be made"
   [{params :query-params :as req}]
   (if-not (and
            (contains? params "adaption_type")

@@ -291,7 +291,7 @@ exports[`renders correctly 1`] = `
                       4
                     </td>
                     <td
-                      className="rdtDay rdtToday"
+                      className="rdtDay"
                       data-value={5}
                       onClick={[Function]}
                     >
@@ -300,7 +300,7 @@ exports[`renders correctly 1`] = `
                   </tr>
                   <tr>
                     <td
-                      className="rdtDay"
+                      className="rdtDay rdtToday"
                       data-value={6}
                       onClick={[Function]}
                     >

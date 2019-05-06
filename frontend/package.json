@@ -31,7 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest __tests__ && start-server-and-test start http://localhost:3000 cy",
+    "test": "jest -u __tests__ && start-server-and-test start http://localhost:3000 cy",
     "cy": "cypress run",
     "cy:open": "cypress:open",
     "eject": "react-scripts eject",
