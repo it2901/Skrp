@@ -44,7 +44,6 @@ class TweakInput extends Component {
   sendToConfigure () {
     let body = this.state.parameters
     body['device_id'] = this.device_id
-    console.log(JSON.stringify(body))
     fetch('http://localhost:8090/configure', {
       method: 'POST',
       headers: [
@@ -56,7 +55,7 @@ class TweakInput extends Component {
 
   sendToAdaptation (name, value) {
     let id = 2
-    let description = `parameter ${name} has been changed to ${value}`
+    let description = `${name} has updated to ${value}`
     let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
@@ -82,6 +81,7 @@ class TweakInput extends Component {
       return <Parameters data-cy="submit" key={s[0]} changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
     })
     return <div>
+      <div> <p style ={{ 'textAlign': 'center' }}> Remember to input correct input in each field, they lack validation</p> </div>
       <Form className="flex-container">
         {parameters}
       </Form>
