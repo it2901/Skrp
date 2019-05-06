@@ -65,7 +65,7 @@ class About extends Component {
     const backend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/backend/README.md').then(data => { return data.text() })
     const frontend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/frontend/README.md').then(data => { return data.text() })
     const mocker = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/mocker/README.md').then(data => { return data.text() })
-    const client = await fetch('https://raw.githubusercontent.com/it2901/Skrp/cc17892cff587b9ad2060a867d0453fa3afd5e8a/client/README.md').then(data => { return data.text() })
+    const client = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/client/README.md').then(data => { return data.text() })
     this.setState({
       client: client,
       main: main,

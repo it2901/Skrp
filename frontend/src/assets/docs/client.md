@@ -30,11 +30,11 @@ The easiest way to set up dependencies is with pip and a virtual environment.
 `pip install -r requirements.txt`
 
 To start the client during development you should have the backend, and mocker
-running. In order for the client to pull data from the two sources, you will need
-to provide the `BACKEND_HOST` and `NETJSON_HOST` environment variables. An optional
+running. In order for the client to pull data from the backend, you will need
+to provide the `BACKEND_HOST` environment variable. An optional
 enviromnent variable `INTERVAL` can also be set. Interval is given in seconds, and
 defines how often the client will poll the data sources.
 
 For instance, you can run the client with:
 
-`BACKEND_HOST=localhost:8090 NETJSON_HOST=localhost:3001 INTERVAL=30.0 python client.py`
+`BACKEND_HOST=localhost:8090 INTERVAL=30.0 python client.py`
