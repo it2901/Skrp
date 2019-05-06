@@ -30,7 +30,16 @@
      :headers {"Content-Type" "application/json"}
      :body body}))
 
-(defn config-handler
+(defn get-config-handler
+  "Retrieve latest config entry in the table
+  Input: GET request with no params
+  Action: Retrieves the latest config entry in the table"
+  [req]
+  {:status 200
+   :header {"Content-Type" "application/json"}
+   :body (run-db (config-check (first (read-config))))})
+
+(defn post-config-handler
   "Handle configuration parameters.
   Input: POST request with all configuration parameters in a json body
   Action: Inserts configuration in database if it fits the schema"
