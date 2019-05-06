@@ -43,10 +43,16 @@
   the same data you posted with a config_id and a timestamp"
   [{body :body :as req}]
   (if (contains? body "device_id")
-    (run-db (config-check (first (write-config (get body "device_id")
-                                               (dissoc body "device_id")))))
-    (error-handler-rep 503
-                       "You must supply a 'device_id' parameter to write a configuration")))
+    (let [res (run-db (first (write-config (get body "device_id")
+                                           (dissoc body "device_id"))))]
+      (if-not (= 503 (:status res))
+        {:status 200
+         :header {"Content-Type" "application/json"}
+         :body res}
+        res))
+    (error-handler-rep
+     503
+     "You must supply a 'device_id' parameter to write a configuration")))
 
 (defn server-config-handler
   "HTTP GET handler for exposing the server configuration file"
