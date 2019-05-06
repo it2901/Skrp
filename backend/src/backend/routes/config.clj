@@ -35,9 +35,7 @@
   Input: GET request with no params
   Action: Retrieves the latest config entry in the table"
   [req]
-  {:status 200
-   :header {"Content-Type" "application/json"}
-   :body (run-db (config-check (first (read-config))))})
+  (run-db (config-check (first (read-config)))))
 
 (defn post-config-handler
   "Handle configuration parameters.
