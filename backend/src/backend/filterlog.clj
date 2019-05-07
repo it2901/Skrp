@@ -25,7 +25,7 @@
     (let [basicQueryString "SELECT system_log.*, adaption.adaption_type, adaption.adaption_id
     FROM system_log INNER JOIN adaption ON adaption.adaption_id = system_log.adaption_id"]
       (if-not (= queryStr basicQueryString)
-        (str queryStr " AND LOWER(adaption.adaption_type = LOWER('" adaption_type "')")
+        (str queryStr " AND LOWER(adaption.adaption_type) = LOWER('" adaption_type "')")
         (str queryStr " WHERE LOWER(adaption.adaption_type) = LOWER('" adaption_type "')")))))
 
 (defn device-filter
