@@ -19,6 +19,11 @@ services:
     - "5432:5432"
     networks:
       - backend
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5432"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
   frontend:
     container_name: skrp_frontend
     build: ./frontend
@@ -38,9 +43,19 @@ services:
     - "3001:3001"
     networks:
       - backend
-#  client:
-#    container_name: skrp_client
-#    build: ./client
+  client:
+    container_name: skrp_client
+    build: ./client
+    networks:
+      - backend
+    environment:
+      - BACKEND_HOST=backend:8090
+      - NETJSON_HOST=mocker:3001
+      - INTERVAL=30.0
+    depends_on:
+      - db
+      - backend
+      - mocker
 
 
 networks:
