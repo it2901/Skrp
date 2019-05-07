@@ -28,13 +28,23 @@ The VM will also expose a webserver to port 7654, visit it in your browser
 The VM runs two systemd-services, a postgres database and an apache2 webserver.
 Relevant files:
 
+Backend service
+
 `/etc/systemd/system/skrp.service`
+
+Mocker service
 
 `/etc/systemd/system/mocker.service`
 
+OKSE
+
 `/etc/systemd/system/okse.service`
 
+Client
+
 `/etc/systemd/system/client.service`
+
+Webserver config
 
 `/etc/apache2/sites-availible/000-default.conf`
 
@@ -43,6 +53,9 @@ The frontend resides in /var/www/build and is served by apache.
 ## Starting and stopping services
 
 `systemctl [stop|start|restart|reload|status] <some>.service`
+
+After updating the backend config `config.edn`, you can restart the backend
+with `systemctl restart skrp.service`.
 
 ## Accessing logs of the individual services
 
