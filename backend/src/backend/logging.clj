@@ -60,8 +60,8 @@
    (when (= latest :latest)
      (j/query db
               "SELECT * FROM network_collection
-       ORDER BY created
-       DESC LIMIT 1"))))
+              ORDER BY created
+              DESC LIMIT 1"))))
 
 (defn insert-network-collection
   "Insert a network collection into the database"
