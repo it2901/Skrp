@@ -98,13 +98,14 @@ class NodeGraph extends Component {
         self.setState({ data: {} })
       }
     }
-    xhttp.open('GET', 'http://localhost:8090/rawnetwork', true)
+    xhttp.open('GET', 'http://localhost:8090/network', true)
     xhttp.send()
   }
   mapValue=(value, vmin, vmax, tmin, tmax) => {
     return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
   processData (data) {
+    if (!data) return
     // ensures no dupes
     let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
     // map min and max value of nodes to HSL color spectrum
