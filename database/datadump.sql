@@ -49,9 +49,32 @@ COPY public.adaption (adaption_id, adaption_type, adaption_description, config_i
 1	compress	Make the things smaller	1
 2	param_update	Human updated parameters	1
 3	switch prot	change protocol	2
-4	param1	update value	3
-5	param2	update value	4
-6	param3	update value	5
+4	advPeriod	update value	3
+5	brokerTcpPort	update value	4
+6	brokerURL	update value	5
+7	checkingPeriod	update value	6
+8	forwarderTimeout	update value	7
+9	gwId	update value	7
+10	handlerTimeout	update value	7
+11	keepAlivePeriod	update value	7
+12	maxMqttsLength	update value	7
+13	maxRetries	update value	7
+14	predfTopicIdSize	update value	7
+15	protocolVersion	update value	7
+16	udpPort	update value	7
+17	waitingTime	update value	7
+18	willQoS	update value	7
+19	brokerURL	update value	7
+20	cleanSession	update value	7
+21	clientInterfaces	update value	7
+22	predefinedTopicsFile	update value	7
+23	protocolName	update value	7
+24	retain	update value	7
+25	serialPortURL	update value	7
+26	willFlag	update value	7
+27	willMessage	update value	7
+28	willTopic	update value	7
+29	minMqttsLength	update value	7
 \.
 
 
@@ -96,7 +119,7 @@ SELECT pg_catalog.setval('public.adaption_adaption_id_seq', 1, false);
 -- Name: config_config_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.config_config_id_seq', 7, true);
+SELECT pg_catalog.setval('public.config_config_id_seq', 30, true);
 
 
 --

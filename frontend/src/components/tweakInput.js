@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Parameters from './parameter'
 import styled from 'styled-components'
-import curl from 'curl'
 
 const Form = styled.form`
 padding: 80px
@@ -15,8 +14,7 @@ class TweakInput extends Component {
     super(props)
     this.device_id = {}
     this.state = {
-      parameters: {}
-    }
+      parameters: {} }
 
     this.props = props
   }
@@ -29,15 +27,9 @@ class TweakInput extends Component {
     const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json() }).catch(err => console.error(err))
     let parameters = stateToBe['config']
     this.device_id = stateToBe['device_id']
-    // this is not allowed, plz fix me.
-    // This might trigger alot of state updates
-    let parameter = {}
-    Object.entries(parameters).map(p => (
-      parameter[p[0]] = p[1])
-    )
+    let p2 = { ...parameters }
     this.setState({
-      parameters: parameter
-    })
+      parameters: p2 })
   }
 
   // new Send to Configuration Endpoint
@@ -47,10 +39,8 @@ class TweakInput extends Component {
     fetch('http://localhost:8090/configure', {
       method: 'POST',
       headers: [
-        ['Content-Type', 'application/json']
-      ],
-      body: JSON.stringify(body)
-    })
+        ['Content-Type', 'application/json']],
+      body: JSON.stringify(body) })
   }
 
   sendToAdaptation (name, value) {
@@ -66,12 +56,13 @@ class TweakInput extends Component {
       let parameters = this.state.parameters
       parameters[name] = value
       this.setState({
-        parameters: parameters
-      })
+        parameters: parameters })
+
       setTimeout(() => {
         this.sendToConfigure()
         this.sendToAdaptation(name, value)
-      }, 1)
+      }
+      , 1)
     }
   }
 
@@ -80,6 +71,7 @@ class TweakInput extends Component {
     let parameters = state.map(s => {
       return <Parameters data-cy="submit" key={s[0]} changeParameterValue={this.onChangeParameterValue.bind(this, s[0])} parameter={s[1]} name ={s[0]}/>
     })
+
     return <div>
       <div> <p style ={{ 'textAlign': 'center' }}> Remember to input correct input in each field, they lack validation</p> </div>
       <Form className="flex-container">
