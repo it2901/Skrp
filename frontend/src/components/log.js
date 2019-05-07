@@ -374,7 +374,7 @@ class Log extends Component {
             name="formAdaptionType"
             value={formAdaptionType}
             onChange={(e, data) => this.onChange(data)}
-            fluid selection clearable />
+            fluid selection clearable search />
           <Form.Field>
             <span style={{ textAlign: 'center' }}>Date
               <Popup
@@ -488,10 +488,10 @@ class Log extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body data-cy='children'>
-            { data.map(o => {
+            { data.map((o, index) => {
               return (
-                <Table.Row key={o.created}>
-                  {logHeaders.map(i => {
+                <Table.Row key={o.toString() + index}>
+                  {logHeaders.map((i) => {
                     return <Table.Cell key={o.created + i.key}> {o[i.key]} </Table.Cell>
                   })}
                 </Table.Row>

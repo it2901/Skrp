@@ -91,7 +91,9 @@ class NodeGraph extends Component {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
         self.processData(JSON.parse(xhttp.responseText).collection[self.config.NODE_GRAPH_PATH].collection[0])
-        // self.setState({ data: JSON.parse(xhttp.responseText) })
+        // console.log(JSON.parse(xhttp.responseText))
+
+        // self.processData(JSON.parse(xhttp.responseText).collection[0])
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
 
@@ -99,14 +101,14 @@ class NodeGraph extends Component {
       }
     }
     xhttp.open('GET', 'http://localhost:8090/rawnetwork', true)
+    // xhttp.open('GET', 'http://localhost:3001/netgph', true)
     xhttp.send()
   }
-  mapValue=(m, rmin, rmax, tmax, tmin) => {
-    return Math.ceil(((m - rmin) / (rmax - rmin)) * (tmax - tmin) + tmin)
+  mapValue=(value, vmin, vmax, tmin, tmax) => {
+    return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
-
-  ensureBigger=(a, b) => (a < b) ? 0 : a + 1
   processData (data) {
+    if (!data) return
     // ensures no dupes
     let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
     // map min and max value of nodes to HSL color spectrum

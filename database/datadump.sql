@@ -145,21 +145,21 @@ COPY public.system_log (system_log_id, device_id, adaption_id, description, crea
 -- Name: adaption_adaption_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.adaption_adaption_id_seq', 1, false);
+SELECT pg_catalog.setval('public.adaption_adaption_id_seq', 29, false);
 
 
 --
 -- Name: config_config_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.config_config_id_seq', 30, true);
+SELECT pg_catalog.setval('public.config_config_id_seq', 7, true);
 
 
 --
 -- Name: device_device_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.device_device_id_seq', 1, false);
+SELECT pg_catalog.setval('public.device_device_id_seq', 3, false);
 
 
 --
@@ -180,7 +180,7 @@ SELECT pg_catalog.setval('public.network_collection_collection_id_seq', 1, true)
 -- Name: system_log_system_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.system_log_system_log_id_seq', 6, true);
+SELECT pg_catalog.setval('public.system_log_system_log_id_seq', 30, true);
 
 
 --

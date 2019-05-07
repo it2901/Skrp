@@ -60,8 +60,8 @@ export default class Maps extends Component {
       })
     }
   }
-  mapValue=(m, rmin, rmax, tmax, tmin) => {
-    return Math.ceil(((m - rmin) / (rmax - rmin)) * (tmax - tmin) + tmin)
+  mapValue=(value, vmin, vmax, tmin, tmax) => {
+    return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
 
   ensureBigger=(a, b) => (a < b) ? 0 : a + 1
@@ -156,12 +156,12 @@ export default class Maps extends Component {
       let time = this.state.nodes[key]['time']
       let neighbours = [...this.state.nodes[key]['neighbours']].map(node => {
         return (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div key={node.toString()} style={{ display: 'flex', flexDirection: 'column' }}>
             {node}
           </div>)
       })
       let posShow = pos.map(p => {
-        return (<div style={{ display: 'flex', flexDirection: 'column' }}>
+        return (<div key={p.toString()}style={{ display: 'flex', flexDirection: 'column' }}>
           {p}
         </div>)
       })

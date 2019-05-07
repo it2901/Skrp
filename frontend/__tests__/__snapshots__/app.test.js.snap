@@ -340,6 +340,25 @@ exports[`renders correctly 1`] = `
               }
             }
           >
+            Frontend
+          </h1>
+          <br />
+          <span>
+            <p>
+              localfrontend
+            </p>
+          </span>
+        </div>
+        <div
+          className="sc-bdVaJa kjxJpE"
+        >
+          <h1
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
             Backend
           </h1>
           <br />
@@ -359,12 +378,12 @@ exports[`renders correctly 1`] = `
               }
             }
           >
-            Mocker
+            Client
           </h1>
           <br />
           <span>
             <p>
-              localmocker
+              localclient
             </p>
           </span>
         </div>
@@ -378,12 +397,12 @@ exports[`renders correctly 1`] = `
               }
             }
           >
-            Frontend
+            Mocker
           </h1>
           <br />
           <span>
             <p>
-              localfrontend
+              localmocker
             </p>
           </span>
         </div>

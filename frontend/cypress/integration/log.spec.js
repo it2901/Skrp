@@ -66,7 +66,7 @@ describe('log test', () => {
     cy.get('div[name=formDevIds]').blur()
     //adaption type ouff
     cy.get('div[name=formAdaptionType]').click()
-    cy.get('div[name=formAdaptionType]').children('div').children().first().next().click()
+    cy.get('div[name=formAdaptionType]').children('input').first().type('meme{enter}')
     cy.contains('Filter').click()
     // check table
     cy.get('[data-cy=children]').children().should('have.length', 1)

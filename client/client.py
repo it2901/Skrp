@@ -30,7 +30,9 @@ def get_datasource():
     datasource_host = '{}:{}'.format(r['datasource']['host'], r['datasource']['port'])
     return datasource_host
 
-NETJSON_HOST = get_datasource()
+NETJSON_HOST = os.environ.get('NETJSON_HOST')
+if not NETJSON_HOST:
+    NETJSON_HOST = get_datasource()
 
 logger.info('Using {} as NETJSON_HOST'.format(NETJSON_HOST))
 
