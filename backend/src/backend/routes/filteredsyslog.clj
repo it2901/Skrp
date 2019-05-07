@@ -61,9 +61,9 @@
 
 (defn filtered-syslog-handler
   "HTTP get handler to filter data from the database table 'system_log'.
-      Passes a map to the fetch-function, containing info about which
-      variables to filter by. If no parameter i passed, the whole log will be retrieved.
-      Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
+  Passes a map to the fetch-function, containing info about which
+  variables to filter by. If no parameter i passed, the whole log will be retrieved.
+  Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
   [{params :query-params :as req}]
   (cond
     (empty? params) (run-db (filtered-syslog-check (get-syslog)))
