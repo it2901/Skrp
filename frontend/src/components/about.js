@@ -6,6 +6,7 @@ import localbackend from '../assets/docs/backend.md'
 import localfrontend from '../assets/docs/frontend.md'
 import localmocker from '../assets/docs/mocker.md'
 import localclient from '../assets/docs/client.md'
+import localVM from '../assets/docs/VM.md'
 import fetch from 'isomorphic-fetch'
 
 const Div = styled.div`
@@ -25,7 +26,8 @@ class About extends Component {
       backend: 'localbackend',
       mocker: 'localmocker',
       frontend: 'localfrontend',
-      client: 'localclient'
+      client: 'localclient',
+      VM: 'localVM'
     }
   }
   // Checks if we have a connection to the internet, if yes then start init the page Online.
@@ -51,12 +53,14 @@ class About extends Component {
     const frontend = await fetch(localfrontend).then(data => { return data.text() })
     const mocker = await fetch(localmocker).then(data => { return data.text() })
     const client = await fetch(localclient).then(data => { return data.text() })
+    const VM = await fetch(localVM).then(data => { return data.text() })
     this.setState({
       client: client,
       main: main,
       backend: backend,
       frontend: frontend,
-      mocker: mocker
+      mocker: mocker,
+      VM: VM
     })
   }
   // Fetches the docs from the github repo
@@ -68,12 +72,14 @@ class About extends Component {
     const frontend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/frontend/README.md').then(data => { return data.text() })
     const mocker = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/mocker/README.md').then(data => { return data.text() })
     const client = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/client/README.md').then(data => { return data.text() })
+    const VM = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/virtual_machine/README.md').then(data => { return data.text() })
     this.setState({
       client: client,
       main: main,
       backend: backend,
       frontend: frontend,
-      mocker: mocker
+      mocker: mocker,
+      VM: VM
     })
   }
 
@@ -104,6 +110,11 @@ class About extends Component {
           <h1 style={{ textAlign: 'center' }}>Mocker</h1>
           <br></br>
           <MDReactComponent text={this.state.mocker}/>
+        </Div>
+        <Div>
+          <h1 style={{ textAlign: 'center' }}>VM</h1>
+          <br></br>
+          <MDReactComponent text={this.state.VM}/>
         </Div>
         <Div style ={{ border: 'none',
           textAlign: 'center' }}>
