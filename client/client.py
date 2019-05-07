@@ -8,7 +8,7 @@ import time
 import json
 
 logger = logging.getLogger('client-logger')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s', '%Y-%m-%d %H:%M:%SZ')
@@ -48,6 +48,28 @@ def get_newest_config():
                    'http://{}/configure'.format(BACKEND_HOST), 
                    headers={'Content-Type': 'application/json'}).json()['config']
     return fresh_config
+
+
+def update_network_collection():
+    """
+    Fetches the geolocation and graph collection, and passes them through to
+    the backend service.
+    """
+    logger.info('Updating network collections')
+    graph = requests.get('http://{}/netgph'.format(NETJSON_HOST)).json()
+    geolocation = requests.get('http://{}/geoloc'.format(NETJSON_HOST)).json()
+
+    collection = {
+       "type": "NetworkCollection",
+        "collection": [
+            graph,
+            geolocation
+        ]
+    }
+    r = requests.post(
+                    'http://{}/lognetwork'.format(BACKEND_HOST),
+                    headers={'Content-Type': 'application/json'},
+                    data=json.dumps(collection, sort_keys=True)).json()
 
 
 def send_config(config={}):
@@ -95,7 +117,8 @@ def send_log(device_id, adaption_type, description):
     is not present in the database
     """
     logger.info('Adding log entry for adaption')
-    r = requests.post('http://{}/logadaption?adaption_type={}&device_id={}&description={}'.format(BACKEND_HOST, adaption_type, device_id, description))
+    r = requests.post('http://{}/logadaption?adaption_type={}&device_id={}&description={}'
+        .format(BACKEND_HOST, adaption_type, device_id, description))
 
 
 def update_config_from_parameters():
@@ -118,11 +141,11 @@ def update_config_from_parameters():
     
         for key in current_config:
             if current_config[key][0] != fresh_config[key]:
-                logger.info("{} values differ, updating config".format(key))
+                logger.debug("{} values differ, updating config".format(key))
                 current_config[key] = fresh_config[key]
                 updated_params.append(key)
             else:
-                logger.info("{} values equal, skipping".format(key))
+                logger.debug("{} values equal, skipping".format(key))
     
         f.seek(0)
         f.truncate(0)
@@ -135,9 +158,10 @@ def update_config_from_parameters():
         call(['systemctl', 'restart', 'okse.service'])
 
 
-send_config()
+#send_config()
 
 while True:
+    update_network_collection()
     update_config_from_parameters()
     fetch_graph_and_make_adaption()
     logger.info('Done, sleeping {} seconds'.format(str(INTERVAL)))
