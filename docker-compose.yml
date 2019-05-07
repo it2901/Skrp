@@ -24,6 +24,8 @@ services:
     build: ./frontend
     ports:
     - "3000:3000"
+    environment:
+      - DATA_SOURCE=mocker:3001
     links:
       - backend
       - mocker
@@ -36,6 +38,10 @@ services:
     - "3001:3001"
     networks:
       - backend
+#  client:
+#    container_name: skrp_client
+#    build: ./client
+
 
 networks:
   backend:
