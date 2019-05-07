@@ -6,8 +6,8 @@ Here we explain what all the different endpoints do and all their supported oper
 ## Format
 The documentation format for the accepted HTTP requst is as follows.
 
-| HTTP Method | Params | Body | Content-Type  |
-| ----------- |--------|------| ------------- |
+| HTTP Method | Parameters | Body | Content-Type  |
+| ----------- |----------- |------| ------------- |
 
 ## Endpoints
 
