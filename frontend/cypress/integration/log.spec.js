@@ -64,7 +64,7 @@ describe('log test', () => {
     cy.get('div[name=formDevIds]').click()
     cy.get('div[name=formDevIds]').children('div').children().first().click()
     cy.get('div[name=formDevIds]').blur()
-    //adaption type ouff
+    // adaption type ouff
     cy.get('div[name=formAdaptionType]').click()
     cy.get('div[name=formAdaptionType]').children('input').first().type('meme{enter}')
     cy.contains('Filter').click()
@@ -75,7 +75,7 @@ describe('log test', () => {
     // route to check for WRONG id
     cy.route('http://localhost:8090/filtersyslog?description=test&device_id=2', [])
     // first clear input
-    cy.get('i.dropdown.icon.clear').click({multiple:true})
+    cy.get('i.dropdown.icon.clear').click({ multiple: true })
     // open list
     cy.get('div[name=formDevIds]').click()
     // add another in array
@@ -85,8 +85,8 @@ describe('log test', () => {
     // table should have length 0 now
     cy.get('[data-cy=children]').children().should('have.length', 0)
   })
-  it('can get get log between two dates', ()=>{
-    cy.route('http://localhost:8090/filtersyslog',[])
+  it('can get get log between two dates', () => {
+    cy.route('http://localhost:8090/filtersyslog', [])
     cy.route('http://localhost:8090/filtersyslog?date_from=2019-03-01&date_to=2019-05-02', [
       {
         'system_log_id': 1,
@@ -103,18 +103,18 @@ describe('log test', () => {
         'created': '2019-05-03T22:23:04Z'
       }
     ])
-    
-    //reset form
+
+    // reset form
     cy.contains('Reset').click()
-    //click date toggle
+    // click date toggle
     cy.get('[data-cy=Toggle]').click()
-    //fill in first date form
+    // fill in first date form
     cy.get('[data-cy=formDateFrom').children().first().type('2019-03-01')
-    //second
+    // second
     cy.get('[data-cy=formDateTo').children().first().type('2019-05-02')
-    //submit
+    // submit
     cy.contains('Filter').click()
-    //Should now have 2 items
+    // Should now have 2 items
     cy.get('[data-cy=children]').children().should('have.length', 2)
   })
 })
