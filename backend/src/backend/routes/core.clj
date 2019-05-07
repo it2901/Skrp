@@ -36,7 +36,7 @@
   (GET "/" [] index-handler)
   (GET "/networkgraph" [] (wrap-json-response dummy-data-handler))
   (GET "/network" [] (wrap-json-response network-handler))
-  (GET "/rawnetwork" [] (wrap-json-response network-handler))
+  (GET "/rawnetwork" [] (wrap-json-response raw-network-handler))
   (GET "/syslog" request (wrap-json-response syslog-handler))
   (POST "/lognetwork" request (wrap-json-response
                                (wrap-json-body
