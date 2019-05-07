@@ -98,7 +98,7 @@
       (= :clojure.spec.alpha/invalid
          verified) (error-handler-rep 500 "Could not clean data")
       :else {:status 200
-             :headers {"Content Type" "application/json"}
+             :headers {"Content-Type" "application/json"}
              :body res})))
 
 (defn raw-network-handler
@@ -109,6 +109,6 @@
     (if (empty? data)
       (error-handler-rep 500 "Could not get data from NetworkCollection table")
       {:status 200
-       :headers {"Content Type" "application/json"}
+       :headers {"Content-Type" "application/json"}
        :body data})))
 
