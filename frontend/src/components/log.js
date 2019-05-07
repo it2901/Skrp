@@ -45,7 +45,6 @@ class Log extends Component {
       liveUpdate: true,
       liveUpdater: 0
     }
-    // used for live polling
     this.queryString = ''
     // a map from api keys to form names
     this.queryParams = {
@@ -68,11 +67,13 @@ class Log extends Component {
   }
 
   async setConfig () {
+    // GETs the local config.JSON and sets it to state
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
     this.config.updateFrequency = (config.LOG_UPDATE_FREQUENCY == 0 || config.LOG_UPDATE_FREQUENCY == undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.LOG_UPDATE_FREQUENCY
   }
   handleSort = clickedColumn => () => {
+    // handles sorting on the table when clicking a header
     const { column, data, direction } = this.state
 
     if (column !== clickedColumn) {
@@ -91,25 +92,18 @@ class Log extends Component {
     })
   }
   componentDidMount () {
-    this.setConfig().then(
-      this.fetch()
-    )
+    // gets config and fetches data at component mount
+    this.setConfig()
     // Fetch logs from rest api
-    // map unique id values for headers
+    // and unwraps headers and filter options
+    // the unwrapping only happens on mount
+    // this.defaultFetch() is used elsewhere
     this.fetch()
       .then((e) => {
         let d = JSON.parse(e.target.response)
 
-        // eslint sucks, but this totally works :ooo
+        //
         d.forEach(x => x.created = x.created.replace(/T|Z/g, ' '))
-
-        // let adaptionIds = d
-        //   .map(o => o.adaption_id)
-        //   .filter((v, i, a) => a.indexOf(v) === i)
-        //   .map(o => {
-        //     return { text: o, key: o, value: o }
-        //   })
-        // ^^^ DEPRECATED
 
         let deviceIds = d
           .map(o => o.device_id)
@@ -143,6 +137,7 @@ class Log extends Component {
       })
   }
   defaultFetch (query) {
+    // only sets data state, used on filter, reset and liveupdate
     query = query || ''
     this.fetch(query)
       .then(e => {
@@ -156,7 +151,7 @@ class Log extends Component {
       })
   }
   fetch (query) {
-    // not using fetch api cause cypress sucks..
+    // not using fetch api, because cypress can't intercept it
     query = query || ''
     // console.log(query)
     return new Promise(function (resolve, reject) {
@@ -245,14 +240,15 @@ class Log extends Component {
   }
   checkIfCanFilter=() => {
     // timeout cause state is fucked idk
+    // ensures that the fields are empty or both are filled
     setTimeout(() => {
       this.setState({ canFilter: !(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)) })
       // console.log(!(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)))
     }, 1)
   }
   renderDateInput = (props, name) => {
+    // custom render function for the dateTime component
     const clear = () => {
-      // props.onChange({ target: { value: '' } })
       this.setState({ [name]: '' })
       this.checkIfCanFilter()
     }
@@ -292,6 +288,7 @@ class Log extends Component {
     this.defaultFetch()
   }
   generateDateField (fields) {
+    // this is not used, as it was hard to generalize since fields had different usage
     return <Form.Field
       control={Datetime}
       label={fields.label || ''}
@@ -306,14 +303,8 @@ class Log extends Component {
       renderInput={this.renderDateInput}
     />
   }
-  checkIfCanFilter=() => {
-    // timeout cause state is fucked idk
-    setTimeout(() => {
-      this.setState({ canFilter: !(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)) })
-      // console.log(!(this.state.dateRange && !!(!this.state.formDateFrom ^ !this.state.formDateTo)))
-    }, 1)
-  }
   liveUpdateChange () {
+    // onClick handler for liveUpdate button
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
       liveUpdater = setInterval(() => {

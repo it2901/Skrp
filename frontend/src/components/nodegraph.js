@@ -55,12 +55,14 @@ class NodeGraph extends Component {
     }
   }
   componentDidMount () {
+    // fetches on mount
     this.setConfig().then(res => {
       this.fetch()
     }
     )
   }
   async setConfig () {
+    // GETs the local config.JSON and sets it to state
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
 
@@ -68,6 +70,7 @@ class NodeGraph extends Component {
   }
 
   change () {
+    // on click handler for live update button
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
       liveUpdater = setInterval(() => {
@@ -105,11 +108,12 @@ class NodeGraph extends Component {
     xhttp.send()
   }
   mapValue=(value, vmin, vmax, tmin, tmax) => {
+    // function to to map a value between vmin and vmax to values between tmin and tmax
     return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
   processData (data) {
     if (!data) return
-    // ensures no dupes
+    // ensures no dupes,
     let nodes = data.nodes.filter((v, i, a) => a.indexOf(v) === i)
     // map min and max value of nodes to HSL color spectrum
     let linkMin = this.config['MIN_THRESHOLD'] || data.links.reduce((a, b) => a.cost > b.cost ? b : a).cost
@@ -128,14 +132,17 @@ class NodeGraph extends Component {
     })
   }
   getLinks (nodeId) {
-    // not making a dict cause mocker has duplicate values xx
+    // no precalculation, this happens every time you click a NODE
+    // gives out link length
     return this.state.data.links.filter(e => e.source === nodeId || e.target === nodeId).length
   }
   render () {
     const onClickNode = (nodeId) => {
+      // happens every time you click a node
       this.setState({ nodeSelected: nodeId })
     }
     const onClickLink = (source, target) => {
+      // dumps out link info when clicked
       let d = this.state.data.links
         .filter(i => i.source === source && i.target === target)[0]
       if (d.properties && Object.entries(d.properties).length === 0) {
