@@ -488,10 +488,10 @@ class Log extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body data-cy='children'>
-            { data.map(o => {
+            { data.map((o, index) => {
               return (
-                <Table.Row key={o.created}>
-                  {logHeaders.map(i => {
+                <Table.Row key={o.toString() + index}>
+                  {logHeaders.map((i) => {
                     return <Table.Cell key={o.created + i.key}> {o[i.key]} </Table.Cell>
                   })}
                 </Table.Row>
