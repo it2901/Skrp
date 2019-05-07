@@ -60,11 +60,15 @@ export default class Maps extends Component {
       })
     }
   }
-  mapValue=(v, s1, e1, s2, e2) => {
-    e1 = this.ensureBigger(s1, e1)
-    return Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
+  mapValue=(v, s1, e1) => {
+    if (v <= s1) {
+      return s1
+    } else if (v >= e1) {
+      return e1
+    } else {
+      return v
+    }
   }
-  ensureBigger=(a, b) => (a < b) ? 0 : a + 1
 
   async setInitalState () {
     let stateToBe = await fetch('http://localhost:8090/network')
@@ -105,7 +109,7 @@ export default class Maps extends Component {
           cost: link['cost'],
           source: link['source'],
           target: link['target'],
-          color: `hsl(${this.mapValue(link.cost, linkMin, linkMax, 120, 0)},100%,66%)`
+          color: `hsl(${this.mapValue(link.cost, linkMin, linkMax)},100%,66%)`
         }
       })
     })

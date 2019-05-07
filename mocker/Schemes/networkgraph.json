@@ -283,7 +283,8 @@
                     },
                     "cost": {
                         "type": "number",
-                        "minimum": 999999
+                        "minimum": 0,
+                        "maximum": 100
                     },
                     "cost_text": {
                         "type": "string"
