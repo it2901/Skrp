@@ -230,7 +230,8 @@
           "collection": {
               "type": "array",
               "title": "NetJSON Objects",
-              "maxItems":1,
+              "minItems":25,
+              "maxItems":50,
               "uniqueItems": true,
               "additionalItems": true,
               "items": {
