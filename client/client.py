@@ -8,7 +8,7 @@ import time
 import json
 
 logger = logging.getLogger('client-logger')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s', '%Y-%m-%d %H:%M:%SZ')
@@ -121,6 +121,7 @@ def send_log(device_id, adaption_type, description):
         .format(BACKEND_HOST, adaption_type, device_id, description))
 
 
+
 def update_config_from_parameters():
     """ 
     Requests parameters from the API. If parameters for this device has changed
@@ -146,6 +147,7 @@ def update_config_from_parameters():
                 updated_params.append(key)
             else:
                 logger.debug("{} values equal, skipping".format(key))
+
     
         f.seek(0)
         f.truncate(0)
@@ -158,7 +160,8 @@ def update_config_from_parameters():
         call(['systemctl', 'restart', 'okse.service'])
 
 
-#send_config()
+
+send_config()
 
 while True:
     update_network_collection()
