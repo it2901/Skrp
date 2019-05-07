@@ -374,7 +374,7 @@ class Log extends Component {
             name="formAdaptionType"
             value={formAdaptionType}
             onChange={(e, data) => this.onChange(data)}
-            fluid selection clearable />
+            fluid selection clearable search />
           <Form.Field>
             <span style={{ textAlign: 'center' }}>Date
               <Popup
