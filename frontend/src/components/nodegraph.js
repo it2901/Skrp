@@ -101,10 +101,10 @@ class NodeGraph extends Component {
     xhttp.open('GET', 'http://localhost:8090/rawnetwork', true)
     xhttp.send()
   }
-  mapValue=(v, s1, e1, s2, e2) => {
-    e1 = this.ensureBigger(s1, e1)
-    return Math.ceil((v - s1) / (e1 - s1) * (e2 - s2) + s2)
+  mapValue=(m, rmin, rmax, tmax, tmin) => {
+    return Math.ceil(((m - rmin) / (rmax - rmin)) * (tmax - tmin) + tmin)
   }
+
   ensureBigger=(a, b) => (a < b) ? 0 : a + 1
   processData (data) {
     // ensures no dupes
