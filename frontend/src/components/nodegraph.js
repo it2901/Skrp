@@ -91,14 +91,17 @@ class NodeGraph extends Component {
       if (this.readyState === 4 && this.status === 200) {
         // Setstate
         self.processData(JSON.parse(xhttp.responseText).collection[self.config.NODE_GRAPH_PATH].collection[0])
-        // self.setState({ data: JSON.parse(xhttp.responseText) })
+        // console.log(JSON.parse(xhttp.responseText))
+
+        // self.processData(JSON.parse(xhttp.responseText).collection[0])
       } else if (this.readyState === 4 && this.status === 404) {
         // no results
 
         self.setState({ data: {} })
       }
     }
-    xhttp.open('GET', 'http://localhost:8090/network', true)
+    xhttp.open('GET', 'http://localhost:8090/rawnetwork', true)
+    // xhttp.open('GET', 'http://localhost:3001/netgph', true)
     xhttp.send()
   }
   mapValue=(value, vmin, vmax, tmin, tmax) => {
