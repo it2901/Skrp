@@ -61,6 +61,6 @@
     (if-not cfg
       (error-handler-rep 500 "Cannot retrieve server configuration file")
       {:status 200
-       :content-type {"Content-Type" "application-json"}
+       :header {"Content-Type" "application-json"}
        :body cfg})))
 
