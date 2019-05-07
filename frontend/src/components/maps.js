@@ -60,8 +60,8 @@ export default class Maps extends Component {
       })
     }
   }
-  mapValue=(m, rmin, rmax, tmax, tmin) => {
-    return Math.ceil(((m - rmin) / (rmax - rmin)) * (tmax - tmin) + tmin)
+  mapValue=(value, vmin, vmax, tmin, tmax) => {
+    return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
 
   ensureBigger=(a, b) => (a < b) ? 0 : a + 1
