@@ -7,10 +7,8 @@ Image created and tested exclusively in VirtualBox 6.0 for debian 9.8.
 - Backend API
 - NetJson mocker
 - Frontend
-
-# Image does not include
-- Okse broker
-- Adaption client
+- Client
+- Broker (OKSE)
 
 # VM UI
 The VM does not include an X-server and desktop environment. The only way to
@@ -36,13 +34,20 @@ Relevant files:
 
 `/etc/systemd/system/okse.service`
 
-`/etc/systemd/system/skrp-client.service`
+`/etc/systemd/system/client.service`
 
 `/etc/apache2/sites-availible/000-default.conf`
+
+The frontend resides in /var/www/build and is served by apache.
 
 ## Starting and stopping services
 
 `systemctl [stop|start|restart|reload|status] <some>.service`
+
+## Accessing logs of the individual services
+
+To get logs from a service you can do `journalctl -u <service>`
+For instance, `journalctl -u skrp.service`
 
 ## Accessing database
 
