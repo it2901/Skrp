@@ -28,7 +28,7 @@ class About extends Component {
       client: 'localclient'
     }
   }
-
+  // Checks if we have a connection to the internet, if yes then start init the page Online.
   componentWillMount () {
     fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/README.md')
       .then((response) => {
@@ -42,6 +42,7 @@ class About extends Component {
         this.setOfflineState()
       })
   }
+  // Fetches the documentation that is the drive.
 
   async setOfflineState () {
     this.setState({ mode: 'Offline' })
@@ -58,6 +59,7 @@ class About extends Component {
       mocker: mocker
     })
   }
+  // Fetches the docs from the github repo
 
   async setOnlineState () {
     this.setState({ mode: 'Online' })
@@ -74,6 +76,7 @@ class About extends Component {
       mocker: mocker
     })
   }
+
   render () {
     return (
       <div>

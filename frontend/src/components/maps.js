@@ -37,13 +37,13 @@ export default class Maps extends Component {
     this.config = {
     }
   }
-
+  // fetches the Config from public, and sets the values in the config.
   async setConfig () {
     const config = await fetch('config.JSON').then(data => data.json()).catch(err => console.error(err))
     this.config = config
     this.config.updateFrequency = (config.MAPS_UPDATE_FREQUENCY == 0 || config.MAPS_UPDATE_FREQUENCY == undefined) ? config.GLOBAL_UPDATE_FREQUENCY : config.MAPS_UPDATE_FREQUENCY
   }
-
+  // Toggles the live updating either on or off. The updating frequency is set in the config.
   change () {
     let liveUpdater = this.state.liveUpdater
     if (this.state.liveUpdate) {
@@ -60,12 +60,12 @@ export default class Maps extends Component {
       })
     }
   }
+  // Normalize the value to be between tmin and tmax, used to ensure correct colors for the HSL.
   mapValue=(value, vmin, vmax, tmin, tmax) => {
     return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
 
-  ensureBigger=(a, b) => (a < b) ? 0 : a + 1
-
+  // fetches the nodegraph and geolocations, and rewrapes it into objects that are easily handled by the rest of the frontend.
   async setInitalState () {
     let stateToBe = await fetch('http://localhost:8090/network')
       .then(response => response.json())
@@ -111,9 +111,8 @@ export default class Maps extends Component {
     })
     this.addNeighbours()
   }
-
+  // Iterates over the links and adds src and trg to the neigbours of each node.
   addNeighbours () {
-    // const newState = this.state
     let links = this.state.links
     let nodes = this.state.nodes
     links.forEach(link => {
@@ -122,21 +121,20 @@ export default class Maps extends Component {
       nodes[src]['neighbours'].add(trg)
       nodes[trg]['neighbours'].add(src)
     })
-    // newState.nodes = nodes
     this.setState({ nodes: nodes })
   }
-
+  // Finds the location of a node
   findLatLng (id) {
     if (id in this.state.nodes) {
       return this.state.nodes[id]['pos']
     }
   }
-
+  // Sets the dimentions of the Map.
   updateDimensions () {
     const height = window.innerHeight
     this.setState({ height: height })
   }
-
+  // Sets the config, has to be done before setting the init state.
   componentWillMount () {
     this.setConfig().then(res => {
       this.setInitalState()
@@ -150,7 +148,7 @@ export default class Maps extends Component {
     }
   }
   render () {
-    // if (this.state.nodes === false && this.state.links === false) return <div></div>
+    // builds nodes with leaflet components
     let nodes = Object.keys(this.state.nodes).map(key => {
       let pos = this.state.nodes[key]['pos']
       let time = this.state.nodes[key]['time']
@@ -178,6 +176,7 @@ export default class Maps extends Component {
           <Circle name={key}center={pos} radius={200} />
         </Marker>)
     })
+    // builds links with leaflet components
     let links = this.state.links.map(link => {
       let src = link['source']
       let trg = link['target']
@@ -191,10 +190,11 @@ export default class Maps extends Component {
         </Polyline>
       )
     })
+    // sets the map above Berlin
     const position = [this.state.lat, this.state.lng]
     return (
       <Map zoomControl= {false} center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
-        <div>{this.state.liveUpdate} </div>
+
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

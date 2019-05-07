@@ -23,6 +23,7 @@ class TweakInput extends Component {
     this.setInitalState()
   }
 
+  // fetches config from database and spreads it to the state.
   async setInitalState () {
     const stateToBe = await fetch('http://localhost:8090/configure').then(data => { return data.json() }).catch(err => console.error(err))
     let parameters = stateToBe['config']
@@ -32,7 +33,7 @@ class TweakInput extends Component {
       parameters: p2 })
   }
 
-  // new Send to Configuration Endpoint
+  // Update the config in the database, this will trigger an adaptation. s
   sendToConfigure () {
     let body = this.state.parameters
     body['device_id'] = this.device_id
@@ -42,14 +43,14 @@ class TweakInput extends Component {
         ['Content-Type', 'application/json']],
       body: JSON.stringify(body) })
   }
-
-  sendToAdaptation (name, value) {
+  // Logs an adaptation to the system log
+  sendToAdaptationLog (name, value) {
     let id = 2
     let description = `${name} has updated to ${value}`
     let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
-
+  // Changes values on a spesific input field and logs the changed adaptation
   onChangeParameterValue (name, event) {
     let value = event.target.value
     if (event.key === 'Enter') {
@@ -60,7 +61,7 @@ class TweakInput extends Component {
 
       setTimeout(() => {
         this.sendToConfigure()
-        this.sendToAdaptation(name, value)
+        this.sendToAdaptationLog(name, value)
       }
       , 1)
     }
@@ -73,7 +74,7 @@ class TweakInput extends Component {
     })
 
     return <div>
-      <div> <p style ={{ 'textAlign': 'center' }}> Remember to input correct input in each field, they lack validation</p> </div>
+      <div> <p style ={{ 'textAlign': 'center' }}> Remember to input valid input in each field, they lack validation</p> </div>
       <Form className="flex-container">
         {parameters}
       </Form>
