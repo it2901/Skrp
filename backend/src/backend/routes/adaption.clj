@@ -47,7 +47,7 @@
     (get-in nc [:collection 0 :protocol])))
 
 (defn adaption-request-handler
-  "HTTP GET handler for requesting network adaptions. This endpoint
+  "HTTP POST handler for requesting network adaptions. This endpoint
   will log the data it recieves and respond with a suitable adaption.
   The endpoint accepts a json body with a device-id integer and a
   netcoll key NetJSON NetworkCollection object which has to be a
