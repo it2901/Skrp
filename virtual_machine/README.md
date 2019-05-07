@@ -34,6 +34,10 @@ Relevant files:
 
 `/etc/systemd/system/mocker.service`
 
+`/etc/systemd/system/okse.service`
+
+`/etc/systemd/system/skrp-client.service`
+
 `/etc/apache2/sites-availible/000-default.conf`
 
 ## Starting and stopping services
