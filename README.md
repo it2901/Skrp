@@ -47,5 +47,4 @@ from the project root to run the project.
 
 Once it is up, visit localhost:3000 in your browser.
 
-![](1.gif)
-![](2.gif)
+![](doc/map.gif)
