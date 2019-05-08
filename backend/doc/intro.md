@@ -43,8 +43,8 @@ The JSON response has the following scructure:
 | GET | None | None | None |
 |-----|------|------|------|
 
-Endpoint for retrieving the servers configuration file. Amongst other things this file
-contains information about what the set data source is.
+Endpoint for retrieving the latest configuration row in the config table. Config table
+contains configuration parameters for the OKSE message broker.
 
 | POST | None | JSON | application/json |
 |------|------|------|------------------|
@@ -54,6 +54,13 @@ a JSON body which can contain any number of OKSE parameters, the only required p
 is a `device_id`. When the row as been inserted the endpoint will return the entire row
 in response as a JSON object.
 
+### /serverconfig
+
+| GET | None | None | None |
+|-----|------|------|------|
+
+Endpoint for retrieving the servers configuration file. Amongst other things this file
+contains information about what the set data source is.
 
 ### /filtersyslog
 
