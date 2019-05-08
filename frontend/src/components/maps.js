@@ -219,7 +219,6 @@ export default class Maps extends Component {
     const position = [this.state.lat, this.state.lng]
     return (
       <Map key= {this.state.key} zoomControl= {false} bounds= {this.state.bound}center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
-            
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
