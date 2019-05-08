@@ -45,7 +45,7 @@ class TweakInput extends Component {
   }
   // Logs an adaptation to the system log
   sendToAdaptationLog (name, value) {
-    let id = 2
+    let id = this.device_id
     let description = `${name} has updated to ${value}`
     let statement = `http://localhost:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
