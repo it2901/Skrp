@@ -46,6 +46,3 @@ Once you have docker engine and docker compose setup, run `docker-compose up`
 from the project root to run the project.
 
 Once it is up, visit localhost:3000 in your browser.
-
-[Postgresql downloads](https://www.postgresql.org/download/)
-![Image1](https://github.com/it2901/Skrp/raw/testing-gifs/doc/map.gif)
