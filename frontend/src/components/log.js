@@ -285,6 +285,7 @@ class Log extends Component {
       canFilter: true
     })
     // also fetch new ok
+    this.queryString = ''
     this.defaultFetch()
   }
   generateDateField (fields) {
