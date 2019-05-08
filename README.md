@@ -47,4 +47,4 @@ from the project root to run the project.
 
 Once it is up, visit localhost:3000 in your browser.
 
-![](https://github.com/it2901/Skrp/blob/testing-gifs/doc/map.gif)
+![](https://github.com/it2901/Skrp/raw/testing-gifs/doc/map.gif)

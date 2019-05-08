@@ -80,6 +80,7 @@ class About extends Component {
           <h1 style={{ textAlign: 'center' }}>SKRP</h1>
           <br></br>
           <MDReactComponent text={this.state.main}/>
+          <img src='https://github.com/it2901/Skrp/blob/testing-gifs/doc/map.gif?raw=true' />
         </Div>
         <Div>
           <h1 style={{ textAlign: 'center' }}>Frontend</h1>
