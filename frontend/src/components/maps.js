@@ -24,6 +24,7 @@ export default class Maps extends Component {
   constructor () {
     super()
     this.state = {
+      key: 0,
       bound: [[0, 1], [1, 2]],
       adjustView: true,
       updaters: [],
@@ -209,7 +210,7 @@ export default class Maps extends Component {
     // sets the map above Berlin
     const position = [this.state.lat, this.state.lng]
     return (
-      <Map zoomControl= {false} bounds= {this.state.bound}center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+      <Map key= {this.state.key} zoomControl= {false} bounds= {this.state.bound}center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
 
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -239,6 +240,19 @@ export default class Maps extends Component {
                 }))
                 this.change()
               }}
+            />
+
+          </Control>
+
+          <Control position="topright" >
+            <Button
+              content={'Force Rerender'}
+              onClick={() => {
+                this.setState(prevState => ({
+                  key: prevState.key + 1
+                }))
+              }
+              }
             />
           </Control>
         </FeatureGroup>
