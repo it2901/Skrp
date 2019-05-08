@@ -24,12 +24,13 @@ export default class Maps extends Component {
   constructor () {
     super()
     this.state = {
+      adjustView: true,
       updaters: [],
       liveUpdate: true,
       liveUpdater: 0,
       lat: 52.5,
       lng: 13.3,
-      zoom: 4,
+      zoom: 7,
       links: [],
       nodes: {}
 
@@ -87,6 +88,14 @@ export default class Maps extends Component {
       let lat = pos['Latitude']
       return [ [lat, lng], time, id ]
     })
+    // moves the map above the first node, on the first init of the page.
+    if (this.state.adjustView) {
+      this.setState({
+        lat: locs[0][0][0],
+        lng: locs[0][0][1],
+        adjustView: false
+      })
+    }
     let x = {}
     for (let i = 0; i < nodes.length; i++) {
       let id = nodes[i]
