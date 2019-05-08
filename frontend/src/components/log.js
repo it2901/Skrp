@@ -141,9 +141,16 @@ class Log extends Component {
     query = query || ''
     this.fetch(query)
       .then(e => {
+        // return if error
+        if (!e.target.response) return
         let d = JSON.parse(e.target.response)
         // eslint sucks, but this totally works :ooo
-        d.forEach(x => x.created = x.created.replace('T', ' ').replace('Z', ' '))
+        d.forEach(x => x.created = x.created.replace(/T|Z/, ' '))
+        // sorts the data again since liveupdate ruins the sorting
+        if (this.state.column) {
+          d = _.sortBy(d, [this.state.column])
+          d = (this.state.direction === 'descending') ? d.reverse() : d
+        }
         this.setState({ data: d })
       }).catch(e => {
         // most likely 404
@@ -156,7 +163,8 @@ class Log extends Component {
     // console.log(query)
     return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest()
-      xhr.open('GET', 'http://localhost:8090/filtersyslog' + query)
+      let url = document.URL.split(':3000')[0]
+      xhr.open('GET', `${url}:8090/filtersyslog${query}`)
       xhr.onload = resolve
       xhr.onerror = reject
       xhr.send()
@@ -282,7 +290,9 @@ class Log extends Component {
       formDesc: '',
       formDevIds: [],
       formAdaptionType: '',
-      canFilter: true
+      canFilter: true,
+      column: null,
+      direction: null
     })
     // also fetch new ok
     this.queryString = ''
