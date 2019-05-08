@@ -33,7 +33,6 @@ class About extends Component {
   // Checks if we have a connection to the internet, if yes then start init the page Online.
   componentWillMount () {
     if (navigator.onLine) { this.setOnlineState() } else { this.setOfflineState() }
-  }
   // Fetches the documentation that is the drive.
 
   async setOfflineState () {
