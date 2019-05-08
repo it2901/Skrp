@@ -67,7 +67,7 @@ class About extends Component {
 
   async setOnlineState () {
     this.setState({ mode: 'Online' })
-    const main = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/README.md').then(data => { return data.text() })
+    const main = await fetch('https://raw.githubusercontent.com/it2901/Skrp/testing-gifs/README.md').then(data => { return data.text() })
     const backend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/backend/README.md').then(data => { return data.text() })
     const frontend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/frontend/README.md').then(data => { return data.text() })
     const mocker = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/mocker/README.md').then(data => { return data.text() })
