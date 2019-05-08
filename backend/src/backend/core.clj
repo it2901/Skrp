@@ -20,7 +20,8 @@
             [postgre-types.json :refer [add-jsonb-type]]
             [aero.core :refer (read-config)]
             [backend.routes.core :refer [reloadable-app]]
-            [backend.database])
+            [backend.database]
+            [backend.server-config :as backend.server-config])
   (:gen-class))
 
 (def cli-options
@@ -44,6 +45,7 @@
     (let [temp-cfg (read-config (get-in opt [:options :config]))]
       ;; Add support for Postgres JSONB
       (add-jsonb-type clojure.data.json/write-str clojure.data.json/read-str)
+      (swap! backend.server-config/server-config (constantly temp-cfg))
       (intern 'backend.database 'cfg temp-cfg)
       (run-jetty (ring-params/wrap-params reloadable-app) (get temp-cfg :webserver))
       (println "Server started on port" (get-in temp-cfg [:webserver :port])))))
