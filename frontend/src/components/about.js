@@ -56,7 +56,7 @@ class About extends Component {
 
   async setOnlineState () {
     this.setState({ mode: 'Online' })
-    const main = await fetch('https://raw.githubusercontent.com/it2901/Skrp/testing-gifs/README.md').then(data => { return data.text() })
+    const main = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/README.md').then(data => { return data.text() })
     const backend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/backend/README.md').then(data => { return data.text() })
     const frontend = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/frontend/README.md').then(data => { return data.text() })
     const mocker = await fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/mocker/README.md').then(data => { return data.text() })
@@ -79,7 +79,6 @@ class About extends Component {
           <h1 style={{ textAlign: 'center' }}>SKRP</h1>
           <br></br>
           <MDReactComponent text={this.state.main}/>
-          <img src='https://github.com/it2901/Skrp/blob/testing-gifs/doc/map.gif?raw=true' />
         </Div>
         <Div>
           <h1 style={{ textAlign: 'center' }}>Frontend</h1>
