@@ -32,17 +32,11 @@ class About extends Component {
   }
   // Checks if we have a connection to the internet, if yes then start init the page Online.
   componentWillMount () {
-    fetch('https://raw.githubusercontent.com/it2901/Skrp/develop/README.md')
-      .then((response) => {
-        if (response.status === 200) {
-          this.setOnlineState()
-        } else {
-
-        }
-      }).catch(err => {
-        console.error(err)
-        this.setOfflineState()
-      })
+    if (navigator.onLine) {
+      this.setOnlineState()
+    } else {
+      this.setOfflineState()
+    }
   }
   // Fetches the documentation that is the drive.
 
