@@ -5,6 +5,6 @@ tags
 **/.idea/tasks.xml
 */node_modules/*
 */venv/*
-*/gateway.properties/*
+*/gateway.properties*
 **/*.idea
 */venv/*
