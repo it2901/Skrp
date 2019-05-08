@@ -46,3 +46,6 @@ Once you have docker engine and docker compose setup, run `docker-compose up`
 from the project root to run the project.
 
 Once it is up, visit localhost:3000 in your browser.
+
+![](1.gif)
+![](2.gif)
