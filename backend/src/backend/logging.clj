@@ -75,8 +75,9 @@
    (j/query db :config "SELECT * FROM config"))
   ([device_id]
    (j/query db
-            (str "SELECT * FROM config WHERE device_id = 1
-                 ORDER BY created DESC LIMIT 1"))))
+            (str "SELECT * FROM config WHERE device_id = '"
+                 device_id
+                 "' ORDER BY created DESC LIMIT 1"))))
 
 ; The timestamp type must be extended in order to handle the timestamps from
 ; Postgres
