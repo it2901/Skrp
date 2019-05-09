@@ -3,6 +3,10 @@ Proof of concept showing the use of the [NetJSON](http://netjson.org) specificat
 information about networks for monitoring purposes and making adaptions to the network for
 optimisation purposes.
 
+
+![Log gif](doc/log.gif)
+![map gif](doc/map.gif)
+
 # Setup project
 `git clone https://github.com/it2901/Skrp.git`
 
