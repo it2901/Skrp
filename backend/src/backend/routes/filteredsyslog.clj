@@ -65,7 +65,7 @@
   variables to filter by. If no parameter i passed, the whole log will be retrieved.
   Date, date_from and date_to have to be ISO-formatted yyyy-mm-dd"
   [{params :query-params :as req}]
-  (cond
-    (empty? params) (run-db (filtered-syslog-check (get-syslog)))
-    (params-check? params) (run-db (filtered-syslog-check (get-filtered-syslog (create-filter-map params))))
-    :else (error-handler-rep 400 "Invalid query")))
+  (if (params-check? params)
+    (run-db (filtered-syslog-check (get-filtered-syslog (create-filter-map params))))
+    (error-handler-rep 400 "Invalid query")))
+

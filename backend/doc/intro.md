@@ -67,17 +67,41 @@ contains information about what the set data source is.
 | GET | device_id, adaption_type, description, data, date_from, date_to | None | None |
 |-----|-----------------------------------------------------------------|------|------|
 
-Endpoint for filtering the system logging database table. Returns a JSON array with all
-the filtered data.
+Endpoint for filtering the system logging database table.
+This endpoint accepts any combination of the parameters, excluding combinations where
+only _either_ `date_from` or `date_to` is present, as they are reliant on each other. 
+Returns a JSON array which is a subset of the systemlog (log of adaptions), i.e. the 
+log filtered by sent parameters. If the request does not contain any parameters, the 
+whole log is retrieved. `Date`, `date_from` and `date_to` have to be ISO-formatted 
+(yyyy-mm-dd).
+
+Each JSON element in the response-array has the following structure:
+
+- system_log_id Integer
+- device_id     Integer
+- adaption_id   Integer
+- description   String
+- created       String
+- adaption_type String
+- adaption_id_2 Integer
 
 ### /logadaption
 
-| GET | adaption_type, device_id, description | None | None |
+| POST| adaption_type, device_id, description | None | None |
 |-----|---------------------------------------|------|------|
 
-Endpoint for logging an adaption that has been made to the database. Returns a JSON object
-with the database row entry. All parameters are required, if the `device_id` is not
-registered in the database the endpoint handler will automatically register it.
+Endpoint for logging an adaption that has been made to the database.
+All parameters are required, if the `device_id` is not registered in the database 
+the endpoint handler will automatically register it.
+Returns a JSON object with the database row entry, where `adaption_id` 
+corresponds to the sent `adaption_type`.
+
+The JSON response has the following structure:
+- system_log_id Integer
+- device_id     Integer
+- adaption_id   Integer
+- description   String
+- created       String
 
 ### /network
 

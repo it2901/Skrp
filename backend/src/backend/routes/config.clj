@@ -48,7 +48,7 @@
                                            (dissoc body "device_id"))))]
       (if-not (= 503 (:status res))
         {:status 200
-         :header {"Content-Type" "application/json"}
+         :headers {"Content-Type" "application/json"}
          :body res}
         res))
     (error-handler-rep
@@ -62,5 +62,5 @@
     (if-not config
       (error-handler-rep 500 "Cannot retrieve server configuration file")
       {:status 200
-       :header {"Content-Type" "application-json"}
+       :headers {"Content-Type" "application-json"}
        :body config})))
