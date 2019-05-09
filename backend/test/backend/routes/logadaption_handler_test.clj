@@ -36,7 +36,8 @@
   (with-redefs
    [backend.logging/get-adaption-id (constantly 2)
     backend.routes.logadaption/device-registered? (constantly true)
-    backend.logging/insert-syslog (constantly dummy-response)]
+    backend.logging/insert-syslog (constantly dummy-response)
+    backend.logging/get-syslog (constantly {:status 200})]
     (as-> req-str m
       (mock/request :post m)
       ((wrap-params backend.routes.core/app-routes) m)
