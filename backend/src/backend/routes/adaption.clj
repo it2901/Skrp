@@ -23,17 +23,15 @@
 (defn command-builder
   "Builds the response map"
   [{:keys [eq-proto? protos config]}]
-  (let [{:keys [keep-alive-period max-retries waiting-time]} config]
+  (let [res {:protocol (if eq-proto? (:current protos) (:new protos))}]
     {:status 200
      :headers {"Content-Type" "application/json"}
      :body {:name "Adaption Command"
             :type "Change Protocol"
-            :options {:protocol (if eq-proto?
-                                  (:current protos)
-                                  (:new protos))
-                      :keep-alive-period (if keep-alive-period keep-alive-period 10)
-                      :max-retries (if max-retries max-retries 3)
-                      :waiting-time (if waiting-time waiting-time 10)}}}))
+            :options (:config (assoc config :protocol res))}}))
+                       
+                         
+
 
 (defn get-protocol
   "Gets the protocol of a NetworkGraph from a nested
@@ -63,7 +61,5 @@
        {:eq-proto? (= req-proto db-proto)
         :protos {:current db-proto
                  :new req-proto}
-        :config (select-keys config [:keep-alive-period
-                                     :max-retries
-                                     :waiting-time])}))
+        :config (dissoc config :config_id :device_id :created)}))                        
     (error-handler-rep 400 "Bad Request")))
