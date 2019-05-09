@@ -62,11 +62,14 @@ def update_network_collection():
     geolocation = requests.get('http://{}/geoloc'.format(NETJSON_HOST)).json()
 
     collection = {
+       "device_id": current_device,
+       "netcoll": {
        "type": "NetworkCollection",
-        "collection": [
-            graph,
-            geolocation
-        ]
+            "collection": [
+                graph,
+                geolocation
+            ]
+        }
     }
     r = requests.post(
                     'http://{}/lognetwork'.format(BACKEND_HOST),
