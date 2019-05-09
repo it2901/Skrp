@@ -53,7 +53,7 @@
           db-proto (get-protocol (clojure.walk/keywordize-keys data))
           req-proto (get-protocol (:netcoll obj))
           config (first (get-configuration (:device-id obj)))]
-      (insert-network-collection obj)
+      (insert-network-collection (:netcoll obj))
       (command-builder
        {:eq-proto? (= req-proto db-proto)
         :protos {:current db-proto
