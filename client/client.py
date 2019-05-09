@@ -75,7 +75,6 @@ def update_network_collection():
                     'http://{}/lognetwork'.format(BACKEND_HOST),
                     headers={'Content-Type': 'application/json'},
                     data=json.dumps(collection, sort_keys=True)).json()
-    print(r)
 
 
 def send_config(config={}):
