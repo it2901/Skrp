@@ -29,9 +29,6 @@
      :body {:name "Adaption Command"
             :type "Change Protocol"
             :options (:config (assoc config :protocol res))}}))
-                       
-                         
-
 
 (defn get-protocol
   "Gets the protocol of a NetworkGraph from a nested
@@ -61,5 +58,5 @@
        {:eq-proto? (= req-proto db-proto)
         :protos {:current db-proto
                  :new req-proto}
-        :config (dissoc config :config_id :device_id :created)}))                        
+        :config (dissoc config :config_id :device_id :created)}))
     (error-handler-rep 400 "Bad Request")))
