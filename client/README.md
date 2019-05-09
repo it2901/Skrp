@@ -37,4 +37,4 @@ defines how often the client will poll the data sources.
 
 For instance, you can run the client with:
 
-`BACKEND_HOST=localhost:8090 INTERVAL=30.0 python client.py`
+`BACKEND_HOST=localhost/api INTERVAL=30.0 python client.py`
