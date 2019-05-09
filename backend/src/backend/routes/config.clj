@@ -16,7 +16,8 @@
 (ns backend.routes.config
   (:require [aero.core :as ac]
             [backend.configuration :refer [write-config, read-config]]
-            [backend.routes.util :refer [error-handler-rep, run-db]]))
+            [backend.routes.util :refer [error-handler-rep, run-db]]
+            [backend.server-config :refer [server-config]]))
 
 (defn config-check
   "Returns correct HTTP response according to configuration result"
@@ -57,10 +58,9 @@
 (defn server-config-handler
   "HTTP GET handler for exposing the server configuration file"
   [req]
-  (let [cfg (ac/read-config "config.edn")]
-    (if-not cfg
+  (let [config @server-config]
+    (if-not config
       (error-handler-rep 500 "Cannot retrieve server configuration file")
       {:status 200
        :header {"Content-Type" "application-json"}
-       :body cfg})))
-
+       :body config})))

@@ -70,7 +70,8 @@ export default class Maps extends Component {
 
   // fetches the nodegraph and geolocations, and rewrapes it into objects that are easily handled by the rest of the frontend.
   async setInitalState () {
-    let stateToBe = await fetch('http://localhost:8090/network')
+    let url = document.URL.split(':3000')[0]
+    let stateToBe = await fetch(`${url}:8090/network`)
       .then(response => response.json())
       .catch(err => console.error(err))
     stateToBe = stateToBe['collection']
