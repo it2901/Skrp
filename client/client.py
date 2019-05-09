@@ -62,7 +62,7 @@ def update_network_collection():
     geolocation = requests.get('http://{}/geoloc'.format(NETJSON_HOST)).json()
 
     collection = {
-       "device_id": current_device,
+       "device-id": current_device, # NOTE: we use device_id everywhere else
        "netcoll": {
        "type": "NetworkCollection",
             "collection": [
@@ -75,6 +75,7 @@ def update_network_collection():
                     'http://{}/lognetwork'.format(BACKEND_HOST),
                     headers={'Content-Type': 'application/json'},
                     data=json.dumps(collection, sort_keys=True)).json()
+    print(r)
 
 
 def send_config(config={}):
