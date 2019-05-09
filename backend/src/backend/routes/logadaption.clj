@@ -35,14 +35,12 @@
   If the device_id is not yet registered in the db, a registration will be made"
   [{params :query-params :as req}]
   (cond
-    (= 503 (:status (run-db (get-syslog)))) {:status 503
-                                             :header {"Content-Type" "application/json"}
-                                             :body "Cant connect to the database"}
+    (= 503 (:status (run-db (get-syslog)))) (run-db (get-syslog))
     (and
      (contains? params "adaption_type")
      (contains? params "device_id")
      (contains? params "description"))
-    (if (= nil (get-adaption-id (params "adaption_type")))
+    (if-not (get-adaption-id (params "adaption_type"))
       (error-handler-rep 503 (str "adaption_type: '" (params "adaption_type") "' is not"
                                   " registered in the database."))
       (let [device_id (Integer/parseInt (params "device_id"))
@@ -54,7 +52,7 @@
                                          :adaption_id adaption_id
                                          :description description}))]
           {:status 200
-           :header {"Content-Type" "application/json"}
+           :headers {"Content-Type" "application/json"}
            :body res})))
 
     :else (error-handler-rep 503 "Invalid query")))

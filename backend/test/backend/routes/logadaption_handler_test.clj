@@ -10,19 +10,31 @@
             [cheshire.core :as json]))
 
 (def dummy-response
+  {"system_log_id" "5"
+   "device_id"     "24"
+   "adaption_id" "4"
+   "description"   "desc"
+   "created"       "2019-05-03T17:01:10Z"})
+
+(def full-dummy-response
   {:status 200
    :headers {"Content-Type" "application/json"}
-   :body [{":system_log_id" "5"
-           "device_id"     "24"
-           "adaption_id" "4"
-           "description"   "desc"
-           "created"       "2019-05-03T17:01:10Z"}]})
+   :body {"system_log_id" "5"
+          "device_id"     "24"
+          "adaption_id" "4"
+          "description"   "desc"
+          "created"       "2019-05-03T17:01:10Z"}})
+
+(def bad-dummy
+  {:status 503
+   :headers {"Content-Type" "application/json"}
+   :body {"Error" "Invalid query"}})
 
 (defn mock-db-query
   "Mock the database query in the handler for the /logadaption endpoint"
   [req-str]
   (with-redefs
-   [backend.logging/get-adaption-id (constantly 4)
+   [backend.logging/get-adaption-id (constantly 2)
     backend.routes.logadaption/device-registered? (constantly true)
     backend.logging/insert-syslog (constantly dummy-response)]
     (as-> req-str m
@@ -32,7 +44,8 @@
 
 (deftest adaption-dummy-request
   (testing "Dummy route for adaption command request"
-    (let [good-rep (mock-db-query "/logadaption?device_id=1&adaption_type=compression&description=desc")
+    (let [good-rep (mock-db-query "/logadaption?device_id=1&adaption_type=adapType&description=desc")
           bad-rep (mock-db-query "/logadaption?rep=bad&device_id=x")]
       (is (= (:status good-rep) 200))
-      (is (not (= (:status bad-rep) 200))))))
+      (is (= good-rep (update full-dummy-response :body first)))
+      (is (= bad-rep bad-dummy)))))
