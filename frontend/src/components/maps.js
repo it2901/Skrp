@@ -24,6 +24,8 @@ export default class Maps extends Component {
   constructor () {
     super()
     this.state = {
+      key: 0,
+      bound: [[0, 1], [1, 2]],
       adjustView: true,
       updaters: [],
       liveUpdate: true,
@@ -89,6 +91,11 @@ export default class Maps extends Component {
       let lat = pos['Latitude']
       return [ [lat, lng], time, id ]
     })
+    let latmin = locs.reduce((current, min) => current[0][0] > min[0][0] ? min : current)[0][0]
+    let latmax = locs.reduce((current, min) => current[0][0] < min[0][0] ? min : current)[0][0]
+    let lngmin = locs.reduce((current, min) => current[0][1] > min[0][1] ? min : current)[0][1]
+    let lngmax = locs.reduce((current, min) => current[0][1] < min[0][1] ? min : current)[0][1]
+    let bounds = [[latmin, lngmin], [latmax, lngmax]]
     // moves the map above the first node, on the first init of the page.
     if (this.state.adjustView) {
       this.setState({
@@ -108,6 +115,7 @@ export default class Maps extends Component {
     }
 
     this.setState({
+      bound: bounds,
       nodes: x,
       links: links.map(link => {
         return {
@@ -203,7 +211,7 @@ export default class Maps extends Component {
     // sets the map above Berlin
     const position = [this.state.lat, this.state.lng]
     return (
-      <Map zoomControl= {false} center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
+      <Map key= {this.state.key} zoomControl= {false} bounds= {this.state.bound}center={position} zoom={this.state.zoom} style={{ height: this.state.height }} >
 
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -218,6 +226,7 @@ export default class Maps extends Component {
           />
           {nodes}
           {links}
+          {console.log(links.length)}
           <Control position="topright" >
             <Button
               style={{
@@ -232,6 +241,19 @@ export default class Maps extends Component {
                 }))
                 this.change()
               }}
+            />
+
+          </Control>
+
+          <Control position="topright" >
+            <Button
+              content={'Force Rerender'}
+              onClick={() => {
+                this.setState(prevState => ({
+                  key: prevState.key + 1
+                }))
+              }
+              }
             />
           </Control>
         </FeatureGroup>

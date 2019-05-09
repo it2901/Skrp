@@ -120,14 +120,14 @@
               "Latitude": {
                 "type": "number",
                 "description": "North/South position in degrees relative to equator",
-                "minimum": -90,
-                "maximum": 90
+                "minimum": 50,
+                "maximum": 52
               },
               "Longitude": {
                 "type": "number",
                 "description": "East/West position in degrees relative to Greenwich",
-                "minimum": -180,
-                "maximum": 180,
+                "minimum": 13,
+                "maximum": 15,
                 "exclusiveMaximum": true
               },
               "AboveSeaLevel": {
