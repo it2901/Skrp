@@ -67,10 +67,18 @@ export default class Maps extends Component {
   mapValue=(value, vmin, vmax, tmin, tmax) => {
     return vmin === vmax ? tmin : Math.ceil((value - vmin) / (vmax - vmin) * (tmax - tmin) + tmin)
   }
+  getRelativeUrl () {
+    // gets relative url oof
+    let d = document.URL
+    let a = d.split('/')
+    let method = a[0]
+    let uri = a[2].split(':')[0]
+    return `${method}//${uri}`
+  }
 
   // fetches the nodegraph and geolocations, and rewrapes it into objects that are easily handled by the rest of the frontend.
   async setInitalState () {
-    let stateToBe = await fetch(`:8090/network`)
+    let stateToBe = await fetch(`${this.getRelativeUrl()}:8090/network`)
       .then(response => response.json())
       .catch(err => console.error(err))
     stateToBe = stateToBe['collection']

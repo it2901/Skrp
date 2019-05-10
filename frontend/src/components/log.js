@@ -157,13 +157,22 @@ class Log extends Component {
         this.setState({ data: [] })
       })
   }
+  getRelativeUrl () {
+    // gets relative url oof
+    let d = document.URL
+    let a = d.split('/')
+    let method = a[0]
+    let uri = a[2].split(':')[0]
+    return `${method}//${uri}`
+  }
   fetch (query) {
     // not using fetch api, because cypress can't intercept it
     query = query || ''
     // console.log(query)
+    let u = this.getRelativeUrl()
     return new Promise(function (resolve, reject) {
-      var xhr = new XMLHttpRequest()
-      xhr.open('GET', `:8090/filtersyslog${query}`)
+      let xhr = new XMLHttpRequest()
+      xhr.open('GET', `${u}:8090/filtersyslog${query}`)
       xhr.onload = resolve
       xhr.onerror = reject
       xhr.send()

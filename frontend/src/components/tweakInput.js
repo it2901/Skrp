@@ -25,19 +25,27 @@ class TweakInput extends Component {
 
   // fetches config from database and spreads it to the state.
   async setInitalState () {
-    const stateToBe = await fetch(`:8090/configure`).then(data => { return data.json() }).catch(err => console.error(err))
+    const stateToBe = await fetch(`${this.getRelativeUrl()}:8090/configure`).then(data => { return data.json() }).catch(err => console.error(err))
     let parameters = stateToBe['config']
     this.device_id = stateToBe['device_id']
     let p2 = { ...parameters }
     this.setState({
       parameters: p2 })
   }
+  getRelativeUrl () {
+    // gets relative url oof
+    let d = document.URL
+    let a = d.split('/')
+    let method = a[0]
+    let uri = a[2].split(':')[0]
+    return `${method}//${uri}`
+  }
 
   // Update the config in the database, this will trigger an adaptation. s
   sendToConfigure () {
     let body = this.state.parameters
     body['device_id'] = this.device_id
-    fetch(`:8090/configure`, {
+    fetch(`${this.getRelativeUrl()}:8090/configure`, {
       method: 'POST',
       headers: [
         ['Content-Type', 'application/json']],
@@ -47,7 +55,7 @@ class TweakInput extends Component {
   sendToAdaptationLog (name, value) {
     let id = this.device_id
     let description = `${name} has updated to ${value}`
-    let statement = `:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
+    let statement = `${this.getRelativeUrl()}:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
   // Changes values on a spesific input field and logs the changed adaptation

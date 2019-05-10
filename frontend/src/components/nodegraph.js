@@ -86,7 +86,14 @@ class NodeGraph extends Component {
       })
     }
   }
-
+  getRelativeUrl () {
+    // gets relative url oof
+    let d = document.URL
+    let a = d.split('/')
+    let method = a[0]
+    let uri = a[2].split(':')[0]
+    return `${method}//${uri}`
+  }
   fetch () {
     let xhttp = new XMLHttpRequest({ mozSystem: true })
     let self = this
@@ -103,7 +110,7 @@ class NodeGraph extends Component {
         self.setState({ data: {} })
       }
     }
-    xhttp.open('GET', `:8090/rawnetwork`, true)
+    xhttp.open('GET', `${this.getRelativeUrl()}:8090/rawnetwork`, true)
     // xhttp.open('GET', 'http://localhost:3001/netgph', true)
     xhttp.send()
   }
