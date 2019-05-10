@@ -163,8 +163,7 @@ class Log extends Component {
     // console.log(query)
     return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest()
-      let url = document.URL.split(':3000')[0]
-      xhr.open('GET', `${url}:8090/filtersyslog${query}`)
+      xhr.open('GET', `:8090/filtersyslog${query}`)
       xhr.onload = resolve
       xhr.onerror = reject
       xhr.send()

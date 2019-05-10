@@ -103,8 +103,7 @@ class NodeGraph extends Component {
         self.setState({ data: {} })
       }
     }
-    let url = document.URL.split(':3000')[0]
-    xhttp.open('GET', `${url}:8090/rawnetwork`, true)
+    xhttp.open('GET', `:8090/rawnetwork`, true)
     // xhttp.open('GET', 'http://localhost:3001/netgph', true)
     xhttp.send()
   }

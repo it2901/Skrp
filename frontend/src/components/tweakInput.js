@@ -25,8 +25,7 @@ class TweakInput extends Component {
 
   // fetches config from database and spreads it to the state.
   async setInitalState () {
-    let url = document.URL.split(':3000')[0]
-    const stateToBe = await fetch(`${url}:8090/configure`).then(data => { return data.json() }).catch(err => console.error(err))
+    const stateToBe = await fetch(`:8090/configure`).then(data => { return data.json() }).catch(err => console.error(err))
     let parameters = stateToBe['config']
     this.device_id = stateToBe['device_id']
     let p2 = { ...parameters }
@@ -38,8 +37,7 @@ class TweakInput extends Component {
   sendToConfigure () {
     let body = this.state.parameters
     body['device_id'] = this.device_id
-    let url = document.URL.split(':3000')[0]
-    fetch(`${url}:8090/configure`, {
+    fetch(`:8090/configure`, {
       method: 'POST',
       headers: [
         ['Content-Type', 'application/json']],
@@ -49,8 +47,7 @@ class TweakInput extends Component {
   sendToAdaptationLog (name, value) {
     let id = this.device_id
     let description = `${name} has updated to ${value}`
-    let url = document.URL.split(':3000')[0]
-    let statement = `${url}:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
+    let statement = `:8090/logadaption?adaption_type=${name}&device_id=${id}&description=${description}`
     fetch(statement, { method: 'POST' })
   }
   // Changes values on a spesific input field and logs the changed adaptation
