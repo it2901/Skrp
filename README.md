@@ -15,7 +15,7 @@ optimisation purposes.
 ![Log gif](doc/log.gif)
 
 ### and more!
-SKRP also supports tweaking message broker (OKSE) paramaters through the interface
+SKRP also supports tweaking message broker (OKSE) parameters through the interface
 
 # Setup project
 `git clone https://github.com/it2901/Skrp.git`
