@@ -3,9 +3,19 @@ Proof of concept showing the use of the [NetJSON](http://netjson.org) specificat
 information about networks for monitoring purposes and making adaptions to the network for
 optimisation purposes.
 
+## Features
 
+### Node graph visualisation
+![node graph gif](doc/Node_Graph.gif)
+
+### Map overview
+![map gif](doc/Map_Overview.gif)
+
+### Logs interface
 ![Log gif](doc/log.gif)
-![map gif](doc/map.gif)
+
+### and more!
+SKRP also supports tweaking message broker (OKSE) paramaters through the interface
 
 # Setup project
 `git clone https://github.com/it2901/Skrp.git`
